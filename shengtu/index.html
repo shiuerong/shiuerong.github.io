@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>薛老師的批次生圖小幫手</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Huninn&family=LXGW+WenKai+TC:wght@400;700&family=Bpmf+Iansui&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f6f1e7; --card: #fffdf8; --ink: #2b2a27; --muted: #4a4741;
+    --line: #b9b2a3; --accent: #1f4e79; --accent-ink: #ffffff; --focus: #c2410c;
+    --ui: "Huninn", "jf-openhuninn", "Microsoft JhengHei", sans-serif;
+    --body: "LXGW WenKai TC", "Huninn", "Microsoft JhengHei", serif;
+  }
+  html { font-size: 22px; }
+  html[data-size="2"] { font-size: 27px; }
+  html[data-size="3"] { font-size: 32px; }
+  html[data-theme="dark"] {
+    --bg: #4f5d57; --card: #f4f0e6; --ink: #2f3a36; --muted: #3c4a45;
+    --line: #8a968f; --accent: #2f4a43; --accent-ink: #fbf8f1; --focus: #e8d9a8;
+  }
+  html[data-theme="hc"] {
+    --bg: #000; --card: #000; --ink: #fff; --muted: #fff;
+    --line: #fff; --accent: #ffe600; --accent-ink: #000; --focus: #ffe600;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); line-height: 1.7; }
+  .wrap { max-width: 46rem; margin: 0 auto; padding: 1rem; }
+  .bar { display: flex; flex-wrap: nowrap; align-items: center; gap: .35rem; margin-bottom: 1rem; overflow-x: auto; padding: 4px; }
+  .bar button { flex: 0 0 auto; white-space: nowrap; padding: .3rem .6rem; gap: .25rem; }
+  .bar .lbl { font-family: var(--ui); flex: 0 0 auto; white-space: nowrap; }
+  html[data-theme="dark"] .bar .lbl { color: #fbf8f1; }
+  button, .go {
+    font-family: var(--ui); font-size: 1rem; min-height: 64px; padding: .4rem 1rem;
+    border-radius: .8rem; border: 3px solid var(--line); background: var(--card); color: var(--ink);
+    cursor: pointer; display: inline-flex; align-items: center; gap: .4rem; text-decoration: none;
+  }
+  html[data-theme="hc"] button, html[data-theme="hc"] .card { border: 4px solid #fff; }
+  button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  html[data-theme="dark"] .bar button:not([aria-pressed="true"]) { background: var(--card); color: var(--ink); }
+  :focus-visible { outline: 4px solid var(--focus); outline-offset: 3px; }
+  .card { background: var(--card); color: var(--ink); border: 3px solid var(--line); border-radius: 1.2rem; padding: 1.4rem; }
+  h1 { font-family: var(--ui); font-size: 1.7rem; line-height: 1.4; margin: 0 0 .6rem; }
+  p { margin: .5rem 0; }
+  .go {
+    width: 100%; justify-content: center; min-height: 96px; font-size: 1.5rem; font-weight: 700;
+    background: var(--accent); color: var(--accent-ink); border-color: var(--accent); margin: 1rem 0 .6rem;
+  }
+  .note { color: var(--muted); font-size: .9rem; }
+  html[data-bpmf="1"] .zy, html[data-bpmf="1"] .zy * { font-family: "Bpmf Iansui", var(--body); line-height: 2; }
+  html[data-bpmf="1"] .go { min-height: 120px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="bar" role="toolbar" aria-label="顯示設定">
+    <span class="lbl" id="sizelbl">字級</span>
+    <button type="button" data-size="1" aria-pressed="true" aria-describedby="sizelbl"><span aria-hidden="true">🔤</span>標準</button>
+    <button type="button" data-size="2" aria-pressed="false" aria-describedby="sizelbl"><span aria-hidden="true">🔍</span>大</button>
+    <button type="button" data-size="3" aria-pressed="false" aria-describedby="sizelbl"><span aria-hidden="true">🔎</span>特大</button>
+    <button type="button" id="hc" aria-pressed="false"><span aria-hidden="true">◐</span>高對比：<span class="st">關</span></button>
+    <button type="button" id="dark" aria-pressed="false"><span aria-hidden="true">🌿</span>深色：<span class="st">關</span></button>
+    <button type="button" id="bpmf" aria-pressed="false"><span aria-hidden="true">ㄅ</span>注音：<span class="st">關</span></button>
+  </div>
+
+  <main class="card zy">
+    <h1><span aria-hidden="true">🎨 </span>薛老師的批次生圖小幫手</h1>
+    <p>正在開啟最新版。沒有自動打開，請按下面的按鈕。</p>
+    <!-- 改版時只要換下面這一行的網址和版本日期 -->
+    <a class="go" id="go" href="https://share.gemini.google/jOKFPH7TEHiy"><span aria-hidden="true">▶</span>開啟最新版</a>
+    <p class="note">版本日期：2026 年 11 月 18 日</p>
+    <p class="note">生圖要先登入 Google 帳號。</p>
+  </main>
+</div>
+<script>
+(function () {
+  // 自動跳到最新版；網址只寫在上面的按鈕，這裡直接讀按鈕的連結
+  var go = document.getElementById('go');
+  if (go && go.href) { try { window.location.replace(go.href); } catch (e) {} }
+})();
+</script>
+<script>
+(function () {
+  var root = document.documentElement;
+  function save(k, v) { try { localStorage.setItem('entry-' + k, v); } catch (e) {} }
+  function load(k) { try { return localStorage.getItem('entry-' + k); } catch (e) { return null; } }
+  function setSize(n) {
+    root.setAttribute('data-size', n);
+    document.querySelectorAll('button[data-size]').forEach(function (b) {
+      b.setAttribute('aria-pressed', b.getAttribute('data-size') === String(n) ? 'true' : 'false');
+    });
+    save('size', n);
+  }
+  function setToggle(id, on) {
+    var b = document.getElementById(id);
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    b.querySelector('.st').textContent = on ? '開' : '關';
+  }
+  function setTheme(t) {
+    if (t) root.setAttribute('data-theme', t); else root.removeAttribute('data-theme');
+    setToggle('hc', t === 'hc'); setToggle('dark', t === 'dark'); save('theme', t || '');
+  }
+  function setBpmf(on) {
+    if (on) root.setAttribute('data-bpmf', '1'); else root.removeAttribute('data-bpmf');
+    setToggle('bpmf', on); save('bpmf', on ? '1' : '');
+  }
+  document.querySelectorAll('button[data-size]').forEach(function (b) {
+    b.addEventListener('click', function () { setSize(b.getAttribute('data-size')); });
+  });
+  document.getElementById('hc').addEventListener('click', function () {
+    setTheme(root.getAttribute('data-theme') === 'hc' ? '' : 'hc');
+  });
+  document.getElementById('dark').addEventListener('click', function () {
+    setTheme(root.getAttribute('data-theme') === 'dark' ? '' : 'dark');
+  });
+  document.getElementById('bpmf').addEventListener('click', function () {
+    setBpmf(root.getAttribute('data-bpmf') !== '1');
+  });
+  setSize(load('size') || 1); setTheme(load('theme') || ''); setBpmf(load('bpmf') === '1');
+})();
+</script>
+</body>
+</html>
