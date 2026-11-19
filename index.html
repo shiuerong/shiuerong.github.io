@@ -1,0 +1,2244 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}
+/* 可愛圖示（cute-button-icons） */
+.ic{display:inline-flex;width:1.6em;height:1.6em;flex:none;vertical-align:-.35em}
+.ic svg{width:100%!important;height:100%!important;overflow:visible;background:none!important;padding:0!important}
+button[aria-pressed="true"] .ic svg,:root[data-contrast="high"] .ic svg{background:#fffdf8!important;border-radius:50%;padding:2px!important}
+.zyic{display:inline-flex;align-items:center;justify-content:center;width:1.45em;height:1.45em;border-radius:50%;background:#fffdf8;color:#3b2a25;font-weight:700;border:2px solid #3b2a25;flex:none;line-height:1}
+.mode[aria-pressed="true"]::before{content:""!important;display:inline-block;border-left:.5em solid currentColor;border-top:.32em solid transparent;border-bottom:.32em solid transparent;margin-right:.25em}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.3em}
+
+.spk svg,.say svg{width:80%!important;height:80%!important;background:#fffdf8;border-radius:50%;padding:3px}
+[hidden]{display:none!important}
+</style></head><body>
+<title>薛老師的教室</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Huninn&family=LXGW+WenKai+TC:wght@400;700&display=swap">
+<style>
+/* Layout: one centred column. Home = two giant subject blocks; subject = lesson cards with picture; lesson = colour-coded sections of big game buttons. */
+:root{
+  --bg:#f3f8fc; --panel:#ffffff; --ink:#1f2a33; --muted:#51606c; --line:#c9d6e0;
+  --zh:#c8432f; --zh-soft:#fde4de;            /* 國語：番茄紅 */
+  --math:#1d65b5; --math-soft:#dcebfb;        /* 數學：藍 */
+  --focus:#ff9f1c;
+  --sec-v:#fff1a8; --sec-v-ink:#5c4a00;       /* 詞語：黃 */
+  --sec-1:#bdeef2; --sec-1-ink:#005c66;       /* 一方面：青 */
+  --sec-2:#cdeebf; --sec-2-ink:#1e5a12;       /* 看似卻：綠 */
+  --sec-3:#ffd6e7; --sec-3-ink:#7a1d45;
+  --sec-4:#fff0a8; --sec-4-ink:#6b4e00;       /* 短語：粉紅 */
+  --btn:#ffffff; --btn-ink:#1f2a33; --shadow:0 6px 0 rgba(31,42,51,.18);
+  --font:"Huninn","LXGW WenKai TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --fs:24px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#56655c; --panel:#46534b; --ink:#f6f3ea; --muted:#dde5de; --line:#83928a;
+  --zh:#ff7a63; --zh-soft:#3d2320; --math:#6fb0ff; --math-soft:#1b2c40; --focus:#ffb547;
+  --sec-v:#4a3f10; --sec-v-ink:#ffe98a; --sec-1:#0e4248; --sec-1-ink:#a6f1f7; --sec-2:#1f4318; --sec-2-ink:#c3f0b0; --sec-3:#4d1f33; --sec-3-ink:#ffc2dc; --sec-4:#4a3d0a; --sec-4-ink:#ffe680;
+  --btn:#f4ecd8; --btn-ink:#22302a; --shadow:0 6px 0 rgba(0,0,0,.45); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#56655c; --panel:#46534b; --ink:#f6f3ea; --muted:#dde5de; --line:#83928a;
+  --zh:#ff7a63; --zh-soft:#3d2320; --math:#6fb0ff; --math-soft:#1b2c40; --focus:#ffb547;
+  --sec-v:#4a3f10; --sec-v-ink:#ffe98a; --sec-1:#0e4248; --sec-1-ink:#a6f1f7; --sec-2:#1f4318; --sec-2-ink:#c3f0b0; --sec-3:#4d1f33; --sec-3-ink:#ffc2dc; --sec-4:#4a3d0a; --sec-4-ink:#ffe680;
+  --btn:#f4ecd8; --btn-ink:#22302a; --shadow:0 6px 0 rgba(0,0,0,.45); color-scheme:dark}
+/* 高對比模式（老師護眼用）：黑底、黃白字、粗框 */
+:root[data-contrast="high"]{
+  --bg:#000; --panel:#000; --ink:#fff; --muted:#ffe600; --line:#fff;
+  --zh:#ffe600; --zh-soft:#000; --math:#00e5ff; --math-soft:#000; --focus:#ff4fd8;
+  --sec-v:#000; --sec-v-ink:#ffe600; --sec-1:#000; --sec-1-ink:#00e5ff; --sec-2:#000; --sec-2-ink:#7dff5a; --sec-3:#000; --sec-3-ink:#ff8ad0; --sec-4:#000; --sec-4-ink:#ffe066;
+  --btn:#000; --btn-ink:#fff; --shadow:none; color-scheme:dark}
+:root[data-contrast="high"] .section,:root[data-contrast="high"] .game,:root[data-contrast="high"] .lesson,:root[data-contrast="high"] .subject{border-width:4px!important}
+*{box-sizing:border-box}
+html{font-size:var(--fs)}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:14px 48px}
+.wrap{max-width:980px;width:100%;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+button,a{font-family:inherit}
+:focus-visible{outline:5px solid var(--focus);outline-offset:3px;border-radius:14px}
+.skip{position:absolute;left:-9999px}.skip:focus{left:16px;top:16px;background:var(--panel);padding:8px 14px;z-index:9}
+/* top bar */
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink)}
+.brand svg{width:2.4rem;height:2.4rem;flex:none}
+.brand h1{margin:0;font-size:1.7rem;letter-spacing:.06em;font-weight:400}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tool{min-height:52px;min-width:52px;border:3px solid var(--line);background:var(--panel);color:var(--ink);border-radius:16px;padding:4px 14px;font-size:.8rem;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.tool[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.sizes{display:inline-flex;border:3px solid var(--line);border-radius:16px;overflow:hidden;background:var(--panel)}
+.sizes button{min-height:46px;min-width:52px;font-size:.8rem;border:none;background:transparent;color:var(--ink);cursor:pointer;font-weight:700}
+.sizes button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.sizes .s1{font-size:.75rem}.sizes .s2{font-size:.95rem}.sizes .s3{font-size:1.15rem}
+/* breadcrumb + back */
+.nav{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.back{display:inline-flex;align-items:center;gap:8px;min-height:64px;padding:6px 22px 6px 14px;border-radius:999px;border:3px solid var(--ink);background:var(--panel);color:var(--ink);text-decoration:none;font-size:1rem;box-shadow:var(--shadow)}
+.back svg{width:1.3em;height:1.3em}
+.crumb{color:var(--muted);font-size:.85rem}
+h2.page{font-size:1.5rem;margin:0;font-weight:400;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.lead{margin:0;color:var(--muted);font-size:.9rem}
+/* speaker */
+.spk{flex:none;width:52px;height:52px;border-radius:50%;border:3px solid currentColor;background:transparent;color:inherit;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0}
+.spk svg{width:26px;height:26px}
+.spk.speaking{background:var(--focus);color:#000;border-color:var(--focus)}
+/* home subjects */
+.subjects{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.subject{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:260px;border-radius:32px;border:4px solid transparent;text-decoration:none;color:#fff;box-shadow:var(--shadow);padding:20px;text-align:center}
+.subject.zh{background:var(--zh)}.subject.math{background:var(--math)}.subject.zy{background:#2e7d4f}
+:root[data-contrast="high"] .subject.zy{color:#7dff5a;border-color:#7dff5a}
+.lesson.zy{border-color:#2e7d4f}.lesson.zy .go{background:#2e7d4f}.lesson.zy .thumb,.lessonhead .mini.zy{background:#e3f3e6}
+:root[data-contrast="high"] .lesson.zy .go{background:#000;color:#7dff5a;border:2px solid #7dff5a}
+:root[data-contrast="high"] .lesson.zy .thumb,:root[data-contrast="high"] .lessonhead .mini.zy{background:#eaffe3}
+/* 字音：玫瑰紅（和國語同是紅色系，偏粉紫好區分） */
+.subject.zg{background:#b0335f}
+:root[data-contrast="high"] .subject.zg{color:#ff8fb8;border-color:#ff8fb8}
+.lesson.zg{border-color:#b0335f}.lesson.zg .go{background:#b0335f}.lesson.zg .thumb,.lessonhead .mini.zg{background:#fbe1ea}
+:root[data-contrast="high"] .lesson.zg .go{background:#000;color:#ff8fb8;border:2px solid #ff8fb8}
+:root[data-contrast="high"] .lesson.zg .thumb{background:#fff0f5}
+/* 數讀題：紫 */
+.subject.sd{background:#6b4fa0}
+:root[data-contrast="high"] .subject.sd{color:#e0b8ff;border-color:#e0b8ff}
+.lesson.sd{border-color:#6b4fa0}.lesson.sd .go{background:#6b4fa0}.lesson.sd .thumb,.lessonhead .mini.sd{background:#ece6f8}
+:root[data-contrast="high"] .lesson.sd .go{background:#000;color:#e0b8ff;border:2px solid #e0b8ff}
+:root[data-contrast="high"] .lesson.sd .thumb,:root[data-contrast="high"] .lessonhead .mini.sd{background:#f3eaff}
+:root[data-contrast="high"] .subject{background:#000;color:var(--zh);border-color:var(--zh)}
+:root[data-contrast="high"] .subject.math{color:var(--math);border-color:var(--math)}
+.subject .icon{width:110px;height:110px}
+.subject .label{font-size:2.4rem;letter-spacing:.2em;line-height:1.1}
+.subject .sub{font-size:.85rem;opacity:.95}
+.badge{display:inline-block;background:#fff;color:#1f2a33;border-radius:999px;padding:2px 14px;font-size:.75rem}
+.subject.soon{opacity:.92}
+/* lessons */
+.lessons{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+.lesson{display:flex;flex-direction:column;border-radius:28px;border:4px solid var(--zh);background:var(--panel);color:var(--ink);text-decoration:none;overflow:hidden;box-shadow:var(--shadow)}
+.lesson .thumb{background:var(--zh-soft);display:flex;align-items:center;justify-content:center;padding:14px;aspect-ratio:4/3;max-width:100%}
+.lesson .thumb svg{width:70%;height:auto}
+.lesson .info{padding:12px 18px 16px;display:flex;flex-direction:column;gap:4px}
+.lesson .title{font-size:1.6rem;line-height:1.2}
+.lesson .meta{font-size:.8rem;color:var(--muted)}
+.lesson .go{margin-top:6px;align-self:flex-start;background:var(--zh);color:#fff;border-radius:999px;padding:4px 18px;font-size:.85rem}
+:root[data-contrast="high"] .lesson .go{background:#000;color:var(--zh);border:2px solid var(--zh)}
+.empty{border:4px dashed var(--line);border-radius:28px;padding:30px;text-align:center;color:var(--muted)}
+/* lesson page */
+.lessonhead{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.lessonhead .mini{width:96px;height:96px;flex:none;background:var(--zh-soft);border-radius:24px;display:flex;align-items:center;justify-content:center}
+.lessonhead .mini svg{width:76px}
+.section{border-radius:28px;padding:16px 18px 20px;border:4px solid transparent;display:flex;flex-direction:column;gap:12px}
+.section.v{background:var(--sec-v);color:var(--sec-v-ink);border-color:color-mix(in srgb,var(--sec-v-ink) 35%,transparent)}
+.section.p1{background:var(--sec-1);color:var(--sec-1-ink);border-color:color-mix(in srgb,var(--sec-1-ink) 35%,transparent)}
+.section.p2{background:var(--sec-2);color:var(--sec-2-ink);border-color:color-mix(in srgb,var(--sec-2-ink) 35%,transparent)}
+.section.p3{background:var(--sec-3);color:var(--sec-3-ink);border-color:color-mix(in srgb,var(--sec-3-ink) 35%,transparent)}
+.section.p4{background:var(--sec-4);color:var(--sec-4-ink);border-color:color-mix(in srgb,var(--sec-4-ink) 35%,transparent)}
+:root[data-contrast="high"] .section{border-color:currentColor}
+.sechead{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.num{flex:none;width:52px;height:52px;border-radius:50%;background:currentColor;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.num span{color:var(--panel)}
+:root[data-contrast="high"] .num span{color:#000}
+.sechead h3{margin:0;font-size:1.4rem;font-weight:400;line-height:1.25}
+.sechead small{display:block;font-size:.75rem;opacity:.85}
+.games{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+.game{display:flex;align-items:center;gap:12px;min-height:84px;padding:10px 16px;border-radius:22px;background:var(--btn);color:var(--btn-ink);text-decoration:none;border:3px solid currentColor;box-shadow:var(--shadow);font-size:1.15rem}
+.section .game{border-color:color-mix(in srgb,currentColor 0%,transparent)}
+.section.v .game{color:var(--btn-ink);border-color:var(--sec-v-ink)}
+.section.p1 .game{border-color:var(--sec-1-ink)}.section.p2 .game{border-color:var(--sec-2-ink)}.section.p3 .game{border-color:var(--sec-3-ink)}.section.p4 .game{border-color:var(--sec-4-ink)}
+.game svg{width:46px;height:46px;flex:none}
+.game .gname{display:flex;flex-direction:column;line-height:1.2}
+.game .gname small{font-size:.65rem;color:var(--muted)}
+.game:hover,.lesson:hover,.subject:hover,.back:hover{transform:translateY(-2px)}
+.game:active,.lesson:active,.subject:active{transform:translateY(3px);box-shadow:none}
+.videobtn{border-color:#c8432f;max-width:420px}
+.lesson .thumb svg.th{width:62%;height:auto}
+/* 圖案的深色線條在深色底上會不見，所以縮圖底色在任何模式都用淺色 */
+.lesson .thumb,.lessonhead .mini{background:#fde4de}
+:root[data-contrast="high"] .lesson .thumb,:root[data-contrast="high"] .lessonhead .mini{background:#fff3d6}
+.lesson.math{border-color:var(--math)}
+.lesson.math .go{background:var(--math)}
+.lesson.math .thumb,.lessonhead .mini.math{background:#dcebfb}
+:root[data-contrast="high"] .lesson.math .go{background:#000;color:var(--math);border:2px solid var(--math)}
+:root[data-contrast="high"] .lesson.math .thumb,:root[data-contrast="high"] .lessonhead .mini.math{background:#e3f6ff}
+.note{font-size:.75rem;color:var(--muted);text-align:center}
+.voicemsg{background:var(--panel);border:3px dashed var(--focus);border-radius:18px;padding:12px 16px;font-size:.8rem;line-height:1.7}
+@media (max-width:640px){.subjects{grid-template-columns:minmax(0,1fr)}.subject{min-height:200px}.subject .icon{width:84px;height:84px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.game:hover,.lesson:hover,.subject:hover,.back:hover{transform:none}}
+
+/* 注音字型（注音芫荽體 OFL）：開啟注音時改用含注音的字型；多音字由程式依詞語自動選讀音 */
+@font-face{font-family:"BpmfZY";src:url("zy.woff") format("woff");font-display:swap}
+html.zy{--font:"BpmfZY","Huninn","Microsoft JhengHei",sans-serif}
+html.zy .tools{font-family:"Huninn","Microsoft JhengHei",sans-serif}
+</style>
+
+<a class="skip" href="#main">跳到主要內容</a>
+<div class="wrap">
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="薛老師的教室，回到首頁">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M8 30 32 12l24 18" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><rect x="14" y="28" width="36" height="28" rx="6" style="fill:var(--zh)"/><rect x="27" y="38" width="10" height="18" rx="3" style="fill:var(--panel)"/><circle cx="21.5" cy="38" r="3" style="fill:var(--panel)"/><circle cx="42.5" cy="38" r="3" style="fill:var(--panel)"/></svg>
+      <h1>薛老師的教室</h1>
+    </a>
+    <div class="tools" role="group" aria-label="閱讀設定">
+      <div class="sizes" role="group" aria-label="字的大小">
+        <button class="s1" type="button" data-fs="20" aria-label="字小一點">A</button>
+        <button class="s2" type="button" data-fs="24" aria-label="字標準">A</button>
+        <button class="s3" type="button" data-fs="30" aria-label="字最大">A</button>
+      </div>
+      <div class="sizes rates" role="group" aria-label="朗讀速度"><button type="button" data-rate="0.6" aria-label="語速慢"><span class="ic" aria-hidden="true"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><ellipse cx="22" cy="28" rx="15" ry="11" fill="#8fd18a" stroke="#3b2a25" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/><path d="M14 26l8-6 8 6-8 6z" fill="#c8eebd" stroke="#3b2a25" stroke-width="2"/><circle cx="40" cy="25" r="6" fill="#b9e6a6" stroke="#3b2a25" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/><circle cx="41.5" cy="23.5" r="1.4" fill="#3b2a25"/><path d="M11 38v3M30 38v3" stroke="#3b2a25" stroke-width="4" stroke-linecap="round"/></svg></span>慢</button><button type="button" data-rate="1.0" aria-label="語速快一點"><span class="ic" aria-hidden="true"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M17 20Q12 3 17 3t5 17M31 20q5-17 0-17t-5 17" fill="#fff" stroke="#3b2a25" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/><path d="M17 18q-2-10 0-12M31 18q2-10 0-12" stroke="#ff9fb0" stroke-width="2.5"/><circle cx="24" cy="30" r="13" fill="#fff" stroke="#3b2a25" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/><circle cx="20" cy="29" r="1.6" fill="#3b2a25"/><circle cx="28" cy="29" r="1.6" fill="#3b2a25"/><path d="M21.6 32q2.4 2.2 4.8 0" fill="none" stroke="#3b2a25" stroke-width="1.8" stroke-linecap="round"/><ellipse cx="16.5" cy="31.5" rx="2" ry="1.3" fill="#ff9fb0"/><ellipse cx="31.5" cy="31.5" rx="2" ry="1.3" fill="#ff9fb0"/></svg></span>快</button></div>
+      <button class="tool" id="zyBtn" type="button" aria-pressed="false"><span class="zyic" aria-hidden="true">ㄅ</span>注音</button>
+      <button class="tool" id="contrastBtn" type="button" aria-pressed="false"><span class="ic" aria-hidden="true"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="17" fill="#fff" stroke="#3b2a25" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/><path d="M24 7a17 17 0 0 1 0 34z" fill="#3b2a25"/><circle cx="24" cy="24" r="17" fill="none" stroke="#3b2a25" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/></svg></span>高對比</button>
+      <button class="tool" id="voiceBtn" type="button" hidden title="在這台裝置的臺灣語音之間切換"><span class="ic" aria-hidden="true"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M8 10h32a4 4 0 0 1 4 4v15a4 4 0 0 1-4 4H22l-8 7v-7H8a4 4 0 0 1-4-4V14a4 4 0 0 1 4-4z" fill="#ffd0e0" stroke="#3b2a25" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/><circle cx="20" cy="20" r="1.6" fill="#3b2a25"/><circle cx="28" cy="20" r="1.6" fill="#3b2a25"/><path d="M21.6 23q2.4 2.2 4.8 0" fill="none" stroke="#3b2a25" stroke-width="1.8" stroke-linecap="round"/><ellipse cx="16.5" cy="22.5" rx="2" ry="1.3" fill="#ff9fb0"/><ellipse cx="31.5" cy="22.5" rx="2" ry="1.3" fill="#ff9fb0"/></svg></span><span id="voiceLab">換聲音</span></button>
+    </div>
+  </header>
+  <div id="voiceMsg" class="voicemsg" hidden></div>
+  <main id="main" class="wrap" tabindex="-1"></main>
+  <p class="note">遊戲會開在新的分頁。玩完關掉分頁，就會回到這裡。</p>
+</div>
+
+<script type="application/json" id="data">{
+ "gameBase": "https://claude.ai/artifact/V1pn6VRB6zjCzbahnxCcd7",
+ "subjects": [
+  {
+   "id": "chinese",
+   "name": "國語",
+   "sub": "課文・詞語・句型",
+   "color": "zh",
+   "lessons": [
+    {"id": "kx1", "title": "康軒第一冊", "meta": "一上・語詞、生字、句型", "thumb": "kx1", "href": "guoyu/", "sections": []},
+    {"id": "kx5", "title": "康軒第五冊", "meta": "三上・語詞辨析（相似、相反）", "thumb": "kx5", "href": "ciyu/", "sections": []},
+    {
+     "id": "banji",
+     "title": "班級與我",
+     "meta": "三上・社會改寫",
+     "thumb": "classroom",
+     "videos": [
+      [
+       "課文指讀（影片）",
+       "https://claude.ai/artifact/Sxj7sm2deegCfiRQmkKuTw"
+      ]
+     ],
+     "sections": [
+      {
+       "key": "v",
+       "title": "詞語練習",
+       "sub": "認識 30 個新詞語",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p1",
+       "title": "透過…來…",
+       "sub": "＝ 用…的方法去做…",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p2",
+       "title": "因此",
+       "sub": "連接詞：＝ 所以",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p3",
+       "title": "這時候",
+       "sub": "連接詞：＝ 當…的時候",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p4",
+       "title": "…，還是…？",
+       "sub": "連接詞：兩個選一個",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "zhenzhu",
+     "title": "珍珠奶茶",
+     "meta": "六上・說明文",
+     "thumb": "bubbletea",
+     "video": "https://youtu.be/ewjY6GXQyTk?si=BqCv-hnLxA3dxEyO",
+     "sections": [
+      {
+       "key": "v",
+       "title": "詞語練習",
+       "sub": "認識 36 個新詞語",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p1",
+       "title": "一方面…，一方面…",
+       "sub": "＝ 又要…，又要…",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p2",
+       "title": "看似…，卻…",
+       "sub": "＝ 看起來好像…，但是…",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p3",
+       "title": "清香美味的奶茶",
+       "sub": "照樣寫短語：○○○○的＋名詞",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組短語"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "xingfu",
+     "title": "幸福生活小高手",
+     "meta": "三上・社會改寫",
+     "thumb": "family",
+     "video": "https://youtu.be/cjTRoczpKug",
+     "sections": [
+      {
+       "key": "v",
+       "title": "詞語練習",
+       "sub": "認識 38 個新詞語",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p1",
+       "title": "不僅…更…",
+       "sub": "＝ 不但…更…",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p2",
+       "title": "當…時…",
+       "sub": "＝ 當…的時候…",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p3",
+       "title": "若…則要…",
+       "sub": "＝ 如果…就要…",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "mima",
+     "title": "神奇密碼",
+     "meta": "三下・改寫說明文",
+     "thumb": "mima",
+     "videos": [
+      [
+       "課文指讀（影片）",
+       "https://youtu.be/wlxR520GUL8"
+      ]
+     ],
+     "sections": [
+      {
+       "key": "v",
+       "title": "詞語練習",
+       "sub": "認識 42 個新詞語",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p1",
+       "title": "只要…就…",
+       "sub": "＝ 做到這件事，就能…",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p2",
+       "title": "既…又…",
+       "sub": "＝ 同時有兩種樣子",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p3",
+       "title": "聽到精采的故事",
+       "sub": "照樣寫短語：○到＋○○的＋名詞",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組短語"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "shanjiao",
+     "title": "臺灣的山椒魚",
+     "meta": "三下・簡化課文",
+     "thumb": "shanjiao",
+     "videos": [
+      [
+       "課文指讀（影片）",
+       "https://youtube.com/shorts/gpWLwnarR5s"
+      ]
+     ],
+     "sections": [
+      {
+       "key": "v",
+       "title": "詞語練習",
+       "sub": "認識 32 個新詞語",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p1",
+       "title": "不但…還…",
+       "sub": "＝ 不只這樣，還有…",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p2",
+       "title": "…或是…",
+       "sub": "＝ 兩樣選一樣",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p3",
+       "title": "平平安安的長大",
+       "sub": "照樣寫短語：AABB的＋動作",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組短語"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "anping",
+     "title": "安平古堡參觀記",
+     "meta": "三上・簡化課文",
+     "thumb": "anping",
+     "videos": [
+      [
+       "課文指讀（影片）",
+       "https://youtu.be/M3WM61ISDuE"
+      ]
+     ],
+     "sections": [
+      {
+       "key": "v",
+       "title": "詞語練習",
+       "sub": "認識 40 個新詞語",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p1",
+       "title": "有…有…還有…",
+       "sub": "＝ 一個地方有很多東西",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p2",
+       "title": "雖然…還是…",
+       "sub": "＝ 結果還是不變",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p3",
+       "title": "…讓…",
+       "sub": "＝ 一件事，使人有了感覺",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "huli",
+     "title": "狐狸的故事",
+     "meta": "三上・簡化課文",
+     "thumb": "huli",
+     "videos": [
+      [
+       "課文指讀（影片）",
+       "https://youtu.be/VDAl6Wj96XE"
+      ]
+     ],
+     "sections": [
+      {
+       "key": "v",
+       "title": "詞語練習",
+       "sub": "認識 32 個新詞語",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p1",
+       "title": "心情句",
+       "sub": "開心、難過、緊張、得意…",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p2",
+       "title": "動作詞",
+       "sub": "舔、拉、踢、咬…",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "xiaochou",
+     "title": "小丑魚和海葵",
+     "meta": "三上・簡化課文",
+     "thumb": "xiaochou",
+     "videos": [
+      [
+       "課文指讀（影片）",
+       "https://www.youtube.com/watch?v=G448E4ohh48"
+      ],
+      [
+       "課文動畫（影片）",
+       "https://www.youtube.com/watch?v=hadmtvPHQo4&t=18s"
+      ]
+     ],
+     "sections": [
+      {
+       "key": "v",
+       "title": "詞語練習",
+       "sub": "認識 29 個新詞語",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p1",
+       "title": "一…就…",
+       "sub": "＝ 一做完，馬上就…",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p2",
+       "title": "雖然…但是…",
+       "sub": "＝ 雖然是這樣，可是…",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "tuzi",
+     "title": "兔子先生等等我",
+     "meta": "四上・簡化課文",
+     "thumb": "tuzi",
+     "videos": [
+      [
+       "課文指讀（影片）",
+       "https://www.youtube.com/watch?v=eY4VH4SzJSk"
+      ]
+     ],
+     "sections": [
+      {
+       "key": "v",
+       "title": "詞語練習",
+       "sub": "認識 26 個新詞語",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p1",
+       "title": "如果…就…",
+       "sub": "＝ 假如…，就會…",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p2",
+       "title": "免得…",
+       "sub": "＝ 才不會…",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p3",
+       "title": "開始…接著…然後…最後…",
+       "sub": "＝ 一步一步說出順序",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "doupeng",
+     "title": "斗篷怪獸",
+     "meta": "實用語文・繪本課文",
+     "thumb": "doupeng",
+     "sections": [
+      {
+       "key": "v",
+       "title": "詞語練習",
+       "sub": "認識 31 個新詞語",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p1",
+       "title": "像…一樣",
+       "sub": "＝ 兩個東西很像",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p2",
+       "title": "有…有…還有…",
+       "sub": "＝ 一樣一樣說出有的東西",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      }
+     ],
+     "videos": [
+      [
+       "課文指讀（影片）",
+       "https://youtu.be/icc4wYZZ6IM"
+      ]
+     ]
+    },
+    {
+     "id": "mianbao",
+     "title": "麵包小偷",
+     "meta": "實用語文・繪本課文",
+     "thumb": "mianbao",
+     "sections": [
+      {
+       "key": "v",
+       "title": "詞語練習",
+       "sub": "認識 24 個新詞語",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p1",
+       "title": "不是…而是…",
+       "sub": "＝ 不是這個，是那個",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p2",
+       "title": "沒想到…竟然…",
+       "sub": "＝ 想不到會這樣",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p3",
+       "title": "有…有…還有…",
+       "sub": "＝ 一樣一樣說出有的東西",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      }
+     ],
+     "videos": [
+      [
+       "課文指讀（影片）",
+       "https://www.youtube.com/watch?v=mEqEOTaDX_A"
+      ],
+      [
+       "詞卡指讀（影片）",
+       "https://www.youtube.com/watch?v=98jO8pHVN5U"
+      ]
+     ]
+    },
+    {
+     "id": "xingqitian",
+     "title": "美好的星期天",
+     "meta": "實用語文・童書改寫",
+     "thumb": "xingqitian",
+     "sections": [
+      {
+       "key": "v",
+       "title": "詞語練習",
+       "sub": "認識 11 個新詞語",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p1",
+       "title": "又…又…",
+       "sub": "＝ 同時有兩種感覺或樣子",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p2",
+       "title": "我用○○做什麼",
+       "sub": "＝ 我＋用＋身體部位＋做什麼",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      }
+     ],
+     "videos": [
+      [
+       "課文指讀（影片）",
+       "https://youtu.be/DS1WDDneuic"
+      ]
+     ]
+    },
+    {
+     "id": "jialefu",
+     "title": "家樂福購物",
+     "meta": "實用語文・量詞",
+     "thumb": "jialefu",
+     "sections": [
+      {
+       "key": "v",
+       "title": "詞語練習",
+       "sub": "認識 9 個新詞語",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p1",
+       "title": "量詞",
+       "sub": "照樣說：一＋量詞＋東西",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組短語"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p2",
+       "title": "誰在哪裡買了什麼",
+       "sub": "＝ 誰＋在哪一區＋買了＋什麼",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "guangjie",
+     "title": "逛街去",
+     "meta": "實用語文・韻文句型",
+     "thumb": "guangjie",
+     "sections": [
+      {
+       "key": "v",
+       "title": "詞語練習",
+       "sub": "認識 19 個新詞語",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p1",
+       "title": "猜猜看這是什麼店？",
+       "sub": "＝ 看賣的東西，猜出是什麼店",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p2",
+       "title": "好香的吐司",
+       "sub": "照樣說：好○的＋東西",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組短語"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      }
+     ],
+     "videos": [
+      [
+       "課文指讀（影片）",
+       "https://youtu.be/t8uH2WL5B0I"
+      ],
+      [
+       "課文動畫（影片）",
+       "https://www.youtube.com/watch?v=1kiBPczf3yQ"
+      ]
+     ]
+    },
+    {
+     "id": "shuguo",
+     "title": "好吃的水果・菜市場",
+     "meta": "實用語文・蔬果和形容詞",
+     "thumb": "shuguo",
+     "sections": [
+      {
+       "key": "v",
+       "title": "詞語練習",
+       "sub": "認識 28 個新詞語",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p1",
+       "title": "○起來○○的",
+       "sub": "＝ 吃起來、聞起來、看起來、摸起來",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p2",
+       "title": "紅紅的蘋果",
+       "sub": "照樣說：○○的＋水果／蔬菜",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組短語"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "fangjia",
+     "title": "放假天，動一動",
+     "meta": "實用語文・身體和動詞",
+     "thumb": "fangjia",
+     "sections": [
+      {
+       "key": "v",
+       "title": "詞語練習",
+       "sub": "認識 20 個新詞語",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p1",
+       "title": "誰用○○做什麼",
+       "sub": "＝ 誰＋用＋身體部位＋做什麼",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p2",
+       "title": "聽一聽聲音",
+       "sub": "照樣說：○一○＋東西",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組短語"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p3",
+       "title": "在哪裡做什麼",
+       "sub": "＝ 在＋地方＋做什麼",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      }
+     ],
+     "videos": [
+      [
+       "課文指讀（影片）",
+       "https://youtube.com/shorts/AHfmCEiIOPo"
+      ],
+      [
+       "短語指讀（影片）",
+       "https://www.youtube.com/watch?v=r95lN-6EKnE"
+      ],
+      [
+       "身體部位詞卡（影片）",
+       "https://youtube.com/shorts/sGUxcEHfdJY"
+      ]
+     ]
+    },
+    {
+     "id": "shengxiao",
+     "title": "十二生肖",
+     "meta": "實用語文・動物和單位",
+     "thumb": "shengxiao",
+     "sections": [
+      {
+       "key": "v",
+       "title": "詞語練習",
+       "sub": "認識 12 個新詞語",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p1",
+       "title": "幾隻動物做什麼",
+       "sub": "＝ 數字＋量詞＋動物＋動作",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p2",
+       "title": "顏色的動物",
+       "sub": "照樣說：○色的＋動物",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組短語"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      }
+     ],
+     "videos": [
+      [
+       "課文指讀（影片）",
+       "https://www.youtube.com/watch?v=C-ikgTgCqUY"
+      ],
+      [
+       "課文動畫（影片）",
+       "https://www.youtube.com/watch?v=ci2Q1kdI26s"
+      ]
+     ]
+    },
+    {
+     "id": "yanse",
+     "title": "小白魚",
+     "meta": "實用語文・顏色",
+     "thumb": "yanse",
+     "sections": [
+      {
+       "key": "v",
+       "title": "詞語練習",
+       "sub": "認識 10 個新詞語",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p1",
+       "title": "顏色的東西",
+       "sub": "照樣說：○色的＋東西",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組短語"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      },
+      {
+       "key": "p2",
+       "title": "你是我的媽媽嗎？",
+       "sub": "＝ 叫出朋友，再問問題",
+       "games": [
+        [
+         "flash",
+         "翻卡"
+        ],
+        [
+         "match",
+         "配對"
+        ],
+        [
+         "unjumble",
+         "重組句子"
+        ],
+        [
+         "quiz",
+         "選擇題"
+        ]
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "zhuyin",
+   "name": "注音",
+   "sub": "首冊・注音符號",
+   "color": "zy",
+   "lessons": [
+    {
+     "id": "g1l1",
+     "title": "貓咪",
+     "meta": "首冊・第一課",
+     "thumb": "g1l1",
+     "sections": [
+      {"key": "v", "title": "課文語詞", "sub": "4 個詞語", "games": [["flash", "翻卡", "guoyu/#115a-0-01_a_zflash"], ["match", "配對", "guoyu/#115a-0-01_a_zmatch"], ["pick", "看圖選注音", "guoyu/#115a-0-01_a_zpick"], ["memory", "翻牌記憶", "guoyu/#115a-0-01_a_zmemory"], ["balloon", "戳氣球", "guoyu/#115a-0-01_a_zballoon"]]},
+      {"key": "p1", "title": "新的符號", "sub": "ㄅ ㄆ ㄇ ㄉ ㄧ ㄠ", "games": [["find", "聽音找符號", "guoyu/#115a-0-01_b_zfind"], ["mole", "打地鼠", "guoyu/#115a-0-01_b_zmole"], ["match", "配對", "guoyu/#115a-0-01_b_zmatch"], ["pick", "看圖選注音", "guoyu/#115a-0-01_b_zpick"], ["balloon", "戳氣球", "guoyu/#115a-0-01_b_zballoon"], ["memory", "翻牌記憶", "guoyu/#115a-0-01_b_zmemory"], ["flash", "翻卡", "guoyu/#115a-0-01_b_zflash"]]},
+      {"key": "p2", "title": "聲調練習", "sub": "一二三四聲和輕聲", "games": [["tone", "選聲調", "guoyu/#115a-0-01_c_ztone"]]}
+     ]
+    },
+    {
+     "id": "g1l2",
+     "title": "鵝寶寶",
+     "meta": "首冊・第二課",
+     "thumb": "g1l2",
+     "sections": [
+      {"key": "v", "title": "課文語詞", "sub": "6 個詞語", "games": [["flash", "翻卡", "guoyu/#115a-0-02_a_zflash"], ["match", "配對", "guoyu/#115a-0-02_a_zmatch"], ["pick", "看圖選注音", "guoyu/#115a-0-02_a_zpick"], ["memory", "翻牌記憶", "guoyu/#115a-0-02_a_zmemory"], ["balloon", "戳氣球", "guoyu/#115a-0-02_a_zballoon"]]},
+      {"key": "p1", "title": "新的符號", "sub": "ㄈ ㄏ ㄓ ㄔ ㄨ ㄚ ㄜ", "games": [["find", "聽音找符號", "guoyu/#115a-0-02_b_zfind"], ["mole", "打地鼠", "guoyu/#115a-0-02_b_zmole"], ["match", "配對", "guoyu/#115a-0-02_b_zmatch"], ["pick", "看圖選注音", "guoyu/#115a-0-02_b_zpick"], ["balloon", "戳氣球", "guoyu/#115a-0-02_b_zballoon"], ["memory", "翻牌記憶", "guoyu/#115a-0-02_b_zmemory"], ["flash", "翻卡", "guoyu/#115a-0-02_b_zflash"]]},
+      {"key": "p2", "title": "聲調練習", "sub": "一二三四聲和輕聲", "games": [["tone", "選聲調", "guoyu/#115a-0-02_c_ztone"]]}
+     ]
+    },
+    {
+     "id": "g1l3",
+     "title": "河馬和河狸",
+     "meta": "首冊・第三課",
+     "thumb": "g1l3",
+     "sections": [
+      {"key": "v", "title": "課文語詞", "sub": "8 個詞語", "games": [["flash", "翻卡", "guoyu/#115a-0-03_a_zflash"], ["match", "配對", "guoyu/#115a-0-03_a_zmatch"], ["pick", "看圖選注音", "guoyu/#115a-0-03_a_zpick"], ["memory", "翻牌記憶", "guoyu/#115a-0-03_a_zmemory"], ["balloon", "戳氣球", "guoyu/#115a-0-03_a_zballoon"]]},
+      {"key": "p1", "title": "新的符號", "sub": "ㄌ ㄑ ㄗ ㄩ ㄛ ㄢ ㄤ", "games": [["find", "聽音找符號", "guoyu/#115a-0-03_b_zfind"], ["mole", "打地鼠", "guoyu/#115a-0-03_b_zmole"], ["match", "配對", "guoyu/#115a-0-03_b_zmatch"], ["pick", "看圖選注音", "guoyu/#115a-0-03_b_zpick"], ["balloon", "戳氣球", "guoyu/#115a-0-03_b_zballoon"], ["memory", "翻牌記憶", "guoyu/#115a-0-03_b_zmemory"], ["flash", "翻卡", "guoyu/#115a-0-03_b_zflash"]]},
+      {"key": "p2", "title": "聲調練習", "sub": "一二三四聲和輕聲", "games": [["tone", "選聲調", "guoyu/#115a-0-03_c_ztone"]]}
+     ]
+    },
+    {
+     "id": "g1l4",
+     "title": "笑嘻嘻",
+     "meta": "首冊・第四課",
+     "thumb": "g1l4",
+     "sections": [
+      {"key": "v", "title": "課文語詞", "sub": "5 個詞語", "games": [["flash", "翻卡", "guoyu/#115a-0-04_a_zflash"], ["match", "配對", "guoyu/#115a-0-04_a_zmatch"], ["pick", "看圖選注音", "guoyu/#115a-0-04_a_zpick"], ["memory", "翻牌記憶", "guoyu/#115a-0-04_a_zmemory"], ["balloon", "戳氣球", "guoyu/#115a-0-04_a_zballoon"]]},
+      {"key": "p1", "title": "新的符號", "sub": "ㄒ ㄕ ㄟ ㄡ ㄦ ㄧㄠ ㄨㄢ", "games": [["find", "聽音找符號", "guoyu/#115a-0-04_b_zfind"], ["mole", "打地鼠", "guoyu/#115a-0-04_b_zmole"], ["match", "配對", "guoyu/#115a-0-04_b_zmatch"], ["pick", "看圖選注音", "guoyu/#115a-0-04_b_zpick"], ["balloon", "戳氣球", "guoyu/#115a-0-04_b_zballoon"], ["memory", "翻牌記憶", "guoyu/#115a-0-04_b_zmemory"], ["flash", "翻卡", "guoyu/#115a-0-04_b_zflash"]]},
+      {"key": "p2", "title": "聲調練習", "sub": "一二三四聲和輕聲", "games": [["tone", "選聲調", "guoyu/#115a-0-04_c_ztone"]]}
+     ]
+    },
+    {
+     "id": "g1l5",
+     "title": "翹翹板",
+     "meta": "首冊・第五課",
+     "thumb": "g1l5",
+     "sections": [
+      {"key": "v", "title": "課文語詞", "sub": "7 個詞語", "games": [["flash", "翻卡", "guoyu/#115a-0-05_a_zflash"], ["match", "配對", "guoyu/#115a-0-05_a_zmatch"], ["pick", "看圖選注音", "guoyu/#115a-0-05_a_zpick"], ["memory", "翻牌記憶", "guoyu/#115a-0-05_a_zmemory"], ["balloon", "戳氣球", "guoyu/#115a-0-05_a_zballoon"]]},
+      {"key": "p1", "title": "新的符號", "sub": "ㄋ ㄍ ㄞ ㄥ ㄧㄚ ㄧㄡ ㄧㄤ", "games": [["find", "聽音找符號", "guoyu/#115a-0-05_b_zfind"], ["mole", "打地鼠", "guoyu/#115a-0-05_b_zmole"], ["match", "配對", "guoyu/#115a-0-05_b_zmatch"], ["pick", "看圖選注音", "guoyu/#115a-0-05_b_zpick"], ["balloon", "戳氣球", "guoyu/#115a-0-05_b_zballoon"], ["memory", "翻牌記憶", "guoyu/#115a-0-05_b_zmemory"], ["flash", "翻卡", "guoyu/#115a-0-05_b_zflash"]]},
+      {"key": "p2", "title": "聲調練習", "sub": "一二三四聲和輕聲", "games": [["tone", "選聲調", "guoyu/#115a-0-05_c_ztone"]]}
+     ]
+    },
+    {
+     "id": "g1l6",
+     "title": "謝謝老師",
+     "meta": "首冊・第六課",
+     "thumb": "g1l6",
+     "sections": [
+      {"key": "v", "title": "課文語詞", "sub": "6 個詞語", "games": [["flash", "翻卡", "guoyu/#115a-0-06_a_zflash"], ["match", "配對", "guoyu/#115a-0-06_a_zmatch"], ["pick", "看圖選注音", "guoyu/#115a-0-06_a_zpick"], ["memory", "翻牌記憶", "guoyu/#115a-0-06_a_zmemory"], ["balloon", "戳氣球", "guoyu/#115a-0-06_a_zballoon"]]},
+      {"key": "p1", "title": "新的符號", "sub": "ㄐ ㄙ ㄝ ㄧㄝ ㄨㄚ ㄨㄛ ㄨㄥ", "games": [["find", "聽音找符號", "guoyu/#115a-0-06_b_zfind"], ["mole", "打地鼠", "guoyu/#115a-0-06_b_zmole"], ["match", "配對", "guoyu/#115a-0-06_b_zmatch"], ["pick", "看圖選注音", "guoyu/#115a-0-06_b_zpick"], ["balloon", "戳氣球", "guoyu/#115a-0-06_b_zballoon"], ["memory", "翻牌記憶", "guoyu/#115a-0-06_b_zmemory"], ["flash", "翻卡", "guoyu/#115a-0-06_b_zflash"]]},
+      {"key": "p2", "title": "聲調練習", "sub": "一二三四聲和輕聲", "games": [["tone", "選聲調", "guoyu/#115a-0-06_c_ztone"]]}
+     ]
+    },
+    {
+     "id": "g1l7",
+     "title": "龜兔賽跑",
+     "meta": "首冊・第七課",
+     "thumb": "g1l7",
+     "sections": [
+      {"key": "v", "title": "課文語詞", "sub": "13 個詞語", "games": [["flash", "翻卡", "guoyu/#115a-0-07_a_zflash"], ["match", "配對", "guoyu/#115a-0-07_a_zmatch"], ["pick", "看圖選注音", "guoyu/#115a-0-07_a_zpick"], ["memory", "翻牌記憶", "guoyu/#115a-0-07_a_zmemory"], ["balloon", "戳氣球", "guoyu/#115a-0-07_a_zballoon"]]},
+      {"key": "p1", "title": "新的符號", "sub": "ㄊ ㄎ ㄣ 和結合韻", "games": [["find", "聽音找符號", "guoyu/#115a-0-07_b_zfind"], ["mole", "打地鼠", "guoyu/#115a-0-07_b_zmole"], ["match", "配對", "guoyu/#115a-0-07_b_zmatch"], ["pick", "看圖選注音", "guoyu/#115a-0-07_b_zpick"], ["balloon", "戳氣球", "guoyu/#115a-0-07_b_zballoon"], ["memory", "翻牌記憶", "guoyu/#115a-0-07_b_zmemory"], ["flash", "翻卡", "guoyu/#115a-0-07_b_zflash"]]},
+      {"key": "p2", "title": "聲調練習", "sub": "一二三四聲和輕聲", "games": [["tone", "選聲調", "guoyu/#115a-0-07_c_ztone"]]}
+     ]
+    },
+    {
+     "id": "g1l8",
+     "title": "拔蘿蔔",
+     "meta": "首冊・第八課",
+     "thumb": "g1l8",
+     "sections": [
+      {"key": "v", "title": "課文語詞", "sub": "14 個詞語", "games": [["flash", "翻卡", "guoyu/#115a-0-08_a_zflash"], ["match", "配對", "guoyu/#115a-0-08_a_zmatch"], ["pick", "看圖選注音", "guoyu/#115a-0-08_a_zpick"], ["memory", "翻牌記憶", "guoyu/#115a-0-08_a_zmemory"], ["balloon", "戳氣球", "guoyu/#115a-0-08_a_zballoon"]]},
+      {"key": "p1", "title": "新的符號", "sub": "ㄖ ㄘ 和結合韻", "games": [["find", "聽音找符號", "guoyu/#115a-0-08_b_zfind"], ["mole", "打地鼠", "guoyu/#115a-0-08_b_zmole"], ["match", "配對", "guoyu/#115a-0-08_b_zmatch"], ["pick", "看圖選注音", "guoyu/#115a-0-08_b_zpick"], ["balloon", "戳氣球", "guoyu/#115a-0-08_b_zballoon"], ["memory", "翻牌記憶", "guoyu/#115a-0-08_b_zmemory"], ["flash", "翻卡", "guoyu/#115a-0-08_b_zflash"]]},
+      {"key": "p2", "title": "聲調練習", "sub": "一二三四聲和輕聲", "games": [["tone", "選聲調", "guoyu/#115a-0-08_c_ztone"]]}
+     ]
+    },
+    {
+     "id": "g1l9",
+     "title": "動物狂歡會",
+     "meta": "首冊・第九課",
+     "thumb": "g1l9",
+     "sections": [
+      {"key": "v", "title": "課文語詞", "sub": "13 個詞語", "games": [["flash", "翻卡", "guoyu/#115a-0-09_a_zflash"], ["match", "配對", "guoyu/#115a-0-09_a_zmatch"], ["pick", "看圖選注音", "guoyu/#115a-0-09_a_zpick"], ["memory", "翻牌記憶", "guoyu/#115a-0-09_a_zmemory"], ["balloon", "戳氣球", "guoyu/#115a-0-09_a_zballoon"]]},
+      {"key": "p1", "title": "新的符號", "sub": "ㄧㄞ ㄧㄣ ㄨㄣ ㄩㄝ ㄩㄣ", "games": [["find", "聽音找符號", "guoyu/#115a-0-09_b_zfind"], ["mole", "打地鼠", "guoyu/#115a-0-09_b_zmole"], ["match", "配對", "guoyu/#115a-0-09_b_zmatch"], ["pick", "看圖選注音", "guoyu/#115a-0-09_b_zpick"], ["balloon", "戳氣球", "guoyu/#115a-0-09_b_zballoon"], ["memory", "翻牌記憶", "guoyu/#115a-0-09_b_zmemory"], ["flash", "翻卡", "guoyu/#115a-0-09_b_zflash"]]},
+      {"key": "p2", "title": "聲調練習", "sub": "一二三四聲和輕聲", "games": [["tone", "選聲調", "guoyu/#115a-0-09_c_ztone"]]}
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ziyin",
+   "name": "字音",
+   "sub": "聽音找字・課內課外",
+   "color": "zg",
+   "lessons": [
+    {"id": "ziyin1", "title": "字音小遊戲", "meta": "前測・教學・闖關", "thumb": "ziyin", "href": "https://claude.ai/artifact/4UFVGLpo3NvRKsr4YT2i6d", "sections": []}
+   ]
+  },
+  {
+   "id": "math",
+   "name": "數學",
+   "sub": "估算・位值",
+   "color": "math",
+   "lessons": [
+    {
+     "id": "baizhan",
+     "title": "大約是幾百",
+     "meta": "三上・估算（大約是幾百）",
+     "thumb": "baizhan",
+     "sections": [
+      {"key": "p1", "title": "幾個百、幾個十、幾個一", "sub": "用積木拼出數字", "games": [["blocks", "拼出數字", "https://claude.ai/artifact/4NdbFjYBiM6e5JxHyU7LpK#s1"]]},
+      {"key": "p2", "title": "數線上的車站", "sub": "在哪兩站之間？自己放紅點，哪一站比較近？", "games": [["line", "在哪兩站之間", "https://claude.ai/artifact/4NdbFjYBiM6e5JxHyU7LpK#s2"], ["place", "自己放紅點", "https://claude.ai/artifact/4NdbFjYBiM6e5JxHyU7LpK#s3"], ["hop", "跳一跳比遠近", "https://claude.ai/artifact/4NdbFjYBiM6e5JxHyU7LpK#s4"]]},
+      {"key": "p3", "title": "看十位，估一估", "sub": "看十位：0～4 回去，5～9 往前", "games": [["quiz", "看十位估一估", "https://claude.ai/artifact/4NdbFjYBiM6e5JxHyU7LpK#s5"], ["mult", "乘法估一估", "https://claude.ai/artifact/4NdbFjYBiM6e5JxHyU7LpK#s6"]]},
+      {"key": "v", "title": "紙本學習單", "sub": "6 張練習＋答案，可以列印", "games": [["paper", "學習單", "https://claude.ai/artifact/4NdbFjYBiM6e5JxHyU7LpK#paper"]]}
+     ]
+    }
+   ]
+  },
+  {
+   "id": "shudu",
+   "name": "數讀題",
+   "sub": "數學讀題・常用字・應用題",
+   "color": "sd",
+   "lessons": [
+    {"id": "shudu1", "title": "數學讀題練習", "meta": "常用字・讀題卡・應用題", "thumb": "shudu", "sections": [
+      {"key": "v", "title": "數學常用字", "sub": "題目裡常見的字", "games": [["flash", "翻卡", "https://claude.ai/artifact/Q3QkRSpTczoo2N9SujQmtU#a_flash"], ["match", "配對", "https://claude.ai/artifact/Q3QkRSpTczoo2N9SujQmtU#a_match"], ["pick", "看圖選詞", "https://claude.ai/artifact/Q3QkRSpTczoo2N9SujQmtU#a_pick"]]},
+      {"key": "p1", "title": "讀題卡", "sub": "唸題目、找關鍵字", "games": [["flash", "讀題卡", "https://claude.ai/artifact/Q3QkRSpTczoo2N9SujQmtU#b_read"]]},
+      {"key": "p2", "title": "應用題", "sub": "讀完題目，選出算式", "games": [["quiz", "選算式", "https://claude.ai/artifact/Q3QkRSpTczoo2N9SujQmtU#c_eq"]]}
+     ]
+    }
+   ]
+  }
+ ]
+}</script>
+<script>
+(() => {
+document.documentElement.lang = 'zh-Hant-TW';
+const DATA = JSON.parse(document.getElementById('data').textContent);
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const store = { get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }, set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} } };
+
+// ---------- icons ----------
+const SPK='<svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M4 17h9l13-11v36L13 31H4z" fill="#7cc4f0" stroke="#3b2a25" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/><path d="M32 17q6 7 0 14" fill="none" stroke="#3b2a25" stroke-width="4.5" stroke-linecap="round"/><path d="M38 10q11 14 0 28" fill="none" stroke="#3b2a25" stroke-width="4.5" stroke-linecap="round"/></svg>';
+const BACK='<span class="ic" aria-hidden="true">'+'<svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M6 22 24 7l18 15" fill="#f07c6c" stroke="#3b2a25" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/><path d="M11 20v20a3 3 0 0 0 3 3h20a3 3 0 0 0 3-3V20L24 10z" fill="#fff3dc" stroke="#3b2a25" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/><path d="M6 22 24 7l18 15" fill="none" stroke="#3b2a25" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/><rect x="20" y="31" width="8" height="12" rx="3" fill="#c98a5a" stroke="#3b2a25" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/><circle cx="20.4" cy="23" r="1.4400000000000002" fill="#3b2a25"/><circle cx="27.6" cy="23" r="1.4400000000000002" fill="#3b2a25"/><path d="M21.84 25.7q2.16 1.9800000000000002 4.32 0" fill="none" stroke="#3b2a25" stroke-width="1.8" stroke-linecap="round"/><ellipse cx="17.25" cy="25.25" rx="1.8" ry="1.1700000000000002" fill="#ff9fb0"/><ellipse cx="30.75" cy="25.25" rx="1.8" ry="1.1700000000000002" fill="#ff9fb0"/></svg>'+'</span>';
+const ICON = {
+ flash:'<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="10" width="26" height="32" rx="5" fill="#ffd54a" stroke="#1f2a33" stroke-width="2.5"/><rect x="16" y="6" width="26" height="32" rx="5" fill="#fff" stroke="#1f2a33" stroke-width="2.5"/><path d="M24 22h10M24 28h7" stroke="#1f2a33" stroke-width="2.5" stroke-linecap="round"/></svg>',
+ match:'<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="3" y="8" width="16" height="12" rx="4" fill="#7fd3ff" stroke="#1f2a33" stroke-width="2.5"/><rect x="29" y="28" width="16" height="12" rx="4" fill="#ff9fc4" stroke="#1f2a33" stroke-width="2.5"/><path d="M19 14c8 0 4 20 10 20" fill="none" stroke="#1f2a33" stroke-width="3" stroke-linecap="round"/><circle cx="19" cy="14" r="3" fill="#1f2a33"/><circle cx="29" cy="34" r="3" fill="#1f2a33"/></svg>',
+ unjumble:'<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="4" y="18" width="12" height="12" rx="3" fill="#8be08b" stroke="#1f2a33" stroke-width="2.5"/><rect x="18" y="18" width="12" height="12" rx="3" fill="#ffd54a" stroke="#1f2a33" stroke-width="2.5"/><rect x="32" y="18" width="12" height="12" rx="3" fill="#ff9fc4" stroke="#1f2a33" stroke-width="2.5"/><path d="M10 12l4-4 4 4M30 36l4 4 4-4" fill="none" stroke="#1f2a33" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+ quiz:'<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="19" fill="#b9a7ff" stroke="#1f2a33" stroke-width="2.5"/><path d="M18 19a6 6 0 1 1 8 5.6c-1.5.6-2 1.6-2 3.4" fill="none" stroke="#1f2a33" stroke-width="3" stroke-linecap="round"/><circle cx="24" cy="34" r="2.3" fill="#1f2a33"/></svg>',
+ blocks:'<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="3" y="12" width="22" height="22" rx="2" fill="#7fb8ff" stroke="#1f2a33" stroke-width="2.5"/><path d="M10 12v22M17 12v22M3 19h22M3 26h22" stroke="#1f2a33" stroke-width="1"/><rect x="29" y="12" width="6" height="22" rx="1" fill="#ffb26b" stroke="#1f2a33" stroke-width="2.5"/><rect x="39" y="28" width="6" height="6" rx="1" fill="#8be08b" stroke="#1f2a33" stroke-width="2.5"/></svg>',
+ line:'<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M3 28h40" stroke="#1f2a33" stroke-width="3" stroke-linecap="round"/><path d="M46 28l-6-4v8z" fill="#1f2a33"/><circle cx="8" cy="28" r="4" fill="#2f6bd0" stroke="#1f2a33" stroke-width="2"/><circle cx="36" cy="28" r="4" fill="#2f6bd0" stroke="#1f2a33" stroke-width="2"/><circle cx="16" cy="28" r="4.5" fill="#ff5f7a" stroke="#1f2a33" stroke-width="2"/><path d="M16 21v-9" stroke="#ff5f7a" stroke-width="3" stroke-linecap="round"/></svg>',
+ place:'<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M3 32h42" stroke="#1f2a33" stroke-width="3" stroke-linecap="round"/><path d="M8 27v10M18 29v6M28 29v6M38 29v6" stroke="#1f2a33" stroke-width="2"/><path d="M22 6c-6 0-10 4-10 9 0 7 10 15 10 15s10-8 10-15c0-5-4-9-10-9z" fill="#ff5f7a" stroke="#1f2a33" stroke-width="2.5"/><circle cx="22" cy="15" r="3.5" fill="#fff"/></svg>',
+ hop:'<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M3 34h42" stroke="#1f2a33" stroke-width="3" stroke-linecap="round"/><path d="M6 32q7-18 14 0M20 32q7-18 14 0" fill="none" stroke="#e2801f" stroke-width="3" stroke-linecap="round"/><circle cx="6" cy="34" r="3.5" fill="#ff5f7a" stroke="#1f2a33" stroke-width="2"/><circle cx="40" cy="34" r="3.5" fill="#2f6bd0" stroke="#1f2a33" stroke-width="2"/></svg>',
+ mult:'<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="19" fill="#ffd54a" stroke="#1f2a33" stroke-width="2.5"/><path d="M17 17l14 14M31 17L17 31" stroke="#1f2a33" stroke-width="4" stroke-linecap="round"/></svg>',
+ pick:'<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="10" y="4" width="28" height="20" rx="4" fill="#bfe6ff" stroke="#1f2a33" stroke-width="2.5"/><circle cx="24" cy="14" r="5" fill="#8be08b" stroke="#1f2a33" stroke-width="2"/><rect x="3" y="30" width="12" height="14" rx="3" fill="#fff" stroke="#1f2a33" stroke-width="2.5"/><rect x="18" y="30" width="12" height="14" rx="3" fill="#ffd54a" stroke="#1f2a33" stroke-width="2.5"/><rect x="33" y="30" width="12" height="14" rx="3" fill="#fff" stroke="#1f2a33" stroke-width="2.5"/></svg>',
+ find:'<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="20" cy="20" r="14" fill="#fff" stroke="#1f2a33" stroke-width="3"/><path d="M30 30l12 12" stroke="#1f2a33" stroke-width="5" stroke-linecap="round"/><path d="M13 14h14M20 14v14" stroke="#c8432f" stroke-width="3.5" stroke-linecap="round"/></svg>',
+ tone:'<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="4" y="8" width="40" height="32" rx="6" fill="#fff" stroke="#1f2a33" stroke-width="2.5"/><path d="M10 30l8-12M20 18l5 10 5-10M34 18l6 12" fill="none" stroke="#c8432f" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+ memory:'<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="4" y="8" width="18" height="24" rx="4" fill="#f2b705" stroke="#1f2a33" stroke-width="2.5"/><text x="13" y="26" font-size="14" font-weight="900" text-anchor="middle" fill="#1f2a33">?</text><rect x="26" y="16" width="18" height="24" rx="4" fill="#fff" stroke="#1f2a33" stroke-width="2.5"/><circle cx="35" cy="28" r="5" fill="#8be08b" stroke="#1f2a33" stroke-width="2"/></svg>',
+ balloon:'<svg viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="17" cy="17" rx="10" ry="12" fill="#ff6b81" stroke="#1f2a33" stroke-width="2.5"/><ellipse cx="32" cy="21" rx="10" ry="12" fill="#62b6f0" stroke="#1f2a33" stroke-width="2.5"/><path d="M17 29q-2 8 2 15M32 33q2 6-1 11" fill="none" stroke="#1f2a33" stroke-width="2"/></svg>',
+ mole:'<svg viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="40" rx="20" ry="6" fill="#5b3b22"/><path d="M10 40q0-26 14-26t14 26z" fill="#a9784b" stroke="#1f2a33" stroke-width="2.5"/><circle cx="19" cy="25" r="2.4" fill="#1f2a33"/><circle cx="29" cy="25" r="2.4" fill="#1f2a33"/><ellipse cx="24" cy="31" rx="4" ry="3" fill="#ff9f9f" stroke="#1f2a33" stroke-width="1.5"/></svg>',
+ paper:'<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M10 4h20l9 9v31H10z" fill="#fff" stroke="#1f2a33" stroke-width="2.5" stroke-linejoin="round"/><path d="M30 4v9h9" fill="none" stroke="#1f2a33" stroke-width="2.5" stroke-linejoin="round"/><path d="M15 22h18M15 29h18M15 36h11" stroke="#2f6bd0" stroke-width="2.5" stroke-linecap="round"/></svg>'
+};
+const BOOK='<svg class="icon" viewBox="0 0 120 120" aria-hidden="true"><path d="M60 30c-12-9-30-10-44-6v66c14-4 32-3 44 6 12-9 30-10 44-6V24c-14-4-32-3-44 6z" fill="#fff"/><path d="M60 30v66" stroke="#c8432f" stroke-width="5"/><path d="M28 44h20M28 56h20M28 68h16M72 44h20M72 56h20M72 68h16" stroke="#c8432f" stroke-width="5" stroke-linecap="round" opacity=".55"/></svg>';
+const ABACUS='<svg class="icon" viewBox="0 0 120 120" aria-hidden="true"><rect x="16" y="20" width="88" height="80" rx="12" fill="none" stroke="#fff" stroke-width="7"/><path d="M16 46h88M16 74h88" stroke="#fff" stroke-width="4"/><g fill="#fff"><circle cx="38" cy="46" r="8"/><circle cx="58" cy="46" r="8"/><circle cx="46" cy="74" r="8"/><circle cx="66" cy="74" r="8"/><circle cx="86" cy="74" r="8"/></g></svg>';
+const ZYICON='<svg class="icon" viewBox="0 0 120 120" aria-hidden="true"><rect x="30" y="10" width="60" height="100" rx="12" fill="#fff"/><g fill="#2e7d4f" font-family="Huninn,&quot;PingFang TC&quot;,&quot;Microsoft JhengHei&quot;,sans-serif" font-size="28" font-weight="700" text-anchor="middle"><text x="60" y="41">ㄅ</text><text x="60" y="72">ㄆ</text><text x="60" y="103">ㄇ</text></g></svg>';
+const SDICON='<svg class="icon" viewBox="0 0 120 120" aria-hidden="true"><rect x="22" y="10" width="76" height="100" rx="12" fill="#fff"/><path d="M36 34h48M36 52h48M36 70h30" stroke="#1f2a33" stroke-width="6" stroke-linecap="round"/><rect x="32" y="45" width="30" height="14" rx="4" fill="#ffd54a" opacity=".85"/><path d="M70 88h20M80 78v20" stroke="#e8573f" stroke-width="7" stroke-linecap="round"/></svg>';
+const ZGICON='<svg class="icon" viewBox="0 0 120 120" aria-hidden="true"><rect x="14" y="22" width="64" height="64" rx="12" fill="#fff"/><text x="46" y="72" font-size="44" text-anchor="middle" font-weight="700" fill="#b0335f" font-family="Huninn,sans-serif">字</text><path d="M88 44q8 10 0 20M98 36q14 18 0 36" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"/><path d="M40 96q6-8 12 0" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/></svg>';
+const THUMB = {
+  ziyin:'<svg class="th" viewBox="0 0 200 226" role="img" aria-label="地鼠舉著字卡的圖"><rect x="40" y="14" width="120" height="70" rx="12" fill="#fff" stroke="#3b2a25" stroke-width="6"/><text x="100" y="68" font-size="46" text-anchor="middle" font-weight="700" fill="#3b2a25">字</text><path d="M36 214V140q0-56 64-56t64 56v74z" fill="#6f5446" stroke="#3b2a25" stroke-width="6"/><ellipse cx="100" cy="170" rx="44" ry="34" fill="#a98a78"/><circle cx="80" cy="138" r="6" fill="#1d1a17"/><circle cx="120" cy="138" r="6" fill="#1d1a17"/><ellipse cx="100" cy="158" rx="14" ry="10" fill="#ef8e9c" stroke="#8c3d4a" stroke-width="3"/><path d="M88 176q12 9 24 0" fill="none" stroke="#3b2a25" stroke-width="4" stroke-linecap="round"/><ellipse cx="58" cy="86" rx="20" ry="14" fill="#f1b7a3" stroke="#3b2a25" stroke-width="4"/><ellipse cx="142" cy="86" rx="20" ry="14" fill="#f1b7a3" stroke="#3b2a25" stroke-width="4"/><ellipse cx="100" cy="216" rx="90" ry="10" fill="#3d2b1c"/></svg>',
+  shudu:'<svg viewBox="0 0 200 150"><rect x="30" y="14" width="140" height="122" rx="14" fill="#fff" stroke="#1f2a33" stroke-width="4"/><path d="M50 42h100M50 66h100M50 90h60" stroke="#1f2a33" stroke-width="6" stroke-linecap="round"/><rect x="46" y="58" width="44" height="16" rx="4" fill="#ffd54a" opacity=".85"/><circle cx="138" cy="108" r="20" fill="#2a6fb0"/><path d="M128 108h20M138 98v20" stroke="#fff" stroke-width="5" stroke-linecap="round"/></svg>',
+  classroom:'<svg viewBox="0 0 200 220" role="img" aria-label="教室黑板和同學舉手的圖"><rect x="24" y="24" width="152" height="88" rx="8" fill="#2f7d5b" stroke="#6d4c41" stroke-width="8"/><path d="M44 56h50M44 76h80" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".85"/><g stroke="#3b2a25" stroke-width="4"><circle cx="58" cy="156" r="18" fill="#ffe1c4"/><circle cx="100" cy="150" r="18" fill="#ffe1c4"/><circle cx="142" cy="156" r="18" fill="#ffe1c4"/></g><path d="M40 214q18-40 36 0M82 214q18-46 36 0M124 214q18-40 36 0" fill="#64b5f6" stroke="#3b2a25" stroke-width="4"/><path d="M118 160l14-40" stroke="#3b2a25" stroke-width="10" stroke-linecap="round"/><path d="M118 160l14-40" stroke="#ffe1c4" stroke-width="6" stroke-linecap="round"/><g fill="#3b2a25"><circle cx="52" cy="156" r="2.5"/><circle cx="64" cy="156" r="2.5"/><circle cx="94" cy="150" r="2.5"/><circle cx="106" cy="150" r="2.5"/><circle cx="136" cy="156" r="2.5"/><circle cx="148" cy="156" r="2.5"/></g></svg>',
+  
+ bubbletea:'<svg viewBox="0 0 200 220" role="img" aria-label="珍珠奶茶的圖"><path d="M118 6l-14 52" stroke="#e8573f" stroke-width="12" stroke-linecap="round"/><ellipse cx="100" cy="60" rx="70" ry="16" fill="#fff6e8" stroke="#3b2a25" stroke-width="5"/><path d="M32 62l12 132a14 14 0 0 0 14 13h84a14 14 0 0 0 14-13l12-132" fill="#e9c9a3" stroke="#3b2a25" stroke-width="5" stroke-linejoin="round"/><path d="M36 80h128" stroke="#fff6e8" stroke-width="10" opacity=".7"/><g fill="#3b2a25"><circle cx="66" cy="182" r="10"/><circle cx="90" cy="188" r="10"/><circle cx="114" cy="188" r="10"/><circle cx="138" cy="182" r="10"/><circle cx="78" cy="166" r="10"/><circle cx="102" cy="170" r="10"/><circle cx="126" cy="166" r="10"/><circle cx="114" cy="150" r="10"/></g><g fill="#fff" opacity=".85"><circle cx="63" cy="179" r="3"/><circle cx="87" cy="185" r="3"/><circle cx="111" cy="185" r="3"/><circle cx="135" cy="179" r="3"/><circle cx="75" cy="163" r="3"/><circle cx="99" cy="167" r="3"/><circle cx="123" cy="163" r="3"/><circle cx="111" cy="147" r="3"/></g><circle cx="78" cy="112" r="6" fill="#3b2a25"/><circle cx="122" cy="112" r="6" fill="#3b2a25"/><path d="M90 124q10 10 20 0" fill="none" stroke="#3b2a25" stroke-width="5" stroke-linecap="round"/><ellipse cx="66" cy="126" rx="9" ry="6" fill="#ff9f9f" opacity=".75"/><ellipse cx="134" cy="126" rx="9" ry="6" fill="#ff9f9f" opacity=".75"/></svg>',
+ family:'<svg viewBox="0 0 200 220" role="img" aria-label="一家人和房子的圖"><path d="M18 98 100 30l82 68" fill="none" stroke="#3b2a25" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><rect x="34" y="90" width="132" height="112" rx="12" fill="#ffe9c7" stroke="#3b2a25" stroke-width="5"/><path d="M100 64c-6-10-22-6-20 6 2 10 20 18 20 18s18-8 20-18c2-12-14-16-20-6z" fill="#e8573f" stroke="#3b2a25" stroke-width="3"/><g stroke="#3b2a25" stroke-width="3.5"><rect x="52" y="150" width="30" height="52" rx="10" fill="#7fb8ff"/><circle cx="67" cy="132" r="16" fill="#ffe1c4"/><rect x="118" y="150" width="30" height="52" rx="10" fill="#ff9fc4"/><circle cx="133" cy="132" r="16" fill="#ffe1c4"/><rect x="88" y="170" width="24" height="32" rx="8" fill="#ffd54a"/><circle cx="100" cy="156" r="12" fill="#ffe1c4"/></g><path d="M51 128q16-22 32 0q-6-8-16-8t-16 8z" fill="#4a3428"/><path d="M117 130q16-26 32 0v10q-4-14-16-14t-16 14z" fill="#4a3428"/><path d="M88 154q12-16 24 0q-5-6-12-6t-12 6z" fill="#4a3428"/><g fill="#3b2a25"><circle cx="61" cy="133" r="2.4"/><circle cx="73" cy="133" r="2.4"/><circle cx="127" cy="133" r="2.4"/><circle cx="139" cy="133" r="2.4"/><circle cx="95" cy="157" r="2"/><circle cx="105" cy="157" r="2"/></g><g fill="none" stroke="#3b2a25" stroke-width="2.2" stroke-linecap="round"><path d="M62 140q5 4 10 0M128 140q5 4 10 0M96 162q4 3 8 0"/></g><path d="M82 172h6M112 172h6" stroke="#ffe1c4" stroke-width="6" stroke-linecap="round"/></svg>',
+ xiaochou:"<svg class=\"th\" viewBox=\"0 0 200 226\" role=\"img\" aria-label=\"小丑魚和海葵的圖\"><circle cx=\"40\" cy=\"30\" r=\"9\" fill=\"#bfe6ff\" stroke=\"#3b2a25\" stroke-width=\"3\"/><circle cx=\"62\" cy=\"12\" r=\"5\" fill=\"#bfe6ff\" stroke=\"#3b2a25\" stroke-width=\"3\"/><path d=\"M162 128l32-34v68z\" fill=\"#ff8a3d\" stroke=\"#3b2a25\" stroke-width=\"6\" stroke-linejoin=\"round\"/><path d=\"M84 80q26-40 58-6z\" fill=\"#ff8a3d\" stroke=\"#3b2a25\" stroke-width=\"5\" stroke-linejoin=\"round\"/><ellipse cx=\"100\" cy=\"128\" rx=\"74\" ry=\"54\" fill=\"#ff8a3d\" stroke=\"#3b2a25\" stroke-width=\"6\"/><path d=\"M66 78q-16 50 0 100h18q-14-50 0-100z\" fill=\"#fff\" stroke=\"#3b2a25\" stroke-width=\"4\"/><path d=\"M124 80q-12 48 0 96h16q-10-48 0-96z\" fill=\"#fff\" stroke=\"#3b2a25\" stroke-width=\"4\"/><path d=\"M92 176q10 26 30 30q-2-20-14-32z\" fill=\"#ff8a3d\" stroke=\"#3b2a25\" stroke-width=\"4\"/><circle cx=\"46\" cy=\"114\" r=\"12\" fill=\"#fff\" stroke=\"#3b2a25\" stroke-width=\"4\"/><circle cx=\"43\" cy=\"115\" r=\"7\" fill=\"#3b2a25\"/><circle cx=\"41\" cy=\"112\" r=\"2.4\" fill=\"#fff\"/><path d=\"M30 142q12 12 26 2\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"5\" stroke-linecap=\"round\"/><ellipse cx=\"44\" cy=\"134\" rx=\"7\" ry=\"4.5\" fill=\"#ff5f5f\" opacity=\".6\"/></svg>",
+ huli:"<svg class=\"th\" viewBox=\"0 0 200 226\" role=\"img\" aria-label=\"狐狸的故事的圖\"><path d=\"M30 44l50 54h40l50-54-8 90q-18 70-62 76q-44-6-62-76z\" fill=\"#f08a2e\" stroke=\"#3b2a25\" stroke-width=\"6\" stroke-linejoin=\"round\"/><path d=\"M44 66l28 32M156 66l-28 32\" stroke=\"#3b2a25\" stroke-width=\"0\"/><path d=\"M42 62l22 32-18 6z M158 62l-22 32 18 6z\" fill=\"#ffd9b8\"/><path d=\"M58 150q42 26 84 0q-6 44-42 58q-36-14-42-58z\" fill=\"#fff\" stroke=\"#3b2a25\" stroke-width=\"5\" stroke-linejoin=\"round\"/><ellipse cx=\"100\" cy=\"176\" rx=\"12\" ry=\"9\" fill=\"#3b2a25\"/><circle cx=\"72\" cy=\"128\" r=\"8\" fill=\"#3b2a25\"/><circle cx=\"128\" cy=\"128\" r=\"8\" fill=\"#3b2a25\"/><circle cx=\"70\" cy=\"125\" r=\"2.7\" fill=\"#fff\"/><circle cx=\"126\" cy=\"125\" r=\"2.7\" fill=\"#fff\"/><path d=\"M90 192q10 8 20 0\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"4\" stroke-linecap=\"round\"/><ellipse cx=\"56\" cy=\"150\" rx=\"9\" ry=\"6\" fill=\"#ff9f9f\" opacity=\".8\"/><ellipse cx=\"144\" cy=\"150\" rx=\"9\" ry=\"6\" fill=\"#ff9f9f\" opacity=\".8\"/><g stroke=\"#3b2a25\" stroke-width=\"2.5\" fill=\"#8e5cc2\"><circle cx=\"166\" cy=\"186\" r=\"9\"/><circle cx=\"184\" cy=\"186\" r=\"9\"/><circle cx=\"175\" cy=\"200\" r=\"9\"/><circle cx=\"175\" cy=\"172\" r=\"9\"/></g><path d=\"M175 163v-12\" stroke=\"#3b2a25\" stroke-width=\"4\" stroke-linecap=\"round\"/></svg>",
+ anping:"<svg class=\"th\" viewBox=\"0 0 200 226\" role=\"img\" aria-label=\"安平古堡參觀記的圖\"><path d=\"M100 8v26\" stroke=\"#3b2a25\" stroke-width=\"5\" stroke-linecap=\"round\"/><path d=\"M100 10l26 8-26 8z\" fill=\"#e8573f\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\"/><path d=\"M28 84 100 30l72 54z\" fill=\"#e8573f\" stroke=\"#3b2a25\" stroke-width=\"6\" stroke-linejoin=\"round\"/><rect x=\"44\" y=\"84\" width=\"112\" height=\"132\" rx=\"8\" fill=\"#fff6e8\" stroke=\"#3b2a25\" stroke-width=\"6\"/><g stroke=\"#c9a68a\" stroke-width=\"3\"><path d=\"M44 178h112M44 198h112M76 178v20M124 178v20M100 198v18\"/></g><path d=\"M80 216v-26a20 20 0 0 1 40 0v26z\" fill=\"#a8432f\" stroke=\"#3b2a25\" stroke-width=\"5\"/><circle cx=\"78\" cy=\"122\" r=\"8\" fill=\"#3b2a25\"/><circle cx=\"122\" cy=\"122\" r=\"8\" fill=\"#3b2a25\"/><circle cx=\"76\" cy=\"119\" r=\"2.7\" fill=\"#fff\"/><circle cx=\"120\" cy=\"119\" r=\"2.7\" fill=\"#fff\"/><path d=\"M86 142q14 14 28 0\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"5\" stroke-linecap=\"round\"/><ellipse cx=\"62\" cy=\"144\" rx=\"9\" ry=\"6\" fill=\"#ff9f9f\" opacity=\".8\"/><ellipse cx=\"138\" cy=\"144\" rx=\"9\" ry=\"6\" fill=\"#ff9f9f\" opacity=\".8\"/></svg>",
+ mima:"<svg class=\"th\" viewBox=\"0 0 200 226\" role=\"img\" aria-label=\"神奇密碼的圖\"><rect x=\"16\" y=\"26\" width=\"168\" height=\"176\" rx=\"22\" fill=\"#ffffff\" stroke=\"#3b2a25\" stroke-width=\"6\"/><rect x=\"30\" y=\"40\" width=\"34\" height=\"34\" rx=\"5\" fill=\"#fff\" stroke=\"#3b2a25\" stroke-width=\"6\"/><rect x=\"40\" y=\"50\" width=\"14\" height=\"14\" rx=\"2\" fill=\"#3b2a25\"/><rect x=\"136\" y=\"40\" width=\"34\" height=\"34\" rx=\"5\" fill=\"#fff\" stroke=\"#3b2a25\" stroke-width=\"6\"/><rect x=\"146\" y=\"50\" width=\"14\" height=\"14\" rx=\"2\" fill=\"#3b2a25\"/><rect x=\"30\" y=\"154\" width=\"34\" height=\"34\" rx=\"5\" fill=\"#fff\" stroke=\"#3b2a25\" stroke-width=\"6\"/><rect x=\"40\" y=\"164\" width=\"14\" height=\"14\" rx=\"2\" fill=\"#3b2a25\"/><g fill=\"#3b2a25\"><rect x=\"80\" y=\"44\" width=\"10\" height=\"10\"/><rect x=\"100\" y=\"54\" width=\"10\" height=\"10\"/><rect x=\"146\" y=\"98\" width=\"10\" height=\"10\"/><rect x=\"132\" y=\"170\" width=\"10\" height=\"10\"/><rect x=\"152\" y=\"160\" width=\"10\" height=\"10\"/><rect x=\"88\" y=\"182\" width=\"10\" height=\"10\"/></g><circle cx=\"80\" cy=\"112\" r=\"9\" fill=\"#3b2a25\"/><circle cx=\"120\" cy=\"112\" r=\"9\" fill=\"#3b2a25\"/><circle cx=\"78\" cy=\"109\" r=\"3.0\" fill=\"#fff\"/><circle cx=\"118\" cy=\"109\" r=\"3.0\" fill=\"#fff\"/><path d=\"M84 136q16 16 32 0\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"5\" stroke-linecap=\"round\"/><ellipse cx=\"64\" cy=\"138\" rx=\"9\" ry=\"6\" fill=\"#ff9f9f\" opacity=\".8\"/><ellipse cx=\"136\" cy=\"138\" rx=\"9\" ry=\"6\" fill=\"#ff9f9f\" opacity=\".8\"/></svg>",
+ shanjiao:"<svg class=\"th\" viewBox=\"0 0 200 226\" role=\"img\" aria-label=\"臺灣的山椒魚的圖\"><path d=\"M150 150q40 0 40-40q0-22-16-26\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"18\" stroke-linecap=\"round\"/><path d=\"M150 150q40 0 40-40q0-22-16-26\" fill=\"none\" stroke=\"#9b7a4a\" stroke-width=\"10\" stroke-linecap=\"round\"/><g fill=\"#9b7a4a\" stroke=\"#3b2a25\" stroke-width=\"5\" stroke-linejoin=\"round\"><path d=\"M50 160l-22 22 14 4z\"/><path d=\"M146 160l22 22-14 4z\"/></g><ellipse cx=\"100\" cy=\"150\" rx=\"58\" ry=\"44\" fill=\"#9b7a4a\" stroke=\"#3b2a25\" stroke-width=\"6\"/><ellipse cx=\"100\" cy=\"96\" rx=\"64\" ry=\"50\" fill=\"#a8885a\" stroke=\"#3b2a25\" stroke-width=\"6\"/><g fill=\"#6e5530\"><circle cx=\"78\" cy=\"150\" r=\"6\"/><circle cx=\"120\" cy=\"160\" r=\"5\"/><circle cx=\"104\" cy=\"138\" r=\"4\"/></g><circle cx=\"72\" cy=\"66\" r=\"15\" fill=\"#fff\" stroke=\"#3b2a25\" stroke-width=\"5\"/><circle cx=\"128\" cy=\"66\" r=\"15\" fill=\"#fff\" stroke=\"#3b2a25\" stroke-width=\"5\"/><circle cx=\"74\" cy=\"68\" r=\"7\" fill=\"#3b2a25\"/><circle cx=\"126\" cy=\"68\" r=\"7\" fill=\"#3b2a25\"/><path d=\"M70 110q30 22 60 0\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"5\" stroke-linecap=\"round\"/><ellipse cx=\"52\" cy=\"104\" rx=\"9\" ry=\"6\" fill=\"#ff9f9f\" opacity=\".8\"/><ellipse cx=\"148\" cy=\"104\" rx=\"9\" ry=\"6\" fill=\"#ff9f9f\" opacity=\".8\"/><path d=\"M14 214q24-30 54-10q-30 20-54 10z\" fill=\"#7cc36a\" stroke=\"#3b2a25\" stroke-width=\"3\"/></svg>",
+ tuzi:"<svg class=\"th\" viewBox=\"0 0 200 226\" role=\"img\" aria-label=\"兔子先生等等我的圖\"><path d=\"M70 92q-22-60-6-84q22 10 22 82z\" fill=\"#fff\" stroke=\"#3b2a25\" stroke-width=\"6\" stroke-linejoin=\"round\"/><path d=\"M72 86q-12-46-4-66q10 10 10 64z\" fill=\"#ffc2dc\"/><path d=\"M130 92q22-60 6-84q-22 10-22 82z\" fill=\"#fff\" stroke=\"#3b2a25\" stroke-width=\"6\" stroke-linejoin=\"round\"/><path d=\"M128 86q12-46 4-66q-10 10-10 64z\" fill=\"#ffc2dc\"/><ellipse cx=\"100\" cy=\"132\" rx=\"66\" ry=\"58\" fill=\"#fff\" stroke=\"#3b2a25\" stroke-width=\"6\"/><circle cx=\"76\" cy=\"124\" r=\"8\" fill=\"#3b2a25\"/><circle cx=\"124\" cy=\"124\" r=\"8\" fill=\"#3b2a25\"/><circle cx=\"74\" cy=\"121\" r=\"2.7\" fill=\"#fff\"/><circle cx=\"122\" cy=\"121\" r=\"2.7\" fill=\"#fff\"/><path d=\"M95 142q5 5 10 0\" fill=\"#ff8fb3\" stroke=\"#3b2a25\" stroke-width=\"3\"/><path d=\"M90 152q10 10 20 0\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"5\" stroke-linecap=\"round\"/><ellipse cx=\"60\" cy=\"146\" rx=\"9\" ry=\"6\" fill=\"#ff9f9f\" opacity=\".8\"/><ellipse cx=\"140\" cy=\"146\" rx=\"9\" ry=\"6\" fill=\"#ff9f9f\" opacity=\".8\"/><circle cx=\"160\" cy=\"194\" r=\"24\" fill=\"#ffd54a\" stroke=\"#3b2a25\" stroke-width=\"5\"/><path d=\"M160 194v-14M160 194l9 6\" stroke=\"#3b2a25\" stroke-width=\"4\" stroke-linecap=\"round\"/><path d=\"M160 170v-8\" stroke=\"#3b2a25\" stroke-width=\"4\"/></svg>",
+ shengxiao:"<svg class=\"th\" viewBox=\"0 0 200 226\" role=\"img\" aria-label=\"十二生肖的圖\"><circle cx=\"46\" cy=\"70\" r=\"36\" fill=\"#c9b8ad\" stroke=\"#3b2a25\" stroke-width=\"6\"/><circle cx=\"154\" cy=\"70\" r=\"36\" fill=\"#c9b8ad\" stroke=\"#3b2a25\" stroke-width=\"6\"/><circle cx=\"46\" cy=\"70\" r=\"20\" fill=\"#ffb7c5\"/><circle cx=\"154\" cy=\"70\" r=\"20\" fill=\"#ffb7c5\"/><path d=\"M160 190q40 0 30-40\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"6\" stroke-linecap=\"round\"/><ellipse cx=\"100\" cy=\"140\" rx=\"70\" ry=\"66\" fill=\"#c9b8ad\" stroke=\"#3b2a25\" stroke-width=\"6\"/><circle cx=\"76\" cy=\"124\" r=\"8\" fill=\"#3b2a25\"/><circle cx=\"124\" cy=\"124\" r=\"8\" fill=\"#3b2a25\"/><circle cx=\"74\" cy=\"121\" r=\"2.7\" fill=\"#fff\"/><circle cx=\"122\" cy=\"121\" r=\"2.7\" fill=\"#fff\"/><ellipse cx=\"100\" cy=\"152\" rx=\"10\" ry=\"8\" fill=\"#ff7f9f\" stroke=\"#3b2a25\" stroke-width=\"3\"/><g stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linecap=\"round\"><path d=\"M60 150h-30M62 162l-28 8M140 150h30M138 162l28 8\"/></g><path d=\"M90 166q10 10 20 0\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"5\" stroke-linecap=\"round\"/><ellipse cx=\"62\" cy=\"146\" rx=\"9\" ry=\"6\" fill=\"#ff9f9f\" opacity=\".8\"/><ellipse cx=\"138\" cy=\"146\" rx=\"9\" ry=\"6\" fill=\"#ff9f9f\" opacity=\".8\"/></svg>",
+ doupeng:"<svg class=\"th\" viewBox=\"0 0 200 226\" role=\"img\" aria-label=\"斗篷怪獸的圖\"><path d=\"M30 92q70-30 140 0l18 120H12z\" fill=\"#7a3fa0\" stroke=\"#3b2a25\" stroke-width=\"6\" stroke-linejoin=\"round\"/><path d=\"M60 30l10 26M140 30l-10 26\" stroke=\"#3b2a25\" stroke-width=\"6\" stroke-linecap=\"round\"/><circle cx=\"58\" cy=\"28\" r=\"8\" fill=\"#ffd34d\" stroke=\"#3b2a25\" stroke-width=\"4\"/><circle cx=\"142\" cy=\"28\" r=\"8\" fill=\"#ffd34d\" stroke=\"#3b2a25\" stroke-width=\"4\"/><ellipse cx=\"100\" cy=\"110\" rx=\"62\" ry=\"58\" fill=\"#7fd36a\" stroke=\"#3b2a25\" stroke-width=\"6\"/><circle cx=\"76\" cy=\"104\" r=\"15\" fill=\"#ff9a3d\" stroke=\"#3b2a25\" stroke-width=\"4\"/><circle cx=\"124\" cy=\"104\" r=\"15\" fill=\"#ff9a3d\" stroke=\"#3b2a25\" stroke-width=\"4\"/><circle cx=\"76\" cy=\"106\" r=\"7\" fill=\"#3b2a25\"/><circle cx=\"124\" cy=\"106\" r=\"7\" fill=\"#3b2a25\"/><path d=\"M74 136q26 22 52 0\" fill=\"#fff\" stroke=\"#3b2a25\" stroke-width=\"5\" stroke-linejoin=\"round\"/><path d=\"M86 140l4 8 4-6 6 7 4-7 6 6 4-8\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"2\"/><path d=\"M66 168l34 18 34-18\" fill=\"#ffd34d\" stroke=\"#3b2a25\" stroke-width=\"5\" stroke-linejoin=\"round\"/></svg>",
+ fangjia:"<svg class=\"th\" viewBox=\"0 0 200 226\" role=\"img\" aria-label=\"放假天，動一動的圖\"><circle cx=\"100\" cy=\"62\" r=\"42\" fill=\"#ffd7b0\" stroke=\"#3b2a25\" stroke-width=\"6\"/><path d=\"M58 52q42-46 84 0q-40-20-84 0z\" fill=\"#3b2a25\"/><circle cx=\"84\" cy=\"66\" r=\"6\" fill=\"#3b2a25\"/><circle cx=\"116\" cy=\"66\" r=\"6\" fill=\"#3b2a25\"/><circle cx=\"82\" cy=\"63\" r=\"2.0\" fill=\"#fff\"/><circle cx=\"114\" cy=\"63\" r=\"2.0\" fill=\"#fff\"/><path d=\"M90 82q10 10 20 0\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"5\" stroke-linecap=\"round\"/><ellipse cx=\"72\" cy=\"82\" rx=\"9\" ry=\"6\" fill=\"#ff9f9f\" opacity=\".8\"/><ellipse cx=\"128\" cy=\"82\" rx=\"9\" ry=\"6\" fill=\"#ff9f9f\" opacity=\".8\"/><path d=\"M100 104v56\" stroke=\"#3b2a25\" stroke-width=\"8\" stroke-linecap=\"round\"/><rect x=\"74\" y=\"104\" width=\"52\" height=\"56\" rx=\"16\" fill=\"#34a6e8\" stroke=\"#3b2a25\" stroke-width=\"6\"/><path d=\"M76 118l-40-30M124 118l40-30\" stroke=\"#3b2a25\" stroke-width=\"8\" stroke-linecap=\"round\"/><path d=\"M88 160l-22 44M112 160l22 44\" stroke=\"#3b2a25\" stroke-width=\"8\" stroke-linecap=\"round\"/><circle cx=\"168\" cy=\"186\" r=\"22\" fill=\"#ff8a3d\" stroke=\"#3b2a25\" stroke-width=\"5\"/><path d=\"M146 186h44M168 164v44\" stroke=\"#3b2a25\" stroke-width=\"3\"/></svg>",
+ xingqitian:"<svg class=\"th\" viewBox=\"0 0 200 226\" role=\"img\" aria-label=\"美好的星期天的圖\"><g stroke=\"#3b2a25\" stroke-width=\"6\" stroke-linecap=\"round\"><path d=\"M178 116L198 116\"/><path d=\"M155 171L169 185\"/><path d=\"M100 194L100 214\"/><path d=\"M45 171L31 185\"/><path d=\"M22 116L2 116\"/><path d=\"M45 61L31 47\"/><path d=\"M100 38L100 18\"/><path d=\"M155 61L169 47\"/></g><circle cx=\"100\" cy=\"116\" r=\"64\" fill=\"#ffc83d\" stroke=\"#3b2a25\" stroke-width=\"6\"/><circle cx=\"78\" cy=\"106\" r=\"8\" fill=\"#3b2a25\"/><circle cx=\"122\" cy=\"106\" r=\"8\" fill=\"#3b2a25\"/><circle cx=\"76\" cy=\"103\" r=\"2.7\" fill=\"#fff\"/><circle cx=\"120\" cy=\"103\" r=\"2.7\" fill=\"#fff\"/><path d=\"M82 132q18 18 36 0\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"5\" stroke-linecap=\"round\"/><ellipse cx=\"66\" cy=\"132\" rx=\"9\" ry=\"6\" fill=\"#ff9f9f\" opacity=\".8\"/><ellipse cx=\"134\" cy=\"132\" rx=\"9\" ry=\"6\" fill=\"#ff9f9f\" opacity=\".8\"/></svg>",
+ shuguo:"<svg class=\"th\" viewBox=\"0 0 200 226\" role=\"img\" aria-label=\"好吃的水果・菜市場的圖\"><path d=\"M100 54q-6-30 14-42\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"6\" stroke-linecap=\"round\"/><path d=\"M106 40q26-24 52-8q-24 22-52 8z\" fill=\"#5cb85c\" stroke=\"#3b2a25\" stroke-width=\"5\" stroke-linejoin=\"round\"/><path d=\"M100 62q-30-20-62 4q-30 40-6 100q24 50 68 40q44 10 68-40q24-60-6-100q-32-24-62-4z\" fill=\"#ef4b3c\" stroke=\"#3b2a25\" stroke-width=\"6\" stroke-linejoin=\"round\"/><circle cx=\"80\" cy=\"124\" r=\"8\" fill=\"#3b2a25\"/><circle cx=\"120\" cy=\"124\" r=\"8\" fill=\"#3b2a25\"/><circle cx=\"78\" cy=\"121\" r=\"2.7\" fill=\"#fff\"/><circle cx=\"118\" cy=\"121\" r=\"2.7\" fill=\"#fff\"/><path d=\"M86 144q14 14 28 0\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"5\" stroke-linecap=\"round\"/><ellipse cx=\"64\" cy=\"146\" rx=\"9\" ry=\"6\" fill=\"#ff9f9f\" opacity=\".8\"/><ellipse cx=\"136\" cy=\"146\" rx=\"9\" ry=\"6\" fill=\"#ff9f9f\" opacity=\".8\"/><ellipse cx=\"62\" cy=\"96\" rx=\"10\" ry=\"16\" fill=\"#fff\" opacity=\".4\"/></svg>",
+ yanse:"<svg class=\"th\" viewBox=\"0 0 200 226\" role=\"img\" aria-label=\"小白魚的圖\"><circle cx=\"168\" cy=\"40\" r=\"9\" fill=\"#bfe6ff\" stroke=\"#3b2a25\" stroke-width=\"3\"/><circle cx=\"184\" cy=\"16\" r=\"5\" fill=\"#bfe6ff\" stroke=\"#3b2a25\" stroke-width=\"3\"/><path d=\"M150 122l42-40v80z\" fill=\"#e8f1f8\" stroke=\"#3b2a25\" stroke-width=\"6\" stroke-linejoin=\"round\"/><path d=\"M70 72q24-40 56-4z\" fill=\"#e8f1f8\" stroke=\"#3b2a25\" stroke-width=\"5\" stroke-linejoin=\"round\"/><ellipse cx=\"92\" cy=\"122\" rx=\"72\" ry=\"54\" fill=\"#ffffff\" stroke=\"#3b2a25\" stroke-width=\"6\"/><g fill=\"none\" stroke=\"#c9d8e4\" stroke-width=\"3\" stroke-linecap=\"round\"><path d=\"M100 104q8 6 0 12M116 112q8 6 0 12M100 128q8 6 0 12M116 136q8 6 0 12\"/></g><path d=\"M84 168q10 28 32 30q-2-20-16-32z\" fill=\"#e8f1f8\" stroke=\"#3b2a25\" stroke-width=\"4\"/><circle cx=\"48\" cy=\"110\" r=\"13\" fill=\"#fff\" stroke=\"#3b2a25\" stroke-width=\"4\"/><circle cx=\"45\" cy=\"111\" r=\"7\" fill=\"#3b2a25\"/><circle cx=\"43\" cy=\"108\" r=\"2.4\" fill=\"#fff\"/><path d=\"M32 140q12 12 26 2\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"5\" stroke-linecap=\"round\"/><ellipse cx=\"48\" cy=\"132\" rx=\"7\" ry=\"4.5\" fill=\"#ff9f9f\" opacity=\".8\"/></svg>",
+ guangjie:"<svg class=\"th\" viewBox=\"0 0 200 226\" role=\"img\" aria-label=\"逛街去的圖\"><path d=\"M70 70q0-44 30-44t30 44\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"7\" stroke-linecap=\"round\"/><path d=\"M36 70h128l12 140H24z\" fill=\"#ff6fa3\" stroke=\"#3b2a25\" stroke-width=\"6\" stroke-linejoin=\"round\"/><path d=\"M30 92h140\" stroke=\"#fff\" stroke-width=\"8\" opacity=\".6\"/><circle cx=\"78\" cy=\"130\" r=\"8\" fill=\"#3b2a25\"/><circle cx=\"122\" cy=\"130\" r=\"8\" fill=\"#3b2a25\"/><circle cx=\"76\" cy=\"127\" r=\"2.7\" fill=\"#fff\"/><circle cx=\"120\" cy=\"127\" r=\"2.7\" fill=\"#fff\"/><path d=\"M84 152q16 16 32 0\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"5\" stroke-linecap=\"round\"/><ellipse cx=\"62\" cy=\"152\" rx=\"9\" ry=\"6\" fill=\"#ff9f9f\" opacity=\".8\"/><ellipse cx=\"138\" cy=\"152\" rx=\"9\" ry=\"6\" fill=\"#ff9f9f\" opacity=\".8\"/></svg>",
+ jialefu:"<svg class=\"th\" viewBox=\"0 0 200 226\" role=\"img\" aria-label=\"家樂福購物的圖\"><path d=\"M10 50h30l24 110h104\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M46 72h140l-18 70H60z\" fill=\"#3fb6a8\" stroke=\"#3b2a25\" stroke-width=\"6\" stroke-linejoin=\"round\"/><rect x=\"82\" y=\"40\" width=\"30\" height=\"34\" rx=\"4\" fill=\"#ffc83d\" stroke=\"#3b2a25\" stroke-width=\"4\"/><circle cx=\"140\" cy=\"56\" r=\"16\" fill=\"#ef4b3c\" stroke=\"#3b2a25\" stroke-width=\"4\"/><circle cx=\"98\" cy=\"102\" r=\"7\" fill=\"#3b2a25\"/><circle cx=\"142\" cy=\"102\" r=\"7\" fill=\"#3b2a25\"/><circle cx=\"96\" cy=\"99\" r=\"2.3\" fill=\"#fff\"/><circle cx=\"140\" cy=\"99\" r=\"2.3\" fill=\"#fff\"/><path d=\"M108 118q12 12 24 0\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"5\" stroke-linecap=\"round\"/><circle cx=\"80\" cy=\"190\" r=\"16\" fill=\"#fff\" stroke=\"#3b2a25\" stroke-width=\"6\"/><circle cx=\"156\" cy=\"190\" r=\"16\" fill=\"#fff\" stroke=\"#3b2a25\" stroke-width=\"6\"/></svg>",
+ baizhan:'<svg class="th" viewBox="0 0 200 226" role="img" aria-label="數線上的車站和小紅點"><rect x="14" y="34" width="56" height="56" rx="4" fill="#7fb8ff" stroke="#3b2a25" stroke-width="5"/><path d="M33 34v56M51 34v56M14 53h56M14 71h56" stroke="#3b2a25" stroke-width="2"/><rect x="82" y="34" width="14" height="56" rx="3" fill="#ffb26b" stroke="#3b2a25" stroke-width="5"/><rect x="108" y="74" width="16" height="16" rx="3" fill="#8be08b" stroke="#3b2a25" stroke-width="5"/><path d="M10 168h176" stroke="#3b2a25" stroke-width="7" stroke-linecap="round"/><path d="M194 168l-14-9v18z" fill="#3b2a25"/><path d="M60 162q20-34 40 0" fill="none" stroke="#e2801f" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 9"/><circle cx="30" cy="168" r="13" fill="#2f6bd0" stroke="#3b2a25" stroke-width="4"/><circle cx="160" cy="168" r="13" fill="#2f6bd0" stroke="#3b2a25" stroke-width="4"/><circle cx="60" cy="168" r="11" fill="#ff5f7a" stroke="#3b2a25" stroke-width="4"/><circle cx="56" cy="166" r="2.2" fill="#3b2a25"/><circle cx="64" cy="166" r="2.2" fill="#3b2a25"/><text x="30" y="210" font-size="22" text-anchor="middle" fill="#3b2a25" font-weight="700">300</text><text x="160" y="210" font-size="22" text-anchor="middle" fill="#3b2a25" font-weight="700">400</text><path d="M150 40l14 20h-28z" fill="#ffd54a" stroke="#3b2a25" stroke-width="4" stroke-linejoin="round"/></svg>',
+ mianbao:"<svg class=\"th\" viewBox=\"0 0 200 226\" role=\"img\" aria-label=\"麵包小偷的圖\"><path d=\"M14 150q-6-50 40-72q46-18 92 0q46 22 40 72q-6 30-40 30H54q-34 0-40-30z\" fill=\"#e6a24b\" stroke=\"#3b2a25\" stroke-width=\"6\" stroke-linejoin=\"round\"/><g fill=\"none\" stroke=\"#b9732a\" stroke-width=\"5\" stroke-linecap=\"round\"><path d=\"M60 86q-10 40 6 88M100 76v104M140 86q10 40-6 88\"/></g><path d=\"M60 40h80l-6 32H66z\" fill=\"#fff\" stroke=\"#3b2a25\" stroke-width=\"5\" stroke-linejoin=\"round\"/><ellipse cx=\"100\" cy=\"36\" rx=\"40\" ry=\"18\" fill=\"#fff\" stroke=\"#3b2a25\" stroke-width=\"5\"/><circle cx=\"80\" cy=\"130\" r=\"7\" fill=\"#3b2a25\"/><circle cx=\"120\" cy=\"130\" r=\"7\" fill=\"#3b2a25\"/><circle cx=\"78\" cy=\"127\" r=\"2.3\" fill=\"#fff\"/><circle cx=\"118\" cy=\"127\" r=\"2.3\" fill=\"#fff\"/><path d=\"M88 150q12 12 24 0\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"5\" stroke-linecap=\"round\"/><ellipse cx=\"62\" cy=\"150\" rx=\"9\" ry=\"6\" fill=\"#ff9f9f\" opacity=\".8\"/><ellipse cx=\"138\" cy=\"150\" rx=\"9\" ry=\"6\" fill=\"#ff9f9f\" opacity=\".8\"/></svg>",
+ kx1:'<svg class="th" viewBox="0 0 200 226" role="img" aria-label="康軒第一冊的圖"><rect x="30" y="20" width="140" height="190" rx="14" fill="#fff" stroke="#3b2a25" stroke-width="6"/><rect x="30" y="20" width="26" height="190" rx="8" fill="#c8432f" stroke="#3b2a25" stroke-width="6"/><text x="112" y="118" font-size="72" text-anchor="middle" font-weight="700" fill="#3b2a25">一</text><text x="112" y="175" font-size="26" text-anchor="middle" fill="#c8432f">國語</text><path d="M150 196l18-18 8 8-18 18h-8z" fill="#f2b705" stroke="#3b2a25" stroke-width="4" stroke-linejoin="round"/></svg>',
+ kx5:'<svg class="th" viewBox="0 0 200 226" role="img" aria-label="康軒第五冊的圖"><rect x="30" y="20" width="140" height="190" rx="14" fill="#fff" stroke="#3b2a25" stroke-width="6"/><rect x="30" y="20" width="26" height="190" rx="8" fill="#c8432f" stroke="#3b2a25" stroke-width="6"/><text x="112" y="118" font-size="72" text-anchor="middle" font-weight="700" fill="#3b2a25">五</text><text x="112" y="175" font-size="26" text-anchor="middle" fill="#c8432f">國語</text><path d="M150 196l18-18 8 8-18 18h-8z" fill="#f2b705" stroke="#3b2a25" stroke-width="4" stroke-linejoin="round"/></svg>',
+ g1l1:'<svg class="th" viewBox="0 0 200 226" role="img" aria-label="貓咪的圖"><rect width="200" height="226" fill="#eaf6ff"/><g transform="translate(0 38)"><rect width="200" height="150" fill="#eaf6ff"/><rect x="0" y="118" width="200" height="32" fill="#cfe8b5"/><g transform="translate(96 86) scale(1.25)"><path d="M30 20q30-4 26-30" fill="none" stroke="#2b3a2e" stroke-width="7" stroke-linecap="round"/><path d="M30 20q30-4 26-30" fill="none" stroke="#f4a259" stroke-width="4" stroke-linecap="round"/><ellipse cx="10" cy="22" rx="30" ry="20" fill="#f4a259" stroke="#2b3a2e" stroke-width="3"/><path d="M-30-14l4-26 14 14M30-14l-4-26-14 14" fill="#f4a259" stroke="#2b3a2e" stroke-width="3" stroke-linejoin="round"/><circle cx="0" cy="-6" r="26" fill="#f4a259" stroke="#2b3a2e" stroke-width="3"/><g transform="translate(0 -8) scale(1.2)"><circle cx="-6" cy="0" r="2.6" fill="#2b3a2e"/><circle cx="6" cy="0" r="2.6" fill="#2b3a2e"/><path d="M-5 8q5 5 10 0" fill="none" stroke="#2b3a2e" stroke-width="2.4" stroke-linecap="round"/><ellipse cx="-12" cy="6" rx="3.5" ry="2.2" fill="#ffb3c1"/><ellipse cx="12" cy="6" rx="3.5" ry="2.2" fill="#ffb3c1"/></g><path d="M-14 0h-14M-14 4l-12 4M14 0h14M14 4l12 4" stroke="#2b3a2e" stroke-width="1.6" stroke-linecap="round"/></g></g></svg>',
+g1l2:'<svg class="th" viewBox="0 0 200 226" role="img" aria-label="鵝媽媽和鵝寶寶的圖"><rect width="200" height="226" fill="#eaf6ff"/><g transform="translate(0 38)"><rect width="200" height="150" fill="#eaf6ff"/><rect x="0" y="118" width="200" height="32" fill="#cfe8b5"/><g transform="translate(80 88) scale(1)"><path d="M-40 10q0-30 34-30q20 0 26 14q4-30 6-46q0-10 12-10q12 0 12 10q0 8-10 10q-6 30-10 52q-6 26-40 26q-30 0-30-26z" fill="#fff" stroke="#2b3a2e" stroke-width="3.2" stroke-linejoin="round"/><path d="M50-60l16 4-16 6z" fill="#ff9f43" stroke="#2b3a2e" stroke-width="2.5" stroke-linejoin="round"/><circle cx="42" cy="-60" r="2.6" fill="#2b3a2e"/><path d="M-20 8q14 10 30 0" fill="none" stroke="#2b3a2e" stroke-width="2.5" stroke-linecap="round"/><path d="M-10 36v10l-8 4M6 36v10l8 4" stroke="#ff9f43" stroke-width="4" stroke-linecap="round" fill="none"/></g><g transform="translate(150 112) scale(0.4)"><path d="M-40 10q0-30 34-30q20 0 26 14q4-30 6-46q0-10 12-10q12 0 12 10q0 8-10 10q-6 30-10 52q-6 26-40 26q-30 0-30-26z" fill="#fff" stroke="#2b3a2e" stroke-width="3.2" stroke-linejoin="round"/><path d="M50-60l16 4-16 6z" fill="#ff9f43" stroke="#2b3a2e" stroke-width="2.5" stroke-linejoin="round"/><circle cx="42" cy="-60" r="2.6" fill="#2b3a2e"/><path d="M-20 8q14 10 30 0" fill="none" stroke="#2b3a2e" stroke-width="2.5" stroke-linecap="round"/><path d="M-10 36v10l-8 4M6 36v10l8 4" stroke="#ff9f43" stroke-width="4" stroke-linecap="round" fill="none"/></g><g transform="translate(178 114) scale(0.36)"><path d="M-40 10q0-30 34-30q20 0 26 14q4-30 6-46q0-10 12-10q12 0 12 10q0 8-10 10q-6 30-10 52q-6 26-40 26q-30 0-30-26z" fill="#fff" stroke="#2b3a2e" stroke-width="3.2" stroke-linejoin="round"/><path d="M50-60l16 4-16 6z" fill="#ff9f43" stroke="#2b3a2e" stroke-width="2.5" stroke-linejoin="round"/><circle cx="42" cy="-60" r="2.6" fill="#2b3a2e"/><path d="M-20 8q14 10 30 0" fill="none" stroke="#2b3a2e" stroke-width="2.5" stroke-linecap="round"/><path d="M-10 36v10l-8 4M6 36v10l8 4" stroke="#ff9f43" stroke-width="4" stroke-linecap="round" fill="none"/></g></g></svg>',
+g1l3:'<svg class="th" viewBox="0 0 200 226" role="img" aria-label="河馬遇到河狸的圖"><rect width="200" height="226" fill="#eaf6ff"/><g transform="translate(0 38)"><rect width="200" height="150" fill="#eaf6ff"/><rect x="0" y="118" width="200" height="32" fill="#cfe8b5"/><g transform="translate(70 96) scale(0.58)"><path d="M-14 30v20M4 32v20M28 32v20M46 28v20" stroke="#2b3a2e" stroke-width="14" stroke-linecap="round"/><path d="M-14 30v20M4 32v20M28 32v20M46 28v20" stroke="#8f8fb8" stroke-width="9" stroke-linecap="round"/><path d="M66 6q12 2 10 14" fill="none" stroke="#2b3a2e" stroke-width="3" stroke-linecap="round"/><ellipse cx="18" cy="12" rx="50" ry="30" fill="#8f8fb8" stroke="#2b3a2e" stroke-width="3"/><circle cx="-30" cy="-30" r="8" fill="#8f8fb8" stroke="#2b3a2e" stroke-width="3"/><circle cx="-30" cy="-30" r="3.5" fill="#e7a9c0"/><circle cx="-6" cy="-30" r="8" fill="#8f8fb8" stroke="#2b3a2e" stroke-width="3"/><circle cx="-6" cy="-30" r="3.5" fill="#e7a9c0"/><ellipse cx="-18" cy="-10" rx="24" ry="22" fill="#8f8fb8" stroke="#2b3a2e" stroke-width="3"/><circle cx="-27" cy="-16" r="3.2" fill="#2b3a2e"/><circle cx="-9" cy="-16" r="3.2" fill="#2b3a2e"/><rect x="-50" y="-4" width="60" height="34" rx="17" fill="#b9b3d6" stroke="#2b3a2e" stroke-width="3"/><ellipse cx="-34" cy="4" rx="3.5" ry="2.5" fill="#2b3a2e"/><ellipse cx="-6" cy="4" rx="3.5" ry="2.5" fill="#2b3a2e"/><path d="M-40 18q20 10 40 0" fill="none" stroke="#2b3a2e" stroke-width="2.5" stroke-linecap="round"/><rect x="-31" y="20" width="6" height="7" rx="1.5" fill="#fff" stroke="#2b3a2e" stroke-width="1.8"/><rect x="-15" y="20" width="6" height="7" rx="1.5" fill="#fff" stroke="#2b3a2e" stroke-width="1.8"/><ellipse cx="-42" cy="12" rx="4" ry="2.5" fill="#ffb3c1"/><ellipse cx="2" cy="12" rx="4" ry="2.5" fill="#ffb3c1"/></g><g transform="translate(152 100) scale(0.72)"><ellipse cx="34" cy="20" rx="26" ry="10" fill="#5a3a22" stroke="#2b3a2e" stroke-width="3" transform="rotate(-14 34 20)"/><ellipse cx="0" cy="10" rx="30" ry="24" fill="#a0683a" stroke="#2b3a2e" stroke-width="3"/><circle cx="-22" cy="-18" r="20" fill="#a0683a" stroke="#2b3a2e" stroke-width="3"/><circle cx="-36" cy="-32" r="6" fill="#a0683a" stroke="#2b3a2e" stroke-width="2.5"/><circle cx="-26" cy="-22" r="2.6" fill="#2b3a2e"/><rect x="-42" y="-8" width="10" height="9" rx="2" fill="#fff" stroke="#2b3a2e" stroke-width="2"/><ellipse cx="-40" cy="-14" rx="5" ry="4" fill="#2b3a2e"/></g><path d="M100 40q4-12 12-4q8-8 12 4q-12 14-12 14t-12-14z" fill="#ff6b81" stroke="#2b3a2e" stroke-width="2"/></g></svg>',
+g1l4:'<svg class="th" viewBox="0 0 200 226" role="img" aria-label="兩個小朋友手拉手的圖"><rect width="200" height="226" fill="#eaf6ff"/><g transform="translate(0 38)"><rect width="200" height="150" fill="#eaf6ff"/><rect x="0" y="118" width="200" height="32" fill="#cfe8b5"/><g transform="translate(60 72) scale(0.85)"><path d="M-8 30l-8 32M8 30l8 32" stroke="#3a5d9c" stroke-width="9" stroke-linecap="round"/><path d="M-16-2h32l4 34h-40z" fill="#3b7dd8" stroke="#2b3a2e" stroke-width="3" stroke-linejoin="round"/><path d="M-14 4l-18 20M14 4l26 14" stroke="#f6c9a1" stroke-width="8" stroke-linecap="round"/><circle cx="0" cy="-20" r="18" fill="#f6c9a1" stroke="#2b3a2e" stroke-width="3"/><path d="M-18-24q2-16 18-16t18 16q-10-8-18-6t-18 6z" fill="#3b2a25"/><g transform="translate(0 -20) scale(1)"><circle cx="-6" cy="0" r="2.6" fill="#2b3a2e"/><circle cx="6" cy="0" r="2.6" fill="#2b3a2e"/><path d="M-5 8q5 5 10 0" fill="none" stroke="#2b3a2e" stroke-width="2.4" stroke-linecap="round"/><ellipse cx="-12" cy="6" rx="3.5" ry="2.2" fill="#ffb3c1"/><ellipse cx="12" cy="6" rx="3.5" ry="2.2" fill="#ffb3c1"/></g></g><g transform="translate(140 72) scale(0.85)"><path d="M-8 30l-8 32M8 30l8 32" stroke="#3a5d9c" stroke-width="9" stroke-linecap="round"/><path d="M-18-2h36l8 38h-52z" fill="#ff8fb1" stroke="#2b3a2e" stroke-width="3" stroke-linejoin="round"/><path d="M-14 4l-26 14M14 4l18 20" stroke="#f6c9a1" stroke-width="8" stroke-linecap="round"/><circle cx="0" cy="-20" r="18" fill="#f6c9a1" stroke="#2b3a2e" stroke-width="3"/><path d="M-19-20q0-22 19-22t19 22q-4-12-19-12t-19 12z" fill="#3b2a25"/><circle cx="-19" cy="-14" r="6" fill="#3b2a25"/><circle cx="19" cy="-14" r="6" fill="#3b2a25"/><g transform="translate(0 -20) scale(1)"><circle cx="-6" cy="0" r="2.6" fill="#2b3a2e"/><circle cx="6" cy="0" r="2.6" fill="#2b3a2e"/><path d="M-5 8q5 5 10 0" fill="none" stroke="#2b3a2e" stroke-width="2.4" stroke-linecap="round"/><ellipse cx="-12" cy="6" rx="3.5" ry="2.2" fill="#ffb3c1"/><ellipse cx="12" cy="6" rx="3.5" ry="2.2" fill="#ffb3c1"/></g></g><circle cx="100" cy="85" r="7" fill="#f6c9a1" stroke="#2b3a2e" stroke-width="2"/></g></svg>',
+g1l5:'<svg class="th" viewBox="0 0 200 226" role="img" aria-label="小朋友玩翹翹板的圖"><rect width="200" height="226" fill="#eaf6ff"/><g transform="translate(0 38)"><rect width="200" height="150" fill="#eaf6ff"/><rect x="0" y="118" width="200" height="32" fill="#cfe8b5"/><path d="M90 130l10-26 10 26z" fill="#e74c3c" stroke="#2b3a2e" stroke-width="3" stroke-linejoin="round"/><g transform="rotate(-14 100 104)"><rect x="14" y="98" width="172" height="12" rx="5" fill="#f2b705" stroke="#2b3a2e" stroke-width="3"/></g><g transform="translate(36 86) scale(0.5)"><path d="M-8 30l-8 32M8 30l8 32" stroke="#3a5d9c" stroke-width="9" stroke-linecap="round"/><path d="M-16-2h32l4 34h-40z" fill="#3b7dd8" stroke="#2b3a2e" stroke-width="3" stroke-linejoin="round"/><path d="M-14 4l-20 18M14 4l20 18" stroke="#f6c9a1" stroke-width="8" stroke-linecap="round"/><circle cx="0" cy="-20" r="18" fill="#f6c9a1" stroke="#2b3a2e" stroke-width="3"/><path d="M-18-24q2-16 18-16t18 16q-10-8-18-6t-18 6z" fill="#3b2a25"/><g transform="translate(0 -20) scale(1)"><circle cx="-6" cy="0" r="2.6" fill="#2b3a2e"/><circle cx="6" cy="0" r="2.6" fill="#2b3a2e"/><path d="M-5 8q5 5 10 0" fill="none" stroke="#2b3a2e" stroke-width="2.4" stroke-linecap="round"/><ellipse cx="-12" cy="6" rx="3.5" ry="2.2" fill="#ffb3c1"/><ellipse cx="12" cy="6" rx="3.5" ry="2.2" fill="#ffb3c1"/></g></g><g transform="translate(166 62) scale(0.5)"><path d="M-8 30l-8 32M8 30l8 32" stroke="#3a5d9c" stroke-width="9" stroke-linecap="round"/><path d="M-18-2h36l8 38h-52z" fill="#ff8fb1" stroke="#2b3a2e" stroke-width="3" stroke-linejoin="round"/><path d="M-14 4l-20 18M14 4l20 18" stroke="#f6c9a1" stroke-width="8" stroke-linecap="round"/><circle cx="0" cy="-20" r="18" fill="#f6c9a1" stroke="#2b3a2e" stroke-width="3"/><path d="M-19-20q0-22 19-22t19 22q-4-12-19-12t-19 12z" fill="#3b2a25"/><circle cx="-19" cy="-14" r="6" fill="#3b2a25"/><circle cx="19" cy="-14" r="6" fill="#3b2a25"/><g transform="translate(0 -20) scale(1)"><circle cx="-6" cy="0" r="2.6" fill="#2b3a2e"/><circle cx="6" cy="0" r="2.6" fill="#2b3a2e"/><path d="M-5 8q5 5 10 0" fill="none" stroke="#2b3a2e" stroke-width="2.4" stroke-linecap="round"/><ellipse cx="-12" cy="6" rx="3.5" ry="2.2" fill="#ffb3c1"/><ellipse cx="12" cy="6" rx="3.5" ry="2.2" fill="#ffb3c1"/></g></g></g></svg>',
+g1l6:'<svg class="th" viewBox="0 0 200 226" role="img" aria-label="小朋友送花給老師的圖"><rect width="200" height="226" fill="#eaf6ff"/><g transform="translate(0 38)"><rect width="200" height="150" fill="#eaf6ff"/><rect x="0" y="118" width="200" height="32" fill="#cfe8b5"/><g transform="translate(140 58) scale(0.95)"><path d="M-9 40l-6 44M9 40l6 44" stroke="#3a4a6c" stroke-width="10" stroke-linecap="round"/><path d="M-20-4h40l4 48h-48z" fill="#3b7dd8" stroke="#2b3a2e" stroke-width="3" stroke-linejoin="round"/><path d="M-18 2l-16 30M18 2l16 30" stroke="#f6c9a1" stroke-width="9" stroke-linecap="round"/><circle cx="0" cy="-22" r="20" fill="#f6c9a1" stroke="#2b3a2e" stroke-width="3"/><path d="M-20-18q0-26 20-26t20 26v22q-6-10-6-24q-14 6-28 0q0 14-6 24z" fill="#4a3222"/><g transform="translate(0 -22) scale(1.05)"><circle cx="-6" cy="0" r="2.6" fill="#2b3a2e"/><circle cx="6" cy="0" r="2.6" fill="#2b3a2e"/><path d="M-5 8q5 5 10 0" fill="none" stroke="#2b3a2e" stroke-width="2.4" stroke-linecap="round"/><ellipse cx="-12" cy="6" rx="3.5" ry="2.2" fill="#ffb3c1"/><ellipse cx="12" cy="6" rx="3.5" ry="2.2" fill="#ffb3c1"/></g></g><g transform="translate(62 80) scale(0.72)"><path d="M-8 30l-8 32M8 30l8 32" stroke="#3a5d9c" stroke-width="9" stroke-linecap="round"/><path d="M-16-2h32l4 34h-40z" fill="#f2b705" stroke="#2b3a2e" stroke-width="3" stroke-linejoin="round"/><path d="M-14 4l-14 18M14 4l30-8" stroke="#f6c9a1" stroke-width="8" stroke-linecap="round"/><circle cx="0" cy="-20" r="18" fill="#f6c9a1" stroke="#2b3a2e" stroke-width="3"/><path d="M-18-24q2-16 18-16t18 16q-10-8-18-6t-18 6z" fill="#3b2a25"/><g transform="translate(0 -20) scale(1)"><circle cx="-6" cy="0" r="2.6" fill="#2b3a2e"/><circle cx="6" cy="0" r="2.6" fill="#2b3a2e"/><path d="M-5 8q5 5 10 0" fill="none" stroke="#2b3a2e" stroke-width="2.4" stroke-linecap="round"/><ellipse cx="-12" cy="6" rx="3.5" ry="2.2" fill="#ffb3c1"/><ellipse cx="12" cy="6" rx="3.5" ry="2.2" fill="#ffb3c1"/></g></g><path d="M98 76v-14" stroke="#3f8f3a" stroke-width="3"/><circle cx="98.0" cy="49.0" r="6" fill="#e74c3c" stroke="#2b3a2e" stroke-width="2"/><circle cx="104.7" cy="53.8" r="6" fill="#e74c3c" stroke="#2b3a2e" stroke-width="2"/><circle cx="102.1" cy="61.7" r="6" fill="#e74c3c" stroke="#2b3a2e" stroke-width="2"/><circle cx="93.9" cy="61.7" r="6" fill="#e74c3c" stroke="#2b3a2e" stroke-width="2"/><circle cx="91.3" cy="53.8" r="6" fill="#e74c3c" stroke="#2b3a2e" stroke-width="2"/><circle cx="98" cy="56" r="4" fill="#ffd54a"/></g></svg>',
+g1l7:'<svg class="th" viewBox="0 0 200 226" role="img" aria-label="烏龜和兔子賽跑的圖"><rect x="0" y="170" width="200" height="56" fill="#d9775f"/><path d="M0 192h200" stroke="#fff" stroke-width="4" stroke-dasharray="14 10"/><ellipse cx="118" cy="62" rx="12" ry="34" fill="#fff" stroke="#3b2a25" stroke-width="5" transform="rotate(-8 118 62)"/><ellipse cx="148" cy="62" rx="12" ry="34" fill="#fff" stroke="#3b2a25" stroke-width="5" transform="rotate(8 148 62)"/><circle cx="134" cy="118" r="34" fill="#fff" stroke="#3b2a25" stroke-width="5"/><circle cx="122" cy="114" r="5" fill="#3b2a25"/><circle cx="146" cy="114" r="5" fill="#3b2a25"/><path d="M126 130q8 8 16 0" fill="none" stroke="#3b2a25" stroke-width="4" stroke-linecap="round"/><path d="M14 176q4-56 54-56q50 0 54 56z" fill="#4f9a52" stroke="#3b2a25" stroke-width="5" stroke-linejoin="round"/><path d="M54 140h28l10 18-10 18H54l-10-18z" fill="#86c46f" stroke="#3b2a25" stroke-width="3"/><circle cx="20" cy="160" r="16" fill="#9bcf7d" stroke="#3b2a25" stroke-width="4"/><circle cx="15" cy="156" r="3.5" fill="#3b2a25"/></svg>',
+ g1l8:'<svg class="th" viewBox="0 0 200 226" role="img" aria-label="拔蘿蔔的圖"><rect x="0" y="150" width="200" height="76" fill="#c99a6b"/><path d="M96 90q-46-30-36-80q28 8 36 72" fill="#5fae5a" stroke="#3b2a25" stroke-width="5" stroke-linejoin="round"/><path d="M104 90q46-30 36-80q-28 8-36 72" fill="#5fae5a" stroke="#3b2a25" stroke-width="5" stroke-linejoin="round"/><path d="M100 92q-8-54 6-86q16 32 0 84" fill="#7cc46a" stroke="#3b2a25" stroke-width="5" stroke-linejoin="round"/><path d="M58 92q42-16 84 0q12 62-42 124q-54-62-42-124z" fill="#fbfbf5" stroke="#3b2a25" stroke-width="6" stroke-linejoin="round"/><circle cx="84" cy="130" r="6" fill="#3b2a25"/><circle cx="116" cy="130" r="6" fill="#3b2a25"/><path d="M90 148q10 10 20 0" fill="none" stroke="#3b2a25" stroke-width="5" stroke-linecap="round"/><ellipse cx="72" cy="146" rx="8" ry="5" fill="#ff9f9f" opacity=".8"/><ellipse cx="128" cy="146" rx="8" ry="5" fill="#ff9f9f" opacity=".8"/></svg>',
+ g1l9:'<svg class="th" viewBox="0 0 200 226" role="img" aria-label="動物狂歡會的圖"><path d="M0 30q50 30 100 0t100 0" fill="none" stroke="#3b2a25" stroke-width="3"/><g stroke="#3b2a25" stroke-width="3"><circle cx="22" cy="46" r="10" fill="#ffd54a"/><circle cx="64" cy="52" r="10" fill="#ff6b81"/><circle cx="100" cy="36" r="10" fill="#62b6f0"/><circle cx="138" cy="50" r="10" fill="#ffd54a"/><circle cx="178" cy="46" r="10" fill="#ff6b81"/></g><circle cx="62" cy="112" r="16" fill="#b07a4a" stroke="#3b2a25" stroke-width="5"/><circle cx="138" cy="112" r="16" fill="#b07a4a" stroke="#3b2a25" stroke-width="5"/><circle cx="100" cy="150" r="56" fill="#b07a4a" stroke="#3b2a25" stroke-width="6"/><ellipse cx="100" cy="170" rx="24" ry="18" fill="#e8c69e" stroke="#3b2a25" stroke-width="4"/><circle cx="100" cy="162" r="7" fill="#3b2a25"/><circle cx="80" cy="140" r="6" fill="#3b2a25"/><circle cx="120" cy="140" r="6" fill="#3b2a25"/><path d="M90 178q10 10 20 0" fill="none" stroke="#3b2a25" stroke-width="4" stroke-linecap="round"/><path d="M100 70l-22 40h44z" fill="#ffd54a" stroke="#3b2a25" stroke-width="4" stroke-linejoin="round"/></svg>'
+};
+
+// ---------- settings ----------
+function setFs(px){ document.documentElement.style.setProperty('--fs', px+'px'); document.querySelectorAll('.sizes button[data-fs]').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.fs==px))); store.set('xue.fs',px); }
+document.querySelectorAll('.sizes button[data-fs]').forEach(b=>b.addEventListener('click',()=>setFs(b.dataset.fs)));
+setFs(store.get('xue.fs')||24);
+function setContrast(on){ if(on) document.documentElement.setAttribute('data-contrast','high'); else document.documentElement.removeAttribute('data-contrast'); $('#contrastBtn').setAttribute('aria-pressed',String(on)); store.set('xue.hc',on?'1':'0'); }
+$('#contrastBtn').addEventListener('click',()=>setContrast($('#contrastBtn').getAttribute('aria-pressed')!=='true'));
+setContrast(store.get('xue.hc')==='1');
+
+let RATE=store.get('xue.rate')==='1'?1:0.6;
+function setRate(r){ RATE=r; document.querySelectorAll('.rates button').forEach(b=>b.setAttribute('aria-pressed',String(parseFloat(b.dataset.rate)===r))); store.set('xue.rate',String(r)); }
+document.querySelectorAll('.rates button').forEach(b=>b.addEventListener('click',()=>{ setRate(parseFloat(b.dataset.rate)); say(b.dataset.rate==='1.0'?'快一點':'慢慢唸'); }));
+setRate(RATE===1?1:0.6);
+const ZYDATA={"t":{"軒":"1","憶":"4","戳":"1","冊":"4","拔":"2","狂":"2","乘":"2","估":"1","列":"4","升":"1","印":"4","址":"3","您":"2","戰":"4","拼":"1","斂":"3","欄":"2","沿":"2","端":"1","致":"4","般":"1","議":"4","貫":"4","躍":"4","鈕":"3","驟":"4","一":"1","七":"1","三":"1","上":"4","下":"4","不":"4","丑":"3","且":"3","世":"4","丟":"1","並":"4","中":"1","串":"4","丸":"2","主":"3","久":"3","之":"1","乎":"1","九":"3","也":"3","乾":"1","亂":"4","了":"5","事":"4","二":"4","互":"4","五":"3","些":"1","交":"1","享":"3","亮":"4","人":"2","什":"2","今":"1","仔":"3","他":"1","仗":"4","付":"4","仙":"1","代":"4","以":"3","件":"4","任":"4","份":"4","休":"1","伯":"2","伴":"4","似":"4","但":"4","位":"4","住":"4","何":"2","作":"4","你":"3","使":"3","來":"2","例":"4","依":"1","侶":"3","便":"4","保":"3","信":"4","修":"1","俱":"4","個":"4","倍":"4","們":"5","倒":"4","候":"4","借":"4","值":"2","假":"3","做":"4","停":"2","健":"4","偷":"1","傅":"4","傘":"3","備":"4","傢":"1","傳":"2","傷":"1","傾":"1","僅":"3","像":"4","價":"4","億":"4","優":"1","儲":"2","元":"2","兄":"1","充":"1","兇":"1","先":"1","光":"1","克":"4","免":"3","兒":"2","兔":"4","入":"4","內":"4","全":"2","兩":"3","八":"1","公":"1","六":"4","共":"4","兵":"1","其":"2","具":"4","典":"3","再":"4","冒":"4","冬":"1","冰":"1","冷":"3","凌":"2","凍":"4","凝":"2","凸":"2","凹":"1","出":"1","刀":"1","分":"1","切":"1","別":"2","利":"4","到":"4","制":"4","刷":"1","券":"4","刺":"4","刻":"4","則":"2","前":"2","剔":"1","剛":"1","剝":"1","剩":"4","剪":"3","創":"4","劃":"4","力":"4","功":"1","加":"1","助":"4","努":"3","勇":"3","動":"4","務":"4","勵":"4","包":"1","化":"4","匙":"2","匹":"1","區":"1","十":"2","千":"1","午":"3","半":"4","協":"2","南":"2","博":"2","卡":"3","危":"2","卷":"4","卻":"4","厚":"4","原":"2","厲":"4","去":"4","參":"1","又":"4","叉":"1","及":"2","友":"3","反":"3","叔":"2","取":"3","受":"4","口":"3","古":"3","句":"4","另":"4","只":"3","叫":"4","可":"3","台":"2","右":"4","司":"1","吃":"1","各":"4","合":"2","吉":"2","同":"2","名":"2","吐":"3","向":"4","吞":"1","吧":"5","含":"2","吱":"1","吵":"3","吸":"1","吹":"1","吼":"3","呀":"1","呆":"1","告":"4","周":"1","味":"4","呼":"1","和":"2","咕":"1","咩":"1","咪":"1","咬":"3","品":"3","哞":"2","員":"2","哥":"1","哪":"3","哭":"1","唐":"2","唯":"2","唱":"4","唸":"4","商":"1","問":"4","啟":"3","喂":"4","善":"4","喔":"1","喜":"3","喝":"1","單":"1","嗎":"5","嗓":"3","嘴":"3","器":"4","嚇":"4","嚜":"5","四":"4","回":"2","因":"1","困":"4","固":"4","圈":"1","國":"2","圍":"2","園":"2","圓":"2","圖":"2","團":"2","土":"3","在":"4","地":"4","圾":"4","坐":"4","垃":"4","型":"2","城":"2","堂":"2","堅":"1","堆":"1","堡":"3","報":"4","場":"3","塊":"4","塞":"1","填":"2","境":"4","墊":"4","增":"1","壁":"4","壓":"1","壞":"4","士":"4","壯":"4","外":"4","多":"1","夜":"4","夠":"4","夢":"4","大":"4","天":"1","太":"4","夫":"1","失":"1","夾":"2","奇":"2","奈":"4","套":"4","奮":"4","女":"3","奶":"3","她":"1","好":"3","如":"2","妙":"4","妹":"4","姊":"3","始":"3","姐":"3","姓":"4","婆":"2","婚":"1","婦":"4","媽":"1","嬤":"1","嬰":"1","子":"3","字":"4","存":"2","孝":"4","季":"4","孤":"1","孩":"2","學":"2","它":"1","守":"3","安":"1","完":"2","定":"4","宜":"2","客":"4","室":"4","宰":"3","害":"4","家":"1","容":"2","寄":"4","密":"4","富":"4","寒":"2","察":"2","寢":"3","實":"2","寧":"2","寫":"3","寬":"1","寶":"3","射":"4","專":"1","尋":"2","對":"4","導":"3","小":"3","少":"3","尖":"1","尚":"4","就":"4","尺":"3","尾":"3","局":"2","居":"1","屋":"1","展":"3","層":"2","山":"1","島":"3","巢":"2","工":"1","左":"3","巧":"3","巨":"4","差":"1","己":"3","已":"3","巴":"1","巾":"1","市":"4","布":"4","希":"1","師":"1","帳":"4","帶":"4","常":"2","帽":"4","幣":"4","幫":"1","平":"2","年":"2","幸":"4","幹":"4","幻":"4","幾":"3","床":"2","序":"4","底":"3","店":"4","度":"4","座":"4","庭":"2","康":"1","廁":"4","廳":"1","建":"4","弄":"4","式":"4","引":"3","弟":"4","弱":"4","張":"1","強":"2","彈":"4","彎":"1","形":"2","彩":"3","影":"3","彼":"3","往":"3","待":"4","很":"3","後":"4","得":"2","從":"2","微":"2","德":"2","心":"1","必":"4","志":"4","忙":"2","忠":"1","快":"4","怎":"3","怒":"4","怕":"4","思":"1","急":"2","性":"4","怪":"4","恆":"2","恐":"3","息":"2","情":"2","惜":"2","惟":"2","想":"3","愉":"2","意":"4","愛":"4","感":"3","慢":"4","慰":"4","慶":"4","憤":"4","懂":"3","應":"1","懷":"2","成":"2","我":"3","或":"4","截":"2","戲":"4","戶":"4","房":"2","所":"3","扁":"3","扇":"4","手":"3","才":"2","打":"3","找":"3","技":"4","抄":"1","把":"3","抓":"1","抖":"3","折":"2","披":"1","抬":"2","抱":"4","拆":"1","拉":"1","拍":"1","拒":"4","拖":"1","招":"1","拳":"2","拿":"2","持":"2","指":"3","按":"4","挑":"3","挖":"1","捨":"3","掃":"3","掉":"4","掌":"3","排":"2","掛":"4","採":"3","接":"1","控":"4","推":"1","描":"2","提":"2","插":"1","換":"4","握":"4","揮":"1","搓":"1","搖":"2","搧":"1","搬":"1","搭":"1","搶":"3","摔":"1","摘":"1","摸":"1","摺":"2","撐":"1","撞":"4","撥":"1","撿":"3","擇":"2","操":"1","擎":"2","擔":"1","擠":"3","擦":"1","擺":"3","攪":"3","支":"1","收":"1","改":"3","放":"4","故":"4","效":"4","救":"4","敗":"4","教":"4","敞":"3","敢":"3","散":"4","敲":"1","整":"3","敵":"2","數":"4","文":"2","斗":"3","料":"4","斧":"3","新":"1","斷":"4","方":"1","於":"2","旁":"2","旅":"3","旗":"2","既":"4","日":"4","早":"3","明":"2","易":"4","星":"1","昨":"2","是":"4","時":"2","晚":"3","普":"3","景":"3","暖":"3","暴":"4","曉":"3","曬":"4","曲":"3","更":"4","書":"1","曾":"2","最":"4","會":"4","月":"4","有":"3","朋":"2","服":"2","朗":"3","望":"4","朝":"2","期":"2","木":"4","末":"4","本":"3","朵":"3","李":"3","材":"2","村":"1","束":"4","杯":"1","東":"1","松":"1","板":"3","枕":"3","林":"2","果":"3","架":"4","某":"3","柔":"2","查":"2","柿":"4","栗":"4","校":"4","根":"1","格":"2","桃":"2","框":"1","案":"4","桌":"1","桶":"3","梗":"3","條":"2","梨":"2","梯":"1","梳":"1","棄":"4","棋":"2","棍":"4","棒":"4","棕":"1","棚":"2","森":"1","棵":"1","椅":"3","植":"2","椒":"1","椰":"2","楚":"3","業":"4","極":"2","槍":"1","樂":"4","樓":"2","標":"1","模":"2","樣":"4","樹":"4","橋":"2","橘":"2","機":"1","橡":"4","橫":"2","檔":"3","檢":"3","檬":"2","檯":"2","檸":"2","櫃":"4","櫻":"1","次":"4","欺":"1","款":"3","歌":"1","歐":"1","歡":"1","正":"4","此":"3","步":"4","歲":"4","段":"4","母":"3","每":"3","毒":"2","比":"3","毛":"2","毽":"4","氣":"4","水":"3","汁":"1","求":"2","汗":"4","池":"2","汪":"1","決":"2","汽":"4","沒":"2","沖":"1","沙":"1","河":"2","油":"2","治":"4","況":"4","泉":"2","法":"3","泡":"4","泥":"2","注":"4","泳":"3","洋":"2","洗":"3","洛":"4","洞":"4","洲":"1","活":"2","流":"2","浪":"4","海":"3","消":"1","液":"4","涼":"2","淇":"2","淋":"2","淚":"4","淨":"4","深":"1","淺":"3","清":"1","減":"3","渴":"3","游":"2","湯":"1","源":"2","準":"3","溜":"1","溝":"1","溪":"1","溫":"1","溼":"1","滑":"2","滴":"1","滾":"3","滿":"3","漂":"4","演":"3","漢":"4","漫":"4","漿":"1","潑":"1","潤":"4","潮":"2","澆":"1","激":"1","濟":"4","瀏":"2","灘":"1","灣":"1","火":"3","灰":"1","炒":"3","炮":"4","為":"2","烏":"1","烤":"3","無":"2","然":"2","照":"4","煩":"2","煮":"3","熊":"2","熟":"2","熱":"4","燈":"1","燙":"4","營":"2","燭":"2","爬":"2","父":"4","爸":"4","爺":"2","牆":"2","片":"4","牌":"2","牙":"2","牛":"2","牠":"1","牢":"2","物":"4","特":"4","牽":"1","狀":"4","狐":"2","狗":"3","狸":"2","猜":"1","猴":"2","獅":"1","獎":"3","獨":"2","獲":"4","獸":"4","玉":"4","玩":"2","珍":"1","珠":"1","班":"1","現":"4","球":"2","理":"3","琴":"2","環":"2","瓜":"1","瓣":"4","瓶":"2","甚":"4","甜":"2","生":"1","產":"3","用":"4","由":"2","申":"1","男":"2","界":"4","留":"2","番":"1","畫":"4","當":"1","疊":"2","病":"4","痛":"4","瘦":"4","發":"1","白":"2","百":"3","皂":"4","的":"5","皮":"2","盆":"2","盒":"2","盛":"2","盤":"2","盪":"4","目":"4","直":"2","相":"4","省":"3","看":"4","真":"1","眶":"1","眼":"3","睛":"1","睡":"4","睦":"4","瞭":"3","知":"1","矩":"3","短":"3","矮":"3","石":"2","砍":"3","破":"4","硬":"4","碎":"4","碗":"3","碰":"4","確":"4","碼":"3","礦":"4","示":"4","社":"4","祕":"4","祝":"4","神":"2","祥":"2","票":"4","禍":"4","福":"2","禮":"3","私":"1","秋":"1","科":"1","秘":"4","租":"1","程":"2","種":"3","稱":"1","稻":"4","積":"1","穫":"4","穴":"4","空":"1","穿":"1","突":"2","窄":"3","窗":"1","立":"4","站":"4","竟":"4","章":"1","童":"2","竹":"2","笑":"4","符":"2","第":"4","筆":"3","等":"3","筒":"3","答":"2","筷":"4","算":"4","管":"3","箭":"4","箱":"1","節":"2","範":"4","篷":"2","簡":"3","簿":"4","籃":"2","籠":"2","米":"3","粉":"3","粒":"4","粗":"1","粵":"4","粽":"4","精":"1","糊":"2","糕":"1","糖":"2","糙":"1","系":"4","紀":"4","約":"1","紅":"2","紋":"2","紙":"3","級":"2","紫":"3","累":"4","細":"4","終":"1","組":"3","結":"2","絕":"2","絡":"4","給":"3","統":"3","絲":"1","經":"1","綠":"4","維":"2","網":"3","綴":"4","綿":"2","緊":"3","線":"4","緩":"3","練":"4","縫":"2","縮":"1","總":"3","績":"1","繩":"2","繪":"4","繳":"3","繼":"4","續":"4","罐":"4","置":"4","罵":"4","羊":"2","美":"3","群":"2","義":"4","習":"2","翻":"1","老":"3","考":"3","者":"3","而":"2","耳":"3","聊":"2","聚":"4","聞":"2","聯":"2","聰":"1","聲":"1","職":"2","聽":"1","肉":"4","肖":"4","肚":"4","股":"3","肥":"2","肩":"1","育":"4","背":"4","胖":"4","胞":"1","胸":"1","能":"2","脆":"4","脾":"2","腔":"1","腦":"3","腳":"3","腸":"2","腿":"3","膀":"3","膚":"1","臂":"4","臉":"3","自":"4","至":"4","臺":"2","舅":"4","與":"3","興":"1","舉":"3","舊":"4","舌":"2","舍":"4","舒":"1","舔":"3","舞":"3","船":"2","良":"2","色":"4","芫":"2","芭":"1","花":"1","苗":"2","若":"4","苦":"3","英":"1","茄":"2","茶":"2","茸":"2","草":"3","荷":"2","荽":"1","莓":"2","莖":"1","菇":"1","菌":"4","菜":"4","萄":"2","萬":"4","落":"4","葉":"4","著":"5","葡":"2","葵":"2","蒂":"4","蓄":"4","蓋":"4","蓮":"2","蔔":"2","蔥":"1","蔬":"1","蕉":"1","薄":"2","薛":"1","薩":"4","薪":"1","薯":"3","藍":"2","藏":"2","蘋":"2","蘭":"2","蘿":"2","虎":"3","處":"3","號":"4","虹":"2","蚊":"2","蛇":"2","蛋":"4","蛙":"1","蜜":"4","蝙":"1","蝟":"4","蝠":"2","蝦":"1","蝴":"2","蝶":"2","蝸":"1","螃":"2","融":"2","螞":"3","螢":"2","蟲":"2","蟹":"4","蟻":"3","蠟":"4","行":"2","術":"4","街":"1","衛":"4","衝":"1","衣":"1","表":"3","袋":"4","袖":"4","被":"4","裙":"2","補":"3","裝":"1","裡":"3","裹":"3","製":"4","複":"4","褲":"4","襪":"4","西":"1","要":"4","見":"4","規":"1","覓":"4","視":"4","親":"1","覺":"2","覽":"3","觀":"1","角":"3","解":"3","觸":"4","言":"2","計":"4","訊":"4","記":"4","訝":"4","訣":"2","設":"4","許":"3","訴":"4","詞":"2","詢":"2","試":"4","話":"4","該":"1","誇":"1","認":"4","語":"3","誤":"4","說":"1","誰":"2","課":"4","誼":"4","調":"2","談":"2","請":"3","諒":"4","論":"4","諧":"2","謂":"4","講":"3","謝":"4","識":"4","警":"3","護":"4","讀":"2","變":"4","讓":"4","豆":"4","豐":"1","象":"4","豬":"1","貌":"4","貓":"1","負":"4","財":"2","貨":"4","責":"2","貴":"4","買":"3","費":"4","貼":"1","資":"1","賣":"4","質":"2","賺":"4","購":"4","賽":"4","贏":"2","走":"3","起":"3","超":"1","越":"4","趕":"3","趣":"4","足":"2","跌":"2","跑":"3","距":"4","跟":"1","路":"4","跳":"4","踢":"1","蹟":"1","蹦":"4","身":"1","躲":"3","躺":"3","車":"1","軟":"3","較":"4","載":"4","輔":"3","輕":"1","輩":"4","輪":"2","輸":"1","轉":"3","辛":"1","辦":"4","近":"4","追":"1","退":"4","送":"4","透":"4","逐":"2","這":"4","通":"1","逛":"4","速":"4","造":"4","連":"2","週":"1","進":"4","遇":"4","遊":"2","運":"4","遍":"4","過":"4","道":"4","達":"2","遠":"3","適":"4","遮":"1","選":"3","還":"2","邊":"1","那":"4","部":"4","郵":"2","都":"1","鄭":"4","鄰":"2","配":"4","酷":"4","酸":"1","醉":"4","醒":"3","采":"3","里":"3","重":"4","野":"3","量":"4","金":"1","釘":"1","針":"1","釣":"4","鈴":"2","銀":"2","銷":"1","鋼":"1","錄":"4","錢":"2","錯":"4","鍊":"4","鍋":"1","鍵":"4","鎖":"3","鎮":"4","鏡":"4","鐘":"1","鐺":"1","鑰":"4","鑽":"1","長":"2","門":"2","閃":"3","閉":"4","開":"1","閒":"2","間":"1","閱":"4","闆":"3","關":"1","防":"2","阿":"1","附":"4","限":"4","院":"4","陣":"4","除":"2","陪":"2","陶":"2","陸":"4","陽":"2","隊":"4","階":"1","隔":"2","隙":"4","際":"4","隨":"2","險":"3","隱":"3","隻":"1","集":"2","雖":"1","雙":"1","雞":"1","離":"2","難":"2","雨":"3","雪":"3","雲":"2","零":"2","電":"4","需":"1","霧":"4","露":"4","霸":"4","靈":"2","青":"1","靜":"4","非":"1","靠":"4","面":"4","鞋":"2","鞦":"1","韆":"1","音":"1","韻":"4","響":"3","頁":"4","頂":"3","項":"4","順":"4","須":"1","預":"4","頓":"4","領":"3","頭":"2","頸":"3","顆":"1","題":"2","顏":"2","願":"4","類":"4","顧":"4","顯":"3","風":"1","颱":"2","颳":"1","飄":"1","飛":"1","食":"2","飯":"4","飲":"3","飽":"3","飾":"4","餃":"3","餅":"3","養":"3","餐":"1","餓":"4","餘":"2","館":"3","餵":"4","饅":"2","首":"3","香":"1","馬":"3","駝":"2","駱":"4","騰":"2","驗":"4","驚":"1","骨":"3","骰":"2","髒":"1","體":"3","高":"1","髮":"3","鬆":"1","鬧":"4","鬼":"3","魚":"2","鮮":"1","鯨":"1","鰓":"1","鳥":"3","鳳":"4","鴉":"1","鴨":"1","鴿":"1","鹿":"4","麗":"4","麥":"4","麵":"4","麻":"2","麼":"5","黃":"2","黏":"2","黑":"1","點":"3","鼠":"3","鼻":"2","齊":"2","齒":"3","龍":"2","龜":"1"},"a":{"一":{"yi2":1,"yi4":2},"上":{"shang3":1},"不":{"bu2":1,"fou1":2,"fu1":3},"中":{"zhong4":1},"乾":{"qian2":1},"了":{"liao3":1},"些":{"suo4":1,"suo1":2},"什":{"shi2":1},"仔":{"zai3":1},"任":{"ren2":1},"伯":{"bo5":1},"作":{"zuo2":1},"便":{"pian2":1},"個":{"ge5":1,"ge3":2},"們":{"men2":1},"倒":{"dao3":1},"假":{"jia4":1},"傳":{"zhuan4":1},"價":{"ga5":1},"兒":{"er1":1,"ni2":2},"六":{"lu4":1},"共":{"gong1":1},"其":{"ji1":1},"冒":{"mo4":1},"分":{"fen4":1},"切":{"qie4":1},"創":{"chuang1":1},"劃":{"hua2":1},"包":{"pao4":1},"化":{"hua1":1},"匙":{"shi5":1},"匹":{"pi3":1},"區":{"ou1":1},"午":{"huo5":1},"南":{"na2":1},"卷":{"juan3":1,"quan2":2},"參":{"shen1":1,"cen1":2,"san1":3},"叔":{"shu5":1},"句":{"gou1":1,"gou4":2},"可":{"ke4":1},"台":{"yi2":1},"吃":{"ji2":1},"合":{"ge3":1},"同":{"tong4":1},"吐":{"tu4":1},"吧":{"ba1":1},"呀":{"ya5":1,"xia1":2},"告":{"gu4":1},"和":{"han4":1,"he4":2,"huo4":3,"huo5":4,"hu2":5},"咕":{"gu5":1},"員":{"yun2":1},"哥":{"ge5":1},"哪":{"na5":1,"nuo2":2},"喔":{"o5":1,"wo4":2},"喝":{"he4":1},"單":{"shan4":1,"chan2":2},"嗎":{"ma3":1},"嚇":{"he4":1},"嚜":{"mo4":1},"圈":{"juan4":1},"地":{"de5":1},"塞":{"se4":1,"sai4":2},"大":{"dai4":1},"太":{"tai5":1},"夫":{"fu2":1},"奇":{"ji1":1},"女":{"nv4":1},"奶":{"nai5":1},"好":{"hao4":1},"妹":{"mei5":1},"姊":{"jie5":1,"zi3":2},"婆":{"po5":1},"媽":{"ma5":1},"嬤":{"ma5":1},"子":{"zi5":1},"字":{"zi5":1},"家":{"gu1":1},"寧":{"ning4":1},"寶":{"bao5":1},"射":{"ye4":1},"少":{"shao4":1},"尺":{"che3":1},"差":{"chai1":1,"ci1":2,"cuo1":3},"巴":{"ba5":1},"平":{"bian4":1},"幾":{"ji1":1},"度":{"duo4":1},"弄":{"long4":1},"弟":{"di5":1,"ti4":2},"強":{"qiang3":1,"jiang4":2},"彈":{"tan2":1},"待":{"dai1":1},"得":{"de5":1,"dei3":2},"從":{"zong4":1,"zong1":2,"cong1":3},"思":{"sai1":1,"si5":2},"應":{"ying4":1},"戲":{"hu1":1},"扁":{"pian1":1},"扇":{"shan1":1},"把":{"ba4":1},"折":{"zhe1":1,"she2":2},"挑":{"tiao1":1},"掃":{"sao4":1},"搶":{"qiang1":1},"擔":{"dan4":1},"放":{"fang3":1},"教":{"jiao1":1},"散":{"san3":1},"數":{"shu3":1,"shuo4":2,"cu4":3},"文":{"wen4":1},"於":{"wu1":1},"日":{"mi4":1},"暖":{"xuan1":1},"暴":{"pu4":1},"曲":{"qu1":1},"更":{"geng1":1},"曾":{"zeng1":1},"會":{"kuai4":1,"hui3":2,"gui4":3},"有":{"you4":1},"朝":{"zhao1":1},"期":{"ji1":1},"朵":{"duo5":1},"枕":{"zhen4":1},"某":{"mei2":1},"查":{"zha1":1},"校":{"jiao4":1},"槍":{"cheng1":1},"樂":{"yue4":1,"yao4":2},"橫":{"heng4":1},"正":{"zheng1":1},"比":{"bi4":1},"汗":{"han2":1},"沒":{"mo4":1},"法":{"fa2":1},"泡":{"pao1":1},"泥":{"ni4":1},"洗":{"xian3":1},"洞":{"tong2":1},"淺":{"jian1":1},"渴":{"he2":1},"湯":{"shang1":1},"溜":{"liu4":1},"滑":{"gu3":1},"漂":{"piao1":1,"piao3":2},"漿":{"jiang4":1},"濟":{"ji3":1},"炮":{"pao2":1,"bao1":2},"為":{"wei4":1},"無":{"mo2":1},"父":{"fu3":1,"fu5":2},"爸":{"ba5":1},"爺":{"ye5":1},"甚":{"shen2":1},"番":{"pan1":1},"當":{"dang4":1},"百":{"bo2":1},"的":{"di2":1,"di4":2},"盛":{"sheng4":1},"相":{"xiang1":1},"省":{"xing3":1},"看":{"kan1":1},"瞭":{"liao4":1},"石":{"dan4":1},"秘":{"bi4":1},"種":{"zhong4":1},"稱":{"cheng4":1},"空":{"kong4":1},"答":{"da1":1},"紅":{"gong1":1},"累":{"lei3":1},"結":{"jie1":1},"絡":{"lao4":1},"給":{"ji3":1},"縫":{"feng4":1},"繳":{"zhuo2":1},"聽":{"ting4":1},"肚":{"du3":1},"背":{"bei1":1},"胖":{"pan2":1},"膀":{"pang2":1,"pang1":2,"bang4":3},"舅":{"jiu5":1},"與":{"yu4":1,"yu2":2},"興":{"xing4":1},"舍":{"she3":1},"色":{"shai3":1},"若":{"re3":1},"茄":{"jia1":1},"荷":{"he4":1},"萄":{"tao5":1},"落":{"la4":1,"lao4":2},"葉":{"she4":1},"著":{"zhu4":1,"zhao1":2,"zhao2":3,"zhuo2":4},"蓋":{"ge3":1},"蔔":{"bo5":1},"薄":{"bo4":1},"藏":{"zang4":1},"蘋":{"pin2":1},"虎":{"hu1":1},"處":{"chu4":1},"號":{"hao2":1},"蛇":{"yi2":1},"蝦":{"ha2":1},"螞":{"ma4":1},"行":{"hang2":1,"xing4":2,"hang4":3},"衝":{"chong4":1},"衣":{"yi4":1},"西":{"xi5":1},"要":{"yao1":1},"親":{"qing4":1},"覺":{"jiao4":1},"觀":{"guan4":1},"角":{"jue2":1,"lu4":2},"解":{"jie4":1,"xie4":2},"語":{"yu4":1},"說":{"shui4":1},"調":{"diao4":1},"請":{"jing4":1},"論":{"lun2":1},"謝":{"xie5":1},"識":{"zhi4":1},"讀":{"dou4":1},"質":{"zhi4":1},"足":{"ju4":1},"跑":{"pao2":1},"身":{"juan1":1},"車":{"ju1":1},"載":{"zai3":1},"轉":{"zhuan4":1},"追":{"dui1":1},"過":{"guo1":1},"遠":{"yuan4":1},"適":{"di2":1},"還":{"huan2":1},"那":{"na3":1,"na1":2,"nuo2":3},"都":{"du1":1},"重":{"chong2":1},"量":{"liang2":1},"釘":{"ding4":1},"鋼":{"gang4":1},"鐺":{"cheng1":1},"鑽":{"zuan4":1},"長":{"zhang3":1,"zhang4":2},"間":{"jian4":1},"阿":{"e1":1},"陶":{"yao2":1},"陸":{"liu4":1},"難":{"nan4":1,"nuo2":2},"雨":{"yu4":1},"露":{"lou4":1},"霸":{"po4":1},"頓":{"du2":1},"頭":{"tou5":1},"頸":{"geng3":1},"風":{"feng4":1},"食":{"si4":1,"yi4":2},"飲":{"yin4":1},"養":{"yang4":1},"骨":{"gu1":1,"gu2":2},"鮮":{"xian3":1},"鰓":{"xi3":1},"麗":{"li2":1},"麼":{"ma2":1,"mo2":2},"齊":{"ji4":1,"zi1":2},"龜":{"jun1":1,"qiu1":2}},"d":{"一":"yi1","上":"shang4","不":"bu4","中":"zhong1","乾":"gan1","了":"le5","些":"xie1","什":"shen2","仔":"zi3","任":"ren4","伯":"bo2","作":"zuo4","便":"bian4","個":"ge4","們":"men5","倒":"dao4","假":"jia3","傳":"chuan2","價":"jia4","兒":"er2","六":"liu4","共":"gong4","其":"qi2","冒":"mao4","分":"fen1","切":"qie1","創":"chuang4","劃":"hua4","包":"bao1","化":"hua4","匙":"chi2","匹":"pi1","區":"qu1","午":"wu3","南":"nan2","卷":"juan4","參":"can1","叔":"shu2","句":"ju4","可":"ke3","台":"tai2","吃":"chi1","合":"he2","同":"tong2","吐":"tu3","吧":"ba5","呀":"ya1","告":"gao4","和":"he2","咕":"gu1","員":"yuan2","哥":"ge1","哪":"na3","喔":"o1","喝":"he1","單":"dan1","嗎":"ma5","嚇":"xia4","嚜":"me5","圈":"quan1","地":"di4","塞":"sai1","大":"da4","太":"tai4","夫":"fu1","奇":"qi2","女":"nv3","奶":"nai3","好":"hao3","妹":"mei4","姊":"jie3","婆":"po2","媽":"ma1","嬤":"ma1","子":"zi3","字":"zi4","家":"jia1","寧":"ning2","寶":"bao3","射":"she4","少":"shao3","尺":"chi3","差":"cha1","巴":"ba1","平":"ping2","幾":"ji3","度":"du4","弄":"nong4","弟":"di4","強":"qiang2","彈":"dan4","待":"dai4","得":"de2","從":"cong2","思":"si1","應":"ying1","戲":"xi4","扁":"bian3","扇":"shan4","把":"ba3","折":"zhe2","挑":"tiao3","掃":"sao3","搶":"qiang3","擔":"dan1","放":"fang4","教":"jiao4","散":"san4","數":"shu4","文":"wen2","於":"yu2","日":"ri4","暖":"nuan3","暴":"bao4","曲":"qu3","更":"geng4","曾":"ceng2","會":"hui4","有":"you3","朝":"chao2","期":"qi2","朵":"duo3","枕":"zhen3","某":"mou3","查":"cha2","校":"xiao4","槍":"qiang1","樂":"le4","橫":"heng2","正":"zheng4","比":"bi3","汗":"han4","沒":"mei2","法":"fa3","泡":"pao4","泥":"ni2","洗":"xi3","洞":"dong4","淺":"qian3","渴":"ke3","湯":"tang1","溜":"liu1","滑":"hua2","漂":"piao4","漿":"jiang1","濟":"ji4","炮":"pao4","為":"wei2","無":"wu2","父":"fu4","爸":"ba4","爺":"ye2","甚":"shen4","番":"fan1","當":"dang1","百":"bai3","的":"de5","盛":"cheng2","相":"xiang4","省":"sheng3","看":"kan4","瞭":"liao3","石":"shi2","秘":"mi4","種":"zhong3","稱":"cheng1","空":"kong1","答":"da2","紅":"hong2","累":"lei4","結":"jie2","絡":"luo4","給":"gei3","縫":"feng2","繳":"jiao3","聽":"ting1","肚":"du4","背":"bei4","胖":"pang4","膀":"bang3","舅":"jiu4","與":"yu3","興":"xing1","舍":"she4","色":"se4","若":"ruo4","茄":"qie2","荷":"he2","萄":"tao2","落":"luo4","葉":"ye4","著":"zhe5","蓋":"gai4","蔔":"bo2","薄":"bo2","藏":"cang2","蘋":"ping2","虎":"hu3","處":"chu3","號":"hao4","蛇":"she2","蝦":"xia1","螞":"ma3","行":"xing2","衝":"chong1","衣":"yi1","西":"xi1","要":"yao4","親":"qin1","覺":"jue2","觀":"guan1","角":"jiao3","解":"jie3","語":"yu3","說":"shuo1","調":"tiao2","請":"qing3","論":"lun4","謝":"xie4","識":"shi4","讀":"du2","質":"zhi2","足":"zu2","跑":"pao3","身":"shen1","車":"che1","載":"zai4","轉":"zhuan3","追":"zhui1","過":"guo4","遠":"yuan3","適":"shi4","還":"hai2","那":"na4","都":"dou1","重":"zhong4","量":"liang4","釘":"ding1","鋼":"gang1","鐺":"dang1","鑽":"zuan1","長":"chang2","間":"jian1","阿":"a1","陶":"tao2","陸":"lu4","難":"nan2","雨":"yu3","露":"lu4","霸":"ba4","頓":"dun4","頭":"tou2","頸":"jing3","風":"feng1","食":"shi2","飲":"yin3","養":"yang3","骨":"gu3","鮮":"xian1","鰓":"sai1","麗":"li4","麼":"me5","齊":"qi2","龜":"gui1"}};
+// ---------- 注音字型（注音芫荽體，OFL）＋ 依詞語自動選正確讀音（IVS） ----------
+// ZYDATA = {t:{字:預設讀音聲調}, a:{多音字:{讀音:IVS序號}}, d:{多音字:預設讀音}}，由建置程式依字型產生
+const ZY = ((D) => {
+  const VS = k => String.fromCodePoint(0xE01E0 + k);
+  const STRIP = /[\u{E0100}-\u{E01EF}]/gu;
+  const R = [];
+  const add = (words, map) => words.split(' ').forEach(w => R.push([w, map]));
+  // 疊字稱謂：第二字輕聲
+  add('哥哥 弟弟 媽媽 妹妹 寶寶 奶奶 太太 爸爸 姐姐 姊姊 爺爺 叔叔 伯伯 舅舅 婆婆 公公 星星 謝謝', {1:'5'});
+  // 名詞後綴「子」「頭」輕聲
+  add('樣子 房子 兔子 椅子 點子 句子 杯子 橘子 葉子 沙子 筷子 被子 孩子 帽子 盒子 鍋子 桌子 鼻子 肚子 日子 箱子 包子 餃子 瓶子 鞋子 襪子 褲子 裙子 梳子 刀子 叉子 盤子 袋子 籃子 院子 村子 車子 影子 鴿子 猴子 獅子 蚊子 桃子 栗子 柿子 李子 銀子 法子 嗓子 輪子 屋子 胖子 瘦子 骰子 稻子 麥子 個子 鏡子 本子 尺子 扇子 竹子 粽子 豆子 釘子 繩子 架子 墊子 蓋子 罐子 棍子 珠子 粒子 例子', {1:'5'});
+  add('石頭 木頭 舌頭 骨頭 饅頭 枕頭 指頭 拳頭 罐頭', {1:'5'});
+  // 補語「得」輕聲
+  add('用得 跑得 說得 聽得 吃得 考得 聞得 變得 覺得 記得 懂得 值得 燙得 做得 寫得 唱得 玩得 笑得 哭得 走得 飛得 跳得 洗得 看得 想得 曉得 捨得 長得 開心得 高興得 急得 累得 痛得 熱得 冷得 氣得 樂得 嚇得 打得 擠得 煮得 吹得', {'-1':'de5'});
+  // 幸福生活小高手（三上社會改寫）新增讀音規則
+  add('長輩', {0:'zhang3'}); add('請假 放假', {1:'jia4'}); add('假日', {0:'jia4'}); add('深處', {1:'chu4'});
+  add('了解', {0:'liao3'}); add('水分 輩分', {1:'fen4'}); add('蝦子', {1:'5'});
+  add('開得 立得 擦得', {'-1':'de5'}); add('整齊地 滴答地 安靜地 平靜地 」地', {'-1':'de5'});
+  // 六課新增讀音規則（小丑魚、狐狸、安平、神奇密碼、山椒魚、兔子）
+  add('長滿 長什麼', {0:'zhang3'}); add('便宜', {0:'pian2'}); add('量石頭', {0:'liang2'}); add('縫隙', {0:'feng4'});
+  add('了不起', {0:'liao3'}); add('不得了', {2:'liao3'}); add('一下子 毽子', {'-1':'5'}); add('感應', {1:'ying4'}); add('到處', {1:'chu4'});
+  add('寒假', {1:'jia4'}); add('應用', {0:'ying4'}); add('高高興興', {3:'xing4'}); add('為山椒魚', {0:'wei4'}); add('露出', {0:'lou4'});
+  add('瞭望', {0:'liao4'}); add('盛開', {0:'sheng4'}); add('來數', {1:'shu3'}); add('抓呀 跳呀 鴉呀', {1:'ya5'});
+  add('站得 比得 看得 說得', {'-1':'de5'}); add('靜地 速地 唱地 喜地', {'-1':'de5'});
+  // 早期九課新增讀音規則
+  add('蘿蔔', {1:'bo5'}); add('興趣', {0:'xing4'}); add('睡著', {1:'zhao2'}); add('會轉', {1:'zhuan4'});
+  add('長得 長在', {0:'zhang3'}); add('機長', {1:'zhang3'});
+  add('意思', {1:'si5'}); add('東西', {1:'xi5'});
+  add('部分', {1:'fen4'}); add('鑰匙', {1:'shi5'}); add('音樂', {1:'yue4'}); add('高興 興趣 興奮', {});
+  add('高興', {1:'xing4'}); add('興趣', {0:'xing4'});
+  add('睡覺', {1:'jiao4'}); add('成長 校長 長大 長了 長出 長高 長得 生長 家長 班長 組長 隊長 市長 部長', {});
+  add('成長 校長 生長 家長 班長 組長 隊長 市長 部長', {1:'zhang3'}); add('長大 長了 長出 長高 長得', {0:'zhang3'});
+  add('西藏', {1:'zang4'}); add('寶藏', {1:'zang4'});
+  add('幾乎', {0:'ji1'}); add('彈性 彈琴 彈回 彈跳 彈起', {0:'tan2'});
+  add('重新 重來 重組 重複 重疊 重做 重寫', {0:'chong2'}); add('量好 量一量 量身高 量體重', {0:'liang2'});
+  add('空格 空白 空地 空位 空閒 有空', {});
+  add('空格 空白 空地 空位 空閒', {0:'kong4'}); add('有空', {1:'kong4'});
+  add('為了 為什麼', {0:'wei4'}); add('因為', {1:'wei4'});
+  add('教我 教你 教他 教她 教大家 教別人 教會 教書', {0:'jiao1'});
+  add('跌倒 打倒 倒下 摔倒 滑倒', {});
+  add('跌倒 打倒 摔倒 滑倒', {1:'dao3'}); add('倒下', {0:'dao3'});
+  add('暖和', {1:'huo5'});
+  add('和平 溫和 和諧 和氣 和好 和善 總和 和睦 柔和 平和 緩和 調和 和尚', {});
+  const KEEP_HE = /和平|溫和|和諧|和氣|和好|和善|總和|和睦|柔和|平和|緩和|調和|和尚|暖和/;
+  const NUM = '零一二三四五六七八九十百千萬兩0123456789０１２３４５６７８９';
+  const tone = r => r ? r.slice(-1) : '';
+  function fix(s){
+    const t = s.replace(STRIP, '');
+    if (!/[一-鿿]/.test(t)) return t;
+    const rd = Array.from(t, c => D.d[c] || null);         // 目前讀音（只記多音字）
+    for (const [w, m] of R){ let i = t.indexOf(w); while (i >= 0){ for (const k in m){ const p = k === '-1' ? i + w.length - 1 : i + +k; const c = t[p]; const want = m[k];
+          if (D.a[c]){ const hit = Object.keys(D.a[c]).find(r => r === want || (want.length === 1 && tone(r) === want)); if (hit) rd[p] = hit; } }
+        i = t.indexOf(w, i + 1); } }
+    for (let i = 0; i < t.length; i++){
+      const c = t[i], prev = t.slice(0,i).replace(/\s+$/,'').slice(-1), next = t[i+1] || '';
+      if (c === '相' && !/照相|相片|長相|真相|首相|宰相|面相|相貌|相聲|相機/.test(t.slice(Math.max(0,i-1), i+2))) rd[i] = 'xiang1';
+      if (c === '個' && (NUM.includes(prev) || '這那哪每幾整某各'.includes(prev))) rd[i] = 'ge5';
+      if (c === '和'){ const win = t.slice(Math.max(0,i-1), i+2); if (!KEEP_HE.test(win)) rd[i] = 'han4'; }
+    }
+    // 一、不 變調（看下一個字原本的聲調）
+    const baseTone = j => { const c = t[j]; if (!c) return ''; const r = rd[j] && tone(rd[j]) !== '5' ? rd[j] : (D.d[c] || (D.t[c] ? 'x' + D.t[c] : '')); return tone(r); };
+    for (let i = 0; i < t.length; i++){
+      const c = t[i], prev = t.slice(0,i).replace(/\s+$/,'').slice(-1), next = t[i+1] || '';
+      if (c === '一'){
+        if (!/[一-鿿]/.test(next) || NUM.includes(next) || (prev && NUM.includes(prev)) || (prev && '第統唯單逐萬'.includes(prev)) || t.slice(i+1,i+3) === '年級' || t.slice(i-2,i) === '星期' || next === '月') rd[i] = 'yi1';
+        else { const bt = baseTone(i+1); rd[i] = bt === '4' ? 'yi2' : (bt ? 'yi4' : 'yi1'); }
+      }
+      if (c === '不'){ rd[i] = baseTone(i+1) === '4' ? 'bu2' : 'bu4'; }
+    }
+    let out = '';
+    for (let i = 0; i < t.length; i++){ out += t[i]; const c = t[i]; if (rd[i] && D.a[c] && rd[i] !== D.d[c] && D.a[c][rd[i]] != null) out += VS(D.a[c][rd[i]]); }
+    return out;
+  }
+  let on = false, busy = false;
+  function walk(root){
+    if (!root) return;
+    const tw = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: n => n.parentElement && /^(SCRIPT|STYLE|TEXTAREA)$/.test(n.parentElement.tagName) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT });
+    const nodes = []; while (tw.nextNode()) nodes.push(tw.currentNode);
+    busy = true; for (const n of nodes){ const v = on ? fix(n.nodeValue) : n.nodeValue.replace(STRIP, ''); if (v !== n.nodeValue) n.nodeValue = v; } busy = false;
+  }
+  if (typeof document !== 'undefined'){
+    const mo = new MutationObserver(ms => { if (busy || !on) return; for (const m of ms){ if (m.type === 'characterData') walk(m.target.parentNode); else m.addedNodes.forEach(n => walk(n.nodeType === 3 ? n.parentNode : n)); } });
+    mo.observe(document.body, { subtree: true, childList: true, characterData: true });
+  }
+  function set(v){ on = !!v; document.documentElement.classList.toggle('zy', on); walk(document.body); }
+  return { set, get: () => on, fix, R };
+})(ZYDATA);
+
+
+
+function setZy(v){ ZY.set(v); $('#zyBtn').setAttribute('aria-pressed',String(!!v)); store.set('xue.zy',v?'1':'0'); }
+$('#zyBtn').addEventListener('click',()=>setZy(!ZY.get()));
+setZy(store.get('xue.zy')==='1');
+// 把教室的注音、語速設定帶進遊戲頁
+document.addEventListener('click',e=>{ const a=e.target.closest('a.game'); if(a&&a.dataset.ext) return; if(a&&a.classList.contains('videobtn')){ a.href=a.href.split('#')[0]+'#zy='+(ZY.get()?1:0)+'&rate='+(RATE===1?1:0.85)+'&fs='+({20:1,24:2,30:3}[store.get('xue.fs')||24]||2); return; } if(a) a.href=a.href.split('&')[0]+'&zy='+(ZY.get()?1:0)+'&rate='+(RATE===1?1:0.85)+'&fs='+({20:1,24:2,30:3}[store.get('xue.fs')||24]||2); },true);
+// ---------- speech: 國語（臺灣） only ----------
+const TW_NAME=/Taiwan|臺灣|台灣|HsiaoChen|HsiaoYu|Yating|Mei-?Jia|Hanhan|Zhiwei|YunJhe/i;
+const NOT_TW=/zh[-_](CN|HK|SG|MO)|cmn[-_]CN|yue|Hans|China|Mainland|普通话|Hong ?Kong|粤|粵|Xiaoxiao|Yunxi|Yunyang|Xiaoyi|Tingting|Sinji|Liang/i;
+let tw=null, tried=false, twList=[];
+const INAPP=/Line\/|FBAN|FBAV|Instagram|MicroMessenger|; wv\)/i.test(navigator.userAgent);
+function inappTip(el){ if(!INAPP||!el) return; el.hidden=false; el.innerHTML='這個網頁是在 LINE（或其他 App）裡面打開的，朗讀的聲音可能會變成大陸腔或男生的聲音。<br>請點右上角「⋯」或「分享」→ 選「用瀏覽器開啟」（Chrome 或 Safari），聲音就會正常。'; }
+
+function pick(){ if(!('speechSynthesis' in window)) return badge(); const vs=speechSynthesis.getVoices(); if(!vs.length) return;
+  tried=true; const c=vs.filter(v=>(/^zh[-_]TW$/i.test(v.lang)||TW_NAME.test(v.name))&&!NOT_TW.test(v.lang+' '+v.name));
+  const sc=v=>(/HsiaoChen|HsiaoYu|Yating|Mei-?Jia|Hanhan|female|女/i.test(v.name)?6:0)-(/female/i.test(v.name)?0:(/Zhiwei|YunJhe|male|男/i.test(v.name)?6:0))+(/Natural|Online|Neural/i.test(v.name)?4:0)+(/Google/i.test(v.name)?2:0);
+  twList=c.sort((a,b)=>sc(b)-sc(a)); const saved=store.get('xue.voice'); tw=twList.find(v=>v.name===saved)||twList[0]||null; badge(); }
+function badge(){ const b=document.getElementById('voiceBtn'); if(!b) return; b.hidden=!twList.length; if(tw){ const l=document.getElementById('voiceLab'); if(l) l.textContent='換聲音 '+(twList.indexOf(tw)+1)+'/'+twList.length; } }
+document.getElementById('voiceBtn').addEventListener('click',()=>{ if(!twList.length) return; if(twList.length<2){ oneVoiceTip(); return; } tw=twList[(twList.indexOf(tw)+1)%twList.length]; store.set('xue.voice',tw.name); badge(); say('你好，我是這個聲音。'); });
+inappTip(document.getElementById('voiceMsg'));
+function help(){ const m=$('#voiceMsg'); m.hidden=false; m.innerHTML = '這台平板（電腦）還沒有安裝「中文（台灣）」語音，所以不能朗讀。<br>新增方法：iPad／iPhone：設定 → 輔助使用 → 語音內容 → 聲音 → 中文（臺灣）；Windows：設定 → 時間與語言 → 語音 → 新增語音 → 中文（台灣）；Android：設定 → 文字轉語音 → Google 語音引擎 → 中文（台灣）。新增後重新打開網頁。'; }
+if('speechSynthesis' in window){ pick(); speechSynthesis.addEventListener?.('voiceschanged',pick); setTimeout(()=>{tried=true;pick();badge();},2500); } else badge();
+function say(text, btn){ if(!('speechSynthesis' in window)||!tw){ pick(); if(!tw){ help(); return; } }
+  try{ speechSynthesis.cancel(); }catch(e){}
+  const u=new SpeechSynthesisUtterance(text.replace(/[…＝○]+/g,'，').replace(/[，、]{2,}/g,'，')); u.voice=tw; u.lang=tw.lang||'zh-TW'; u.rate=RATE;
+  document.querySelectorAll('.spk.speaking').forEach(x=>x.classList.remove('speaking')); if(btn) btn.classList.add('speaking');
+  u.onend=u.onerror=()=>btn&&btn.classList.remove('speaking'); speechSynthesis.speak(u); }
+document.addEventListener('click',e=>{ const b=e.target.closest('.spk'); if(b){ e.preventDefault(); e.stopPropagation(); say(b.dataset.say,b); } },true);
+const spk = (text,label) => `<button class="spk" type="button" data-say="${esc(text)}" aria-label="唸出：${esc(label||text)}">${SPK}</button>`;
+
+// ---------- pages ----------
+const main = $('#main');
+function home(){
+  main.innerHTML = `<div class="sechead"><h2 class="page">今天要學什麼？</h2>${spk('今天要學什麼？')}</div>
+  <div class="subjects">${DATA.subjects.map(s=>`
+    <a class="subject ${s.color}${s.lessons.length?'':' soon'}" href="#${s.id}">
+      ${s.id==='math'?ABACUS:(s.id==='zhuyin'?ZYICON:(s.id==='shudu'?SDICON:(s.id==='ziyin'?ZGICON:BOOK)))}<span class="label">${esc(s.name)}</span>
+      ${s.lessons.length?`<span class="sub">${esc(s.sub)}</span>`:'<span class="badge">準備中</span>'}
+    </a>`).join('')}</div>`;
+}
+function subject(s){
+  main.innerHTML = `<nav class="nav" aria-label="位置"><a class="back" href="#home">${BACK}回首頁</a><span class="crumb">首頁 ＞ ${esc(s.name)}</span></nav>
+  <div class="sechead"><h2 class="page">${esc(s.name)}</h2>${spk(s.name)}</div>
+  ${s.lessons.length ? `<p class="lead">點一課進去練習。</p><div class="lessons">${s.lessons.map(l=>`
+    <a class="lesson ${s.color}" href="${l.href?esc(l.href):'#'+l.id}"${l.href?' target="_blank" rel="noopener"':''} aria-label="${esc(l.title)}，${esc(l.meta)}${l.href?'（開新分頁）':''}">
+      <div class="thumb">${THUMB[l.thumb]||''}</div>
+      <div class="info"><span class="title">${esc(l.title)}</span><span class="meta">${esc(l.meta)}${l.href?'':'・'+l.sections.reduce((a,x)=>a+x.games.length,0)+' 個遊戲'}</span><span class="go">開始練習<span class="ic" aria-hidden="true"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M15 7q-5-3-5 3v28q0 6 5 3l25-14q4-3 0-6z" fill="#ffd45c" stroke="#3b2a25" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/></svg></span></span></div>
+    </a>`).join('')}</div>` : `<div class="empty">${esc(s.name)}教材準備中，請先到國語練習。</div>`}`;
+}
+function lesson(s,l){
+  main.innerHTML = `<nav class="nav" aria-label="位置"><a class="back" href="#${s.id}">${BACK}回${esc(s.name)}</a><span class="crumb">首頁 ＞ ${esc(s.name)} ＞ ${esc(l.title)}</span></nav>
+  <div class="lessonhead"><div class="mini ${s.color}">${THUMB[l.thumb]||''}</div><div><h2 class="page">${esc(l.title)} ${spk(l.title)}</h2><p class="lead">${esc(l.meta)}</p></div></div>
+  ${(l.videos||(l.video?[['課文指讀（影片）',l.video]]:[])).map(([lab,u])=>`<a class="game videobtn" href="${esc(u)}" target="_blank" rel="noopener" aria-label="${esc(lab)}（開新分頁）"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="4" y="9" width="40" height="30" rx="8" fill="#e8573f" stroke="#1f2a33" stroke-width="2.5"/><path d="M20 17l12 7-12 7z" fill="#fff"/></svg><span class="gname">${esc(lab)}</span></a>`).join('')}
+  ${l.sections.map((sec,i)=>`
+    <section class="section ${sec.key}" aria-labelledby="h-${sec.key}">
+      <div class="sechead"><span class="num" aria-hidden="true"><span>${i+1}</span></span>
+        <h3 id="h-${sec.key}">${esc(sec.title)}<small>${esc(sec.sub)}</small></h3>${spk(sec.title)}</div>
+      <div class="games">${sec.games.map(([m,name,url])=>`
+        <a class="game" href="${url?esc(url):DATA.gameBase+'#'+l.id+'-'+sec.key+'-'+m}"${url?' data-ext="1"':''} target="_blank" rel="noopener" aria-label="${esc(sec.title)}：${esc(name)}（開新分頁）">
+          ${ICON[m]||''}<span class="gname">${esc(name)}</span></a>`).join('')}</div>
+    </section>`).join('')}`;
+}
+function route(){
+  const h=location.hash.replace('#','')||'home';
+  const s=DATA.subjects.find(x=>x.id===h);
+  let found=null; DATA.subjects.forEach(su=>su.lessons.forEach(l=>{ if(l.id===h) found=[su,l]; }));
+  if(found) lesson(...found); else if(s) subject(s); else home();
+  window.scrollTo(0,0);
+}
+window.addEventListener('hashchange',()=>{ route(); main.focus({preventScroll:true}); });
+route();
+})();
+</script>
+
+
+<script>window.oneVoiceTip=function(){var d=document.getElementById('vtip');if(!d){d=document.createElement('div');d.id='vtip';d.setAttribute('role','status');d.style.cssText='position:fixed;left:50%;bottom:16px;transform:translateX(-50%);width:min(92vw,640px);z-index:999;padding:14px 18px;border-radius:16px;background:#fff3dc;color:#3b2a25;border:3px solid #3b2a25;font-size:18px;line-height:1.6';d.addEventListener('click',function(){d.hidden=true;});document.body.appendChild(d);}d.textContent='這台平板只有一個臺灣國語聲音，所以還不能換。想多幾個聲音：iPad 到「設定 → 輔助使用 → 朗讀內容（或語音內容）→ 聲音 → 中文（臺灣）」下載其他聲音，再重新打開這個網頁。';d.hidden=false;clearTimeout(d._t);d._t=setTimeout(function(){d.hidden=true;},12000);};</script></body></html>
