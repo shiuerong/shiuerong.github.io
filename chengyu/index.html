@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>成語故事屋</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Huninn&family=LXGW+WenKai+TC:wght@400;700&display=swap">
+<link rel="stylesheet" href="font/zy.css">
+<style>
+/* VOICE 溫暖、像睡前故事書
+   IDEA 一本會說話的成語故事小書，一站一站往下走
+   PICTURE 每個故事的插圖、翻面字卡
+   COLOUR 莫蘭迪灰綠底＋米白紙卡＋柔和黃
+   TYPE 介面粉圓體、內文霞鶩文楷、注音芫荽 */
+:root{color-scheme:light;--bg:#56655c;--bg2:#4a5850;--card:#fbf6ea;--ink:#2f2a26;--mute:#6a5f55;--acc:#e8c46a;--line:#3b2a25;--ok:#2f7d4a;--no:#b5452f;--soft:#f3ead5}
+:root[data-theme=dark]{--bg:#3b4640;--bg2:#323c37;--card:#efe7d6;--soft:#e6dcc5}
+*{box-sizing:border-box;min-width:0}
+html{font-size:22px}html.s1{font-size:19px}html.s3{font-size:28px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Huninn","jf open 粉圓","LXGW WenKai TC",sans-serif;line-height:1.6;overflow-x:clip}
+.txt,.story p,.card p,.q{font-family:"LXGW WenKai TC","Huninn",serif}
+body.zy,body.zy *:not(svg):not(svg *){font-family:"BpmfZY","LXGW WenKai TC",sans-serif!important}
+body.zy{line-height:1.9}
+.ic{display:inline-flex;width:1.6em;height:1.6em;flex:none}.ic svg{width:100%;height:100%;overflow:visible}
+button[aria-pressed="true"] .ic svg,.big .ic svg{background:#fffdf8;border-radius:50%;padding:2px}
+h1 .ic,h2 .ic{width:1.3em;height:1.3em;vertical-align:-.25em;margin-right:.25em}
+[hidden]{display:none!important}
+header{position:sticky;top:0;z-index:5;background:var(--bg2);padding:.4rem .6rem;box-shadow:0 3px 10px #0003}
+.bar{display:flex;flex-wrap:wrap;gap:.35rem;align-items:center;justify-content:center}
+.bar+.bar{margin-top:.35rem}
+button{font:inherit;color:var(--ink);background:var(--card);border:3px solid var(--line);border-radius:18px;min-height:64px;min-width:64px;padding:.2rem .55rem;display:inline-flex;align-items:center;justify-content:center;gap:.3rem;cursor:pointer;box-shadow:0 3px 0 var(--line)}
+button:active{transform:translateY(2px);box-shadow:0 1px 0 var(--line)}
+button[aria-pressed="true"]{background:var(--acc)}
+button:focus-visible,a:focus-visible{outline:5px solid #ffe600;outline-offset:3px}
+button:disabled{opacity:.45;cursor:default}
+.tb{font-size:.8rem}
+.grp{display:inline-flex;gap:.25rem;padding:.2rem;border-radius:22px;background:#0002}
+.tab{font-size:.85rem}
+main{max-width:980px;margin:0 auto;padding:1rem .8rem 4rem}
+.hero{color:#fbf6ea;text-align:center;padding:.6rem 0 1rem}
+.hero h1{margin:0;font-size:1.9rem;line-height:1.2}
+.hero p{margin:.3rem 0 0;font-size:.9rem;opacity:.9}
+.hero{display:flex;align-items:center;justify-content:center;gap:.6rem;text-align:left}
+.xy{display:inline-block;width:5rem;flex:none;background:#fbf6ea;border-radius:50%;border:3px solid #3b2a25}.xy svg{width:100%;height:auto;display:block}
+.sxy{width:3.4rem;float:right;margin:0 0 .3rem .5rem;background:#fff;border-radius:50%;border:3px solid var(--line)}.sxy svg{width:100%;height:auto;display:block}
+.card{background:var(--card);border:3px solid var(--line);border-radius:26px;padding:1rem 1.1rem 1.2rem;margin:0 0 1.1rem;box-shadow:0 6px 0 #0003}
+.card h2{margin:0 0 .6rem;font-size:1.15rem;line-height:1.35;display:flex;align-items:center;gap:.3rem}
+.no{display:inline-grid;place-items:center;width:1.8em;height:1.8em;border-radius:50%;background:var(--acc);border:3px solid var(--line);font-size:.85rem;flex:none}
+.pic{width:100%;max-width:560px;display:block;margin:0 auto .6rem;border-radius:18px;border:3px solid var(--line);background:#fff}
+.row{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:.5rem 0}
+.story p{margin:.5rem 0;font-size:1.05rem}
+.note,.src{font-size:.8rem;color:var(--mute);margin:.3rem 0}
+.tip{font-size:.85rem;color:var(--mute);margin:.2rem 0 .5rem}
+.hint{background:var(--soft);border-radius:14px;padding:.4rem .7rem;margin:.4rem 0;font-size:.95rem;border:2px dashed var(--line)}
+.ans{font-size:2.6rem;text-align:center;letter-spacing:.2em;margin:.4rem 0;color:var(--ink)}
+.chars{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.5rem}
+@media(max-width:620px){.chars{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.flip{flex-direction:column;min-height:9rem;font-size:1rem;background:#fff;padding:.5rem}
+.flip b{font-size:2.6rem;line-height:1.1}
+.flip .m{font-size:.85rem;line-height:1.4}
+.flip .t{font-size:.7rem;color:var(--mute)}
+.flip[aria-pressed="true"]{background:#fff3c4}
+.flip .pc{width:100%;max-width:150px}.flip .pc svg{width:100%;height:auto;display:block}
+.flip.now{outline:6px solid #e8c46a;outline-offset:3px;box-shadow:0 0 0 10px #e8c46a55}
+.key{color:#b5452f;background:#ffe9a8;padding:0 .15em;border-radius:6px;font-weight:700}
+body.hc .key{color:#000;background:#ffe600}
+.chip.ok{border-color:#2f7d4a;background:#bfe6c6;box-shadow:0 0 0 5px #2f7d4a66}
+.chip.bad{border-color:#b5452f;background:#f6c7bd;box-shadow:0 0 0 5px #b5452f66}
+body.hc .chip.ok{border-color:#7dff9a;color:#7dff9a;background:#000}body.hc .chip.bad{border-color:#ff9b8a;color:#ff9b8a;background:#000}
+.chpic{display:block;width:100%;max-width:420px;margin:.5rem auto 0;border-radius:16px;border:3px solid var(--line);background:#fff}
+.sent{font-size:1.15rem;line-height:2.2}
+.slot{display:inline-block;min-width:3.4em;border-bottom:4px solid var(--line);text-align:center;margin:0 .15em;padding:0 .2em;background:#fff8e2;border-radius:6px 6px 0 0}
+.slot.f{background:#d9f0d9}
+.chip{font-size:1rem}
+.mean{background:var(--soft);border-radius:16px;padding:.6rem .8rem;margin-top:.6rem}
+.mean dt{font-weight:700;font-size:.85rem;color:var(--mute)}.mean dd{margin:0 0 .4rem;font-size:1.05rem}
+.q{font-size:1.02rem;margin:.6rem 0 .2rem}
+.ref{background:var(--soft);border-radius:14px;padding:.4rem .7rem;font-size:.95rem}
+.jd{border-top:2px dashed #3b2a2544;padding:.6rem 0}
+.jd:first-of-type{border-top:0}
+.fb{font-size:.95rem;margin:.3rem 0 0;padding:.3rem .6rem;border-radius:12px}
+.fb.y{background:#dff3e3;color:var(--ok)}.fb.n{background:#fbe2dc;color:var(--no)}
+.yes[aria-pressed="true"]{background:#bfe6c6}.nope[aria-pressed="true"]{background:#f6c7bd}
+.sym{font-size:1.4rem;font-weight:700}
+.done{background:var(--acc);text-align:center;font-size:1.2rem}
+.shake{animation:sh .35s}@keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@media(prefers-reduced-motion:reduce){.shake{animation:none}}
+/* 高對比 */
+body.hc{--bg:#000;--bg2:#000;--card:#000;--ink:#fff;--mute:#fff;--acc:#ffe600;--soft:#000;--line:#fff}
+body.hc .card,body.hc button{border-width:4px}
+body.hc button{background:#000;color:#fff;box-shadow:none}
+body.hc button[aria-pressed="true"]{background:#ffe600;color:#000}
+body.hc .ic svg{background:#fffdf8;border-radius:50%;padding:2px}
+body.hc .hint,body.hc .mean,body.hc .ref{border:3px solid #fff}
+body.hc .ans,body.hc h2,body.hc .flip b{color:#ffe600}
+body.hc .flip,body.hc .slot{background:#000}body.hc .slot.f{background:#000;color:#ffe600}
+body.hc .fb.y{background:#000;color:#7dff9a;border:3px solid #7dff9a}body.hc .fb.n{background:#000;color:#ff9b8a;border:3px solid #ff9b8a}
+body.hc .hero{color:#fff}body.hc .no{color:#000;border-color:#fff}
+body.zy .tb,body.zy .tab,body.zy .pick{font-size:.72rem}
+.pick{display:inline-flex;align-items:center;gap:.3rem;font-size:.8rem;color:#fbf6ea}
+.pick select{font:inherit;color:var(--ink);background:var(--card);border:3px solid var(--line);border-radius:16px;min-height:64px;padding:.2rem .5rem;max-width:62vw}
+.cnt{background:#fff;border:2px solid var(--line);border-radius:999px;padding:0 .4em;font-size:.8em;margin-left:.2em}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(14rem,1fr));gap:1rem}
+.cc{position:relative;background:#fff;border:4px solid var(--line);border-radius:22px;padding:.6rem;text-align:center;box-shadow:0 6px 0 #0003}
+.cc img{width:100%;border-radius:14px;border:2px solid var(--line)}
+.cc .nm{font-size:1.6rem;font-weight:700;margin:.3rem 0 0;letter-spacing:.1em}
+.cc .mn{font-size:.85rem;margin:.2rem 0}.cc .dt{font-size:.75rem;color:var(--mute)}
+.cc .stamp{position:absolute;top:.6rem;right:.6rem;width:4rem;height:4rem;border-radius:50%;border:4px solid #c8432f;color:#c8432f;display:grid;place-items:center;font-weight:700;font-size:1rem;transform:rotate(-14deg);background:#fff8}
+.cc.lock{background:#e9e4da;filter:grayscale(1)}.cc.lock .q{font-size:3rem;margin:1.2rem 0 .4rem;color:#8a7f73}
+.lv{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}.lv .bar2{flex:1 1 12rem;height:1.2rem;border:3px solid var(--line);border-radius:999px;background:#fff;overflow:hidden}.lv .bar2 i{display:block;height:100%;background:#8fd18a}
+body.hc .cc{background:#000}body.hc .cc .stamp{background:#000;color:#ffe600;border-color:#ffe600}body.hc .lv .bar2{background:#000}body.hc .pic{border-color:#fff}
+</style>
+</head>
+<body>
+<header>
+ <div class="bar">
+  <span class="grp" role="group" aria-label="字級">
+   <button class="tb" data-size="s1" aria-pressed="false" aria-label="字級 小" style="font-size:.7rem">A</button>
+   <button class="tb" data-size="s2" aria-pressed="true" aria-label="字級 中" style="font-size:.9rem">A</button>
+   <button class="tb" data-size="s3" aria-pressed="false" aria-label="字級 大" style="font-size:1.15rem">A</button>
+  </span>
+  <button class="tb" id="bZy" aria-pressed="false"><span class="ic" aria-hidden="true" data-ic="zy"></span>注音</button>
+  <button class="tb" id="bHc" aria-pressed="false"><span class="ic" aria-hidden="true" data-ic="half"></span>高對比</button>
+  <button class="tb" id="bVoice" aria-pressed="false"><span class="ic" aria-hidden="true" data-ic="girl"></span><span id="vLab">女聲</span></button>
+  <button class="tb" id="bRate" aria-pressed="false"><span class="ic" aria-hidden="true" data-ic="rabbit"></span><span id="rLab">快</span></button>
+ </div>
+ <div class="bar"><label class="pick"><span class="ic" aria-hidden="true" data-ic="book"></span>選故事<select id="sel"></select></label><button class="tb" id="bBook" aria-pressed="false"><span class="ic" aria-hidden="true" data-ic="cards"></span>我的成語圖鑑<span class="cnt" id="cnt"></span></button></div>
+</header>
+<main>
+ <div class="hero"><span class="xy"><svg viewBox="0 0 120 120" aria-hidden="true" focusable="false"><rect x="38" y="70" width="44" height="40" rx="14" fill="#f2c57c" stroke="#3b2a25" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/><path d="M60 72v36" stroke="#3b2a25" stroke-width="2.5"/><circle cx="60" cy="50" r="26" fill="#ffe0c8" stroke="#3b2a25" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/><path d="M32 44q2-26 28-26t28 26q-12-6-28-6t-28 6z" fill="#8a5a3c" stroke="#3b2a25" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/><path d="M86 42l14 4-14 4" fill="#8a5a3c" stroke="#3b2a25" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/><path d="M40 38q20-8 40 0" fill="none" stroke="#f2c57c" stroke-width="3"/><circle cx="54.5" cy="54" r="2.2" fill="#3b2a25"/><circle cx="65.5" cy="54" r="2.2" fill="#3b2a25"/><path d="M56.7 58.4q3.3000000000000003 3.3000000000000003 6.6000000000000005 0" fill="none" stroke="#3b2a25" stroke-width="2" stroke-linecap="round"/><ellipse cx="50.1" cy="57.3" rx="2.75" ry="1.7600000000000002" fill="#ff9fb0"/><ellipse cx="69.9" cy="57.3" rx="2.75" ry="1.7600000000000002" fill="#ff9fb0"/><path d="M84 84l10-10" stroke="#3b2a25" stroke-width="7" stroke-linecap="round"/><circle cx="100" cy="66" r="12" fill="#d8f0ff" stroke="#3b2a25" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/><path d="M95 62q3-4 7-3" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg></span><div><h1>成語故事屋</h1><p>跟著󠇡小偵探小柚，先聽故事，再推理成語</p></div></div>
+ <div id="app"></div>
+</main>
+<script>
+var IC_O='stroke="#3b2a25" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"';
+var IC_FACE=function(x,y,s){ s=s||1; return '<circle cx="'+(x-4*s)+'" cy="'+y+'" r="'+(1.6*s)+'" fill="#3b2a25"/><circle cx="'+(x+4*s)+'" cy="'+y+'" r="'+(1.6*s)+'" fill="#3b2a25"/><path d="M'+(x-2.4*s)+' '+(y+3*s)+'q'+(2.4*s)+' '+(2.2*s)+' '+(4.8*s)+' 0" fill="none" stroke="#3b2a25" stroke-width="1.8" stroke-linecap="round"/><ellipse cx="'+(x-7.5*s)+'" cy="'+(y+2.5*s)+'" rx="'+(2*s)+'" ry="'+(1.3*s)+'" fill="#ff9fb0"/><ellipse cx="'+(x+7.5*s)+'" cy="'+(y+2.5*s)+'" rx="'+(2*s)+'" ry="'+(1.3*s)+'" fill="#ff9fb0"/>'; };
+var ICONS={
+ house:'<path d="M6 22 24 7l18 15" fill="#f07c6c" '+IC_O+'/><path d="M11 20v20a3 3 0 0 0 3 3h20a3 3 0 0 0 3-3V20L24 10z" fill="#fff3dc" '+IC_O+'/><path d="M6 22 24 7l18 15" fill="none" '+IC_O+'/><rect x="20" y="31" width="8" height="12" rx="3" fill="#c98a5a" '+IC_O+'/>'+IC_FACE(24,23,.9),
+ bell:'<path d="M24 6c-8 0-12 6-12 13v8l-4 6h32l-4-6v-8c0-7-4-13-12-13z" fill="#ffd45c" '+IC_O+'/><circle cx="24" cy="5" r="2.5" fill="#ffd45c" '+IC_O+'/><circle cx="24" cy="38" r="4" fill="#f5a623" '+IC_O+'/>'+IC_FACE(24,21,.9),
+ belloff:'<path d="M24 6c-8 0-12 6-12 13v8l-4 6h32l-4-6v-8c0-7-4-13-12-13z" fill="#d9d4cc" '+IC_O+'/><circle cx="24" cy="38" r="4" fill="#b7b0a5" '+IC_O+'/><path d="M8 8l32 32" stroke="#e0533d" stroke-width="4.5" stroke-linecap="round"/>',
+ speaker:'<path d="M4 17h9l13-11v36L13 31H4z" fill="#7cc4f0" '+IC_O+'/><path d="M32 17q6 7 0 14" fill="none" stroke="#3b2a25" stroke-width="4.5" stroke-linecap="round"/><path d="M38 10q11 14 0 28" fill="none" stroke="#3b2a25" stroke-width="4.5" stroke-linecap="round"/>',
+ turtle:'<ellipse cx="22" cy="28" rx="15" ry="11" fill="#8fd18a" '+IC_O+'/><path d="M14 26l8-6 8 6-8 6z" fill="#c8eebd" stroke="#3b2a25" stroke-width="2"/><circle cx="40" cy="25" r="6" fill="#b9e6a6" '+IC_O+'/><circle cx="41.5" cy="23.5" r="1.4" fill="#3b2a25"/><path d="M11 38v3M30 38v3" stroke="#3b2a25" stroke-width="4" stroke-linecap="round"/>',
+ rabbit:'<path d="M17 20Q12 3 17 3t5 17M31 20q5-17 0-17t-5 17" fill="#fff" '+IC_O+'/><path d="M17 18q-2-10 0-12M31 18q2-10 0-12" stroke="#ff9fb0" stroke-width="2.5"/><circle cx="24" cy="30" r="13" fill="#fff" '+IC_O+'/>'+IC_FACE(24,29,1),
+ half:'<circle cx="24" cy="24" r="17" fill="#fff" '+IC_O+'/><path d="M24 7a17 17 0 0 1 0 34z" fill="#3b2a25"/><circle cx="24" cy="24" r="17" fill="none" '+IC_O+'/>',
+ leaf:'<path d="M9 39C8 18 22 8 40 8c1 18-9 32-31 31z" fill="#9ccf8a" '+IC_O+'/><path d="M10 38 30 18" stroke="#3b2a25" stroke-width="2.5" stroke-linecap="round"/>',
+ voice:'<path d="M8 10h32a4 4 0 0 1 4 4v15a4 4 0 0 1-4 4H22l-8 7v-7H8a4 4 0 0 1-4-4V14a4 4 0 0 1 4-4z" fill="#ffd0e0" '+IC_O+'/>'+IC_FACE(24,20,1),
+ hammer:'<rect x="6" y="8" width="26" height="13" rx="4" fill="#d9925a" '+IC_O+'/><path d="M19 21l8 21" stroke="#3b2a25" stroke-width="8" stroke-linecap="round"/><path d="M19 21l8 21" stroke="#f2c57c" stroke-width="3.5" stroke-linecap="round"/>',
+ fish:'<path d="M36 24l9-8v16z" fill="#f08a3c" '+IC_O+'/><ellipse cx="21" cy="24" rx="16" ry="11" fill="#ffb066" '+IC_O+'/><circle cx="12" cy="22" r="2" fill="#3b2a25"/><path d="M8 28q3 2 5 0" fill="none" stroke="#3b2a25" stroke-width="1.8" stroke-linecap="round"/>',
+ brick:'<rect x="5" y="9" width="38" height="30" rx="4" fill="#d9774a" '+IC_O+'/><path d="M5 19h38M5 29h38M18 9v10M32 19v10M18 29v10" stroke="#3b2a25" stroke-width="2.5"/><circle cx="24" cy="5" r="3" fill="#ffd45c" stroke="#3b2a25" stroke-width="2"/>',
+ stay:'<rect x="11" y="10" width="26" height="26" rx="9" fill="#a8d8f0" '+IC_O+'/>'+IC_FACE(24,22,1)+'<path d="M17 36v6M31 36v6" stroke="#3b2a25" stroke-width="4" stroke-linecap="round"/><path d="M8 44h32" stroke="#3b2a25" stroke-width="3" stroke-linecap="round"/>',
+ move:'<circle cx="30" cy="24" r="12" fill="#ffc35c" '+IC_O+'/>'+IC_FACE(31,23,.8)+'<path d="M4 17h10M2 24h12M4 31h10" stroke="#3b2a25" stroke-width="3" stroke-linecap="round"/>',
+ play:'<path d="M14 8q-3-1-3 3v26q0 4 3 3l24-14q3-2 0-4z" fill="#ffffff" '+IC_O+'/>',
+ pencil:'<path d="M10 38l2-9L32 9l7 7-20 20z" fill="#ffd45c" '+IC_O+'/><path d="M28 13l7 7" stroke="#3b2a25" stroke-width="3"/><path d="M10 38l2-9 7 7z" fill="#f5d6b0" '+IC_O+'/>',
+ wand:'<path d="M10 40 30 20" stroke="#3b2a25" stroke-width="7" stroke-linecap="round"/><path d="M10 40 30 20" stroke="#9b7be0" stroke-width="3" stroke-linecap="round"/><path d="M34 6l2.5 6 6 2.5-6 2.5L34 23l-2.5-6-6-2.5 6-2.5z" fill="#ffd45c" stroke="#3b2a25" stroke-width="2.2" stroke-linejoin="round"/>',
+ camera:'<rect x="5" y="14" width="38" height="26" rx="6" fill="#9fd3f5" '+IC_O+'/><path d="M16 14l3-6h10l3 6" fill="#9fd3f5" '+IC_O+'/><circle cx="24" cy="27" r="8" fill="#fff" '+IC_O+'/><circle cx="24" cy="27" r="3" fill="#3b2a25"/>',
+ picture:'<rect x="5" y="8" width="38" height="32" rx="5" fill="#fff" '+IC_O+'/><path d="M8 37l11-12 8 8 5-5 9 9z" fill="#8fd18a" stroke="#3b2a25" stroke-width="2.5" stroke-linejoin="round"/><circle cx="33" cy="17" r="4" fill="#ffd45c" stroke="#3b2a25" stroke-width="2.2"/>',
+ eyes:'<ellipse cx="15" cy="24" rx="9" ry="12" fill="#fff" '+IC_O+'/><ellipse cx="33" cy="24" rx="9" ry="12" fill="#fff" '+IC_O+'/><circle cx="17" cy="26" r="4" fill="#3b2a25"/><circle cx="35" cy="26" r="4" fill="#3b2a25"/>',
+ save:'<path d="M8 6h26l8 8v26a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" fill="#7cc4f0" '+IC_O+'/><rect x="14" y="6" width="16" height="11" fill="#fff" '+IC_O+'/><rect x="12" y="26" width="24" height="14" rx="2" fill="#fff" '+IC_O+'/>',
+ link:'<rect x="4" y="17" width="22" height="14" rx="7" fill="none" stroke="#3b2a25" stroke-width="4"/><rect x="22" y="17" width="22" height="14" rx="7" fill="none" stroke="#3b2a25" stroke-width="4"/><path d="M17 24h14" stroke="#7cc4f0" stroke-width="4" stroke-linecap="round"/>',
+ trash:'<path d="M11 14h26l-2 27a3 3 0 0 1-3 3H16a3 3 0 0 1-3-3z" fill="#d9d4cc" '+IC_O+'/><path d="M7 14h34M19 14V8h10v6M20 21v16M28 21v16" fill="none" '+IC_O+'/>',
+ cross:'<circle cx="24" cy="24" r="17" fill="#ffd8d2" '+IC_O+'/><path d="M17 17l14 14M31 17 17 31" stroke="#3b2a25" stroke-width="3.5" stroke-linecap="round"/>',
+ ear:'<path d="M14 18c0-9 7-14 14-14s13 6 12 15c-1 7-6 9-8 14-2 6-5 10-11 10-5 0-8-4-8-8" fill="#f8c9a5" '+IC_O+'/><path d="M21 19c0-5 3-8 7-8s7 3 6 7c-1 4-5 5-5 9" fill="none" '+IC_O+'/>',
+ target:'<circle cx="24" cy="24" r="19" fill="#ff8f7a" '+IC_O+'/><circle cx="24" cy="24" r="12" fill="#fff" '+IC_O+'/><circle cx="24" cy="24" r="5" fill="#ff8f7a" '+IC_O+'/>',
+ party:'<path d="M6 42l9-26 17 17z" fill="#ffd45c" '+IC_O+'/><path d="M10 31l7 7M13 23l12 12" stroke="#f07c6c" stroke-width="3" stroke-linecap="round"/><circle cx="34" cy="10" r="3" fill="#7cc4f0"/><circle cx="41" cy="20" r="2.5" fill="#f07c6c"/><circle cx="26" cy="6" r="2.5" fill="#8fd18a"/><path d="M30 18q4-6 10-4" fill="none" stroke="#9b7be0" stroke-width="3" stroke-linecap="round"/>',
+ trophy:'<path d="M14 6h20v12a10 10 0 0 1-20 0z" fill="#ffd45c" '+IC_O+'/><path d="M14 10H7q0 10 8 11M34 10h7q0 10-8 11" fill="none" '+IC_O+'/><path d="M24 28v7M16 42h16l-2-7H18z" fill="#f5a623" '+IC_O+'/>',
+ muscle:'<path d="M8 36q-2-12 6-20l4-8h8l-2 8q8-2 12 4 6 2 6 9 0 9-10 11H14q-5 0-6-4z" fill="#ffc7a0" '+IC_O+'/><path d="M24 30q6-4 12 0" fill="none" stroke="#3b2a25" stroke-width="2.5" stroke-linecap="round"/>',
+ retry:'<path d="M38 22a14 14 0 1 1-5-10" fill="none" stroke="#3b2a25" stroke-width="7" stroke-linecap="round"/><path d="M38 22a14 14 0 1 1-5-10" fill="none" stroke="#8fd18a" stroke-width="3" stroke-linecap="round"/><path d="M28 6l8 6-8 5z" fill="#8fd18a" '+IC_O+'/>',
+ gamepad:'<path d="M12 14h24a9 9 0 0 1 9 9v6a7 7 0 0 1-12 5l-3-3H18l-3 3a7 7 0 0 1-12-5v-6a9 9 0 0 1 9-9z" fill="#b9a7ff" '+IC_O+'/><path d="M13 20v8M9 24h8" stroke="#3b2a25" stroke-width="3" stroke-linecap="round"/><circle cx="33" cy="21" r="2.5" fill="#f07c6c"/><circle cx="37" cy="26" r="2.5" fill="#ffd45c"/>',
+ next:'<path d="M15 7q-5-3-5 3v28q0 6 5 3l25-14q4-3 0-6z" fill="#ffd45c" '+IC_O+'/>',
+ prev:'<path d="M33 7q5-3 5 3v28q0 6-5 3L8 27q-4-3 0-6z" fill="#ffd45c" '+IC_O+'/>',
+ qr:'<rect x="4" y="4" width="40" height="40" rx="8" fill="#fff" '+IC_O+'/><rect x="10" y="10" width="11" height="11" rx="2.5" fill="#3b2a25"/><rect x="27" y="10" width="11" height="11" rx="2.5" fill="#3b2a25"/><rect x="10" y="27" width="11" height="11" rx="2.5" fill="#3b2a25"/><rect x="13.5" y="13.5" width="4" height="4" rx="1" fill="#fff"/><rect x="30.5" y="13.5" width="4" height="4" rx="1" fill="#fff"/><rect x="13.5" y="30.5" width="4" height="4" rx="1" fill="#fff"/><circle cx="30" cy="30" r="3" fill="#f07c6c"/><circle cx="37" cy="37" r="3" fill="#7cc4f0"/><circle cx="37" cy="29" r="2.6" fill="#8fd18a"/><circle cx="29" cy="38" r="2.6" fill="#ffd45c"/>',
+ bulb:'<path d="M24 5a13 13 0 0 0-8 23c2 2 3 4 3 7h10c0-3 1-5 3-7a13 13 0 0 0-8-23z" fill="#ffe27a" '+IC_O+'/><rect x="18" y="35" width="12" height="8" rx="3" fill="#d9d4cc" '+IC_O+'/>'+IC_FACE(24,18,.8),
+ search:'<circle cx="20" cy="20" r="13" fill="#d8f0ff" '+IC_O+'/><path d="M30 30l11 11" stroke="#3b2a25" stroke-width="7" stroke-linecap="round"/><path d="M30 30l11 11" stroke="#f07c6c" stroke-width="3" stroke-linecap="round"/>'+IC_FACE(20,19,.75),
+ warn:'<path d="M24 6 44 40H4z" fill="#ffd45c" '+IC_O+'/><path d="M24 18v11" stroke="#3b2a25" stroke-width="4" stroke-linecap="round"/><circle cx="24" cy="35" r="2.4" fill="#3b2a25"/>',
+ ok:'<circle cx="24" cy="24" r="18" fill="#8fd18a" '+IC_O+'/><path d="M15 24l7 7 12-14" fill="none" stroke="#3b2a25" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>'
+};
+function icSvg(n){ return ICONS[n]?'<svg viewBox="0 0 48 48" aria-hidden="true" focusable="false">'+ICONS[n]+'</svg>':''; }
+function paintIcons(root){ (root||document).querySelectorAll("[data-ic]").forEach(function(el){ if(el.dataset.icDone!==el.dataset.ic){ el.innerHTML=icSvg(el.dataset.ic); el.dataset.icDone=el.dataset.ic; } }); }
+ ICONS.zy='<circle cx="24" cy="24" r="19" fill="#8fd18a" '+IC_O+'/><path d="M17 14h12l-7 9h9l-6 13" fill="none" stroke="#3b2a25" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>';
+ ICONS.book='<path d="M24 12C18 8 11 8 5 10v28c6-2 13-2 19 2z" fill="#ffd45c" '+IC_O+'/><path d="M24 12c6-4 13-4 19-2v28c-6-2-13-2-19 2z" fill="#7cc4f0" '+IC_O+'/><path d="M10 17q6-1 10 1M10 23q6-1 10 1M28 18q5-2 10-1M28 24q5-2 10-1" fill="none" stroke="#3b2a25" stroke-width="2" stroke-linecap="round"/>';
+ ICONS.cards='<rect x="4" y="12" width="20" height="26" rx="4" fill="#ffd8d2" transform="rotate(-10 14 25)" '+IC_O+'/><rect x="22" y="10" width="20" height="26" rx="4" fill="#d8f0ff" transform="rotate(8 32 23)" '+IC_O+'/><circle cx="32" cy="22" r="4" fill="#ffd45c" stroke="#3b2a25" stroke-width="2"/>';
+ ICONS.star='<path d="M24 5l5.6 11.6 12.6 1.7-9.2 8.8 2.3 12.6L24 33.6l-11.3 6.1 2.3-12.6-9.2-8.8 12.6-1.7z" fill="#ffd45c" '+IC_O+'/>'+IC_FACE(24,23,.75);
+ ICONS.home2=ICONS.house;
+ ICONS.pause='<rect x="11" y="8" width="9" height="32" rx="3" fill="#fff" '+IC_O+'/><rect x="28" y="8" width="9" height="32" rx="3" fill="#fff" '+IC_O+'/>';
+ ICONS.girl='<circle cx="24" cy="25" r="15" fill="#ffe0c8" '+IC_O+'/><path d="M9 24q0-16 15-16t15 16q-4-8-15-8T9 24z" fill="#6b4a3a" '+IC_O+'/><circle cx="9" cy="28" r="5" fill="#6b4a3a" '+IC_O+'/><circle cx="39" cy="28" r="5" fill="#6b4a3a" '+IC_O+'/>'+IC_FACE(24,27,.8);
+ ICONS.boy='<circle cx="24" cy="26" r="15" fill="#ffe0c8" '+IC_O+'/><path d="M9 24q1-15 15-15t15 15q-6-6-15-6T9 24z" fill="#3b2a25" '+IC_O+'/>'+IC_FACE(24,28,.8);
+
+var DATA=[{"id": "szdt", "no": 1, "idiom": "守株待兔", "story_title": "種󠇡田人和󠇡樹樁", "source": "典故出自《韓非子󠇡》", "story": ["小偵探小柚翻開爺爺󠇡送他的「時光故事書」，眼前一󠇡亮，他就來到了很久很久以前的宋國。小柚躲在田邊的大樹後面，拿出線索小本子󠇡，準備好好觀察。", "田裡有一󠇡個農夫，正彎著腰除草，滿頭大汗󠇡。忽然，草叢裡「咻～」的一󠇢聲，一󠇢隻兔子󠇡衝了出來，跑得󠇡好快好快！「碰！」兔子󠇡一󠇢頭撞上田邊的樹樁，倒󠇡在地上，再也不󠇡動了。", "農夫跑過去撿起兔子󠇡，開心得󠇡不得了󠇡：「哇！不󠇡用追、不󠇡用抓，兔子󠇡自己送上門來了！今天晚上有兔肉可以吃囉󠇢！」", "小柚在本子󠇡上寫下：「線索一：兔子󠇡是自己撞上來的，這是運氣。」", "第二天，農夫心想：「種󠇡田好累喔！要是每天都有兔子󠇡來撞樹樁，我就不󠇡用工作了。」於是，他把鋤頭󠇡丟在一󠇢旁，坐在樹樁旁邊，眼睛盯著樹樁，一󠇢直等、一󠇢直等……", "小柚皺起眉頭，又寫下：「線索二：農夫不󠇡種󠇡田了，一󠇢直守在樹樁旁邊。」", "一󠇢天過去了，沒有兔子󠇡。十天過去了，還是沒有兔子󠇡。田裡的雜草越長󠇡越高，把稻子󠇡都蓋住了。農夫一󠇢隻兔子󠇡也沒等到，田也荒廢了，村子󠇡裡的人都笑他好傻。", "小柚闔上本子󠇡，小聲地󠇡說：「好運氣不󠇡會天天掉下來呀󠇡！」", "時光故事書又亮了起來，把小柚帶回家。書的最後一󠇡頁寫著：「後來，人們就用四個字，來說這種『不想努力，只想等好運氣自己掉下來』的人。」", "小偵探，你推理出來了嗎？是哪四個字呢？"], "note": "樹樁：樹被砍掉以後，留在地上的那一󠇢截。", "hints": ["故事裡，農夫一󠇢直「<b class=\"key\">守</b>」在一󠇡個地方，不肯離開。", "他守在哪裡？古時候把「<b class=\"key\">樹樁</b>」叫做「<b class=\"key\">株</b>」。", "他在「<b class=\"key\">等待</b>」哪一󠇢種動物？把四個字連起來看看！"], "chars": [["守", "守在旁邊，一󠇢直待在那裡不走（像守門員守著球門）", "<svg viewBox=\"0 0 120 90\" aria-hidden=\"true\" focusable=\"false\"><rect x=\"14\" y=\"14\" width=\"92\" height=\"60\" rx=\"4\" fill=\"#fff\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M14 30h92M14 46h92M14 62h92M36 14v60M60 14v60M84 14v60\" stroke=\"#c9c2b6\" stroke-width=\"2\"/><rect x=\"49\" y=\"52\" width=\"22\" height=\"24\" rx=\"8\" fill=\"#ffd45c\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><circle cx=\"60\" cy=\"40\" r=\"14\" fill=\"#ffe0c8\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M46 38q2-15 14-14t14 14q-6-6-14-6t-14 6z\" fill=\"#3b2a25\"/><circle cx=\"56.0\" cy=\"42\" r=\"1.6\" fill=\"#3b2a25\"/><circle cx=\"64.0\" cy=\"42\" r=\"1.6\" fill=\"#3b2a25\"/><path d=\"M57.6 45.2q2.4000000000000004 2.4000000000000004 4.800000000000001 0\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"2\" stroke-linecap=\"round\"/><ellipse cx=\"52.8\" cy=\"44.4\" rx=\"2.0\" ry=\"1.2800000000000002\" fill=\"#ff9fb0\"/><ellipse cx=\"67.2\" cy=\"44.4\" rx=\"2.0\" ry=\"1.2800000000000002\" fill=\"#ff9fb0\"/><path d=\"M48 54l-16-12M72 54l16-12\" stroke=\"#3b2a25\" stroke-width=\"6\" stroke-linecap=\"round\"/><circle cx=\"30\" cy=\"40\" r=\"6\" fill=\"#ffe0c8\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><circle cx=\"90\" cy=\"40\" r=\"6\" fill=\"#ffe0c8\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/></svg>"], ["株", "樹樁", "<svg viewBox=\"0 0 120 90\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M8 80h104\" stroke=\"#8fd18a\" stroke-width=\"6\" stroke-linecap=\"round\"/><path d=\"M34 80l4-34h44l4 34z\" fill=\"#c98a5a\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><ellipse cx=\"60\" cy=\"46\" rx=\"22\" ry=\"8\" fill=\"#f2c57c\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><ellipse cx=\"60\" cy=\"46\" rx=\"13\" ry=\"4.5\" fill=\"none\" stroke=\"#c98a5a\" stroke-width=\"2\"/><ellipse cx=\"60\" cy=\"46\" rx=\"5\" ry=\"1.8\" fill=\"#c98a5a\"/><path d=\"M84 60q8-14 18-12-2 10-18 12z\" fill=\"#8fd18a\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><circle cx=\"56.0\" cy=\"64\" r=\"1.6\" fill=\"#3b2a25\"/><circle cx=\"64.0\" cy=\"64\" r=\"1.6\" fill=\"#3b2a25\"/><path d=\"M57.6 67.2q2.4000000000000004 2.4000000000000004 4.800000000000001 0\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"2\" stroke-linecap=\"round\"/><ellipse cx=\"52.8\" cy=\"66.4\" rx=\"2.0\" ry=\"1.2800000000000002\" fill=\"#ff9fb0\"/><ellipse cx=\"67.2\" cy=\"66.4\" rx=\"2.0\" ry=\"1.2800000000000002\" fill=\"#ff9fb0\"/></svg>"], ["待", "等待", "<svg viewBox=\"0 0 120 90\" aria-hidden=\"true\" focusable=\"false\"><rect x=\"14\" y=\"58\" width=\"56\" height=\"8\" rx=\"3\" fill=\"#c98a5a\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M20 66v12M64 66v12\" stroke=\"#3b2a25\" stroke-width=\"4\" stroke-linecap=\"round\"/><rect x=\"31\" y=\"40\" width=\"22\" height=\"24\" rx=\"8\" fill=\"#8fd18a\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><circle cx=\"42\" cy=\"28\" r=\"14\" fill=\"#ffe0c8\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M28 26q2-15 14-14t14 14q-6-6-14-6t-14 6z\" fill=\"#3b2a25\"/><circle cx=\"38.0\" cy=\"30\" r=\"1.6\" fill=\"#3b2a25\"/><circle cx=\"46.0\" cy=\"30\" r=\"1.6\" fill=\"#3b2a25\"/><path d=\"M39.6 33.2q2.4000000000000004 2.4000000000000004 4.800000000000001 0\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"2\" stroke-linecap=\"round\"/><ellipse cx=\"34.8\" cy=\"32.4\" rx=\"2.0\" ry=\"1.2800000000000002\" fill=\"#ff9fb0\"/><ellipse cx=\"49.2\" cy=\"32.4\" rx=\"2.0\" ry=\"1.2800000000000002\" fill=\"#ff9fb0\"/><circle cx=\"92\" cy=\"36\" r=\"20\" fill=\"#fff\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M92 36V24M92 36l9 6\" stroke=\"#3b2a25\" stroke-width=\"3.5\" stroke-linecap=\"round\"/><path d=\"M112 22q6 6 0 12M74 20q-5 5 0 10\" fill=\"none\" stroke=\"#f07c6c\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>"], ["兔", "兔子󠇡", "<svg viewBox=\"0 0 120 90\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M48 36Q40 4 48 4t8 32M72 36q8-32 0-32t-8 32\" fill=\"#fff\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M48 32q-3-18 0-22M72 32q3-18 0-22\" stroke=\"#ff9fb0\" stroke-width=\"3\"/><ellipse cx=\"60\" cy=\"66\" rx=\"26\" ry=\"16\" fill=\"#fff\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><circle cx=\"60\" cy=\"46\" r=\"18\" fill=\"#fff\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><circle cx=\"55.5\" cy=\"46\" r=\"1.8\" fill=\"#3b2a25\"/><circle cx=\"64.5\" cy=\"46\" r=\"1.8\" fill=\"#3b2a25\"/><path d=\"M57.3 49.6q2.7 2.7 5.4 0\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"2\" stroke-linecap=\"round\"/><ellipse cx=\"51.9\" cy=\"48.7\" rx=\"2.25\" ry=\"1.4400000000000002\" fill=\"#ff9fb0\"/><ellipse cx=\"68.1\" cy=\"48.7\" rx=\"2.25\" ry=\"1.4400000000000002\" fill=\"#ff9fb0\"/></svg>"]], "blank": ["守在＿＿＿＿旁邊，等＿＿＿＿自己撞上來。", ["樹樁", "兔子󠇡"], ["老虎", "石頭󠇡"]], "literal": "守在樹樁旁邊，等兔子󠇡自己撞上來。", "meaning": "不想努力，只想等好運氣自己來。", "more": "也可以用來說一󠇡個人只會用老方法，不知道要改變。", "think": ["農夫第一次撿到兔子󠇡，是因為󠇡很努力，還是因為󠇡運氣好？", "農夫做錯了什麼？如果你是他的好朋友，你會怎麼勸他？"], "think_ref": ["運氣好。兔子󠇡是自己撞上來的，不󠇡是農夫抓到的。", "他把一󠇡次的好運，當成每天都會有，結果不󠇡去種󠇡田。可以勸他：好運不󠇡會天天來，還是要好好種󠇡田。"], "judge": [["弟弟󠇡不󠇡練習寫字，只希望考試的題目剛好都會寫，這就像守株待兔。", true, "弟弟󠇡不想努力，只想等好運，所以這句用得󠇡對。"], ["姊姊󠇡每天練琴，終於在比賽得到第一名，真是守株待兔。", false, "姊姊󠇡是努力練習才得獎，不󠇡是等好運，所以這句用錯了。"], ["小華在公園撿到十元以後，每天都去同一個地方等著撿錢，真像守株待兔。", true, "小華一󠇢直等同樣的好運再發生，就像農夫等兔子󠇡。"]], "life": "哥哥󠇡想買新球鞋，卻不肯存零用錢，每天只等著別人送他，這樣守株待兔，是等不󠇡到的。", "say": "想要得到一󠇡樣東西󠇡，用什麼方法，才不󠇡會變成守株待兔？", "xy": "<svg viewBox=\"0 0 120 120\" aria-hidden=\"true\" focusable=\"false\"><rect x=\"38\" y=\"70\" width=\"44\" height=\"40\" rx=\"14\" fill=\"#f2c57c\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M60 72v36\" stroke=\"#3b2a25\" stroke-width=\"2.5\"/><circle cx=\"60\" cy=\"50\" r=\"26\" fill=\"#ffe0c8\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M32 44q2-26 28-26t28 26q-12-6-28-6t-28 6z\" fill=\"#8a5a3c\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M86 42l14 4-14 4\" fill=\"#8a5a3c\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M40 38q20-8 40 0\" fill=\"none\" stroke=\"#f2c57c\" stroke-width=\"3\"/><circle cx=\"54.5\" cy=\"54\" r=\"2.2\" fill=\"#3b2a25\"/><circle cx=\"65.5\" cy=\"54\" r=\"2.2\" fill=\"#3b2a25\"/><path d=\"M56.7 58.4q3.3000000000000003 3.3000000000000003 6.6000000000000005 0\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"2\" stroke-linecap=\"round\"/><ellipse cx=\"50.1\" cy=\"57.3\" rx=\"2.75\" ry=\"1.7600000000000002\" fill=\"#ff9fb0\"/><ellipse cx=\"69.9\" cy=\"57.3\" rx=\"2.75\" ry=\"1.7600000000000002\" fill=\"#ff9fb0\"/><path d=\"M84 84l10-10\" stroke=\"#3b2a25\" stroke-width=\"7\" stroke-linecap=\"round\"/><circle cx=\"100\" cy=\"66\" r=\"12\" fill=\"#d8f0ff\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M95 62q3-4 7-3\" fill=\"none\" stroke=\"#fff\" stroke-width=\"3\" stroke-linecap=\"round\"/></svg>", "ch": {"q": "哪一󠇡個成語的意思󠇢，和󠇡「守株待兔」剛好相󠇡反？", "opts": ["一󠇢舉兩得", "腳踏實地"], "ans": 1, "why": "腳踏實地：腳穩穩踩在地上，比喻做事一󠇡步一󠇡步、很實在。農夫只想等好運，和󠇡腳踏實地剛好相󠇡反。"}}, {"id": "yjld", "no": 2, "idiom": "一󠇢舉兩得", "story_title": "卞莊子打老虎", "source": "典故出自《史記》卞莊子刺虎的故事", "story": ["小偵探小柚翻開時光故事書，這一󠇡次，他來到了古代的一󠇡個小村子󠇡。", "村子󠇡裡有一󠇡個力氣很大、又很勇敢的人，名叫卞莊子。這天，村民慌慌張張地󠇡跑來說：「不好了！山上有兩隻老虎，正在搶一󠇢頭牛！」", "卞莊子拿起寶劍，馬上就要衝上山。旁邊一󠇡個小男孩拉住他：「等一󠇢等！」", "「為󠇡什麼要等？」卞莊子問。", "小男孩說：「兩隻老虎都想吃那頭牛，一󠇡定會打起來。打完以後，小老虎會被咬死，大老虎也會受傷。到時候，你只要對付一󠇢隻受傷的老虎就好了。」", "躲在旁邊的小柚，趕快在本子󠇡上寫下：「線索一：先不󠇡要急，等老虎自己打起來。」", "卞莊子想一󠇢想：「有道理！」就躲在大石頭󠇡後面等著。果然，兩隻老虎為󠇡了搶牛，你咬我、我抓你，打得󠇡好激烈。最後，小老虎被咬死了，大老虎也受了重傷，趴在地上喘氣。", "卞莊子跳出來，只出手一󠇡次，就打敗了大老虎。村民都拍手說：「哇！只出手一󠇡次，就得到兩隻老虎！」", "小柚眼睛一󠇡亮，寫下：「線索二：只做一󠇡次動作，卻得到兩個收穫。」他心想：「這個小男孩好聰明喔！」", "時光故事書又亮了起來，把小柚帶回家。書的最後一󠇡頁寫著：「後來，人們就用四個字，來說『做一󠇡件事，同時得到兩種好處󠇡』。」", "小偵探，你推理出來了嗎？是哪四個字呢？"], "note": "卞莊子：古代一󠇡位很勇敢的人。", "hints": ["卞莊子出手了幾次？答案是第一個字。", "「<b class=\"key\">出手</b>」就是做一󠇡個動作，舉手的「<b class=\"key\">舉</b>」，也有「<b class=\"key\">動作</b>」的意思󠇢。", "他一󠇡共得到幾隻老虎？「<b class=\"key\">得到</b>」的「<b class=\"key\">得</b>」是最後一󠇡個字。"], "chars": [["一", "一󠇡個、一󠇡次", "<svg viewBox=\"0 0 120 90\" aria-hidden=\"true\" focusable=\"false\"><rect x=\"44\" y=\"46\" width=\"40\" height=\"36\" rx=\"12\" fill=\"#ffe0c8\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><rect x=\"52\" y=\"16\" width=\"13\" height=\"40\" rx=\"6.5\" fill=\"#ffe0c8\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M66 50q5-4 9 0M73 56q5-4 9 0M66 62q5-4 9 0\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><circle cx=\"58.5\" cy=\"20\" r=\"15\" fill=\"none\" stroke=\"#f07c6c\" stroke-width=\"3.5\" stroke-dasharray=\"5 4\"/></svg>"], ["舉", "動作（舉手的「舉」）", "<svg viewBox=\"0 0 120 90\" aria-hidden=\"true\" focusable=\"false\"><rect x=\"49\" y=\"56\" width=\"22\" height=\"24\" rx=\"8\" fill=\"#b9a7ff\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><circle cx=\"60\" cy=\"44\" r=\"14\" fill=\"#ffe0c8\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M46 42q2-15 14-14t14 14q-6-6-14-6t-14 6z\" fill=\"#3b2a25\"/><circle cx=\"56.0\" cy=\"46\" r=\"1.6\" fill=\"#3b2a25\"/><circle cx=\"64.0\" cy=\"46\" r=\"1.6\" fill=\"#3b2a25\"/><path d=\"M57.6 49.2q2.4000000000000004 2.4000000000000004 4.800000000000001 0\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"2\" stroke-linecap=\"round\"/><ellipse cx=\"52.8\" cy=\"48.4\" rx=\"2.0\" ry=\"1.2800000000000002\" fill=\"#ff9fb0\"/><ellipse cx=\"67.2\" cy=\"48.4\" rx=\"2.0\" ry=\"1.2800000000000002\" fill=\"#ff9fb0\"/><path d=\"M70 58l14-30\" stroke=\"#3b2a25\" stroke-width=\"7\" stroke-linecap=\"round\"/><path d=\"M70 58l14-30\" stroke=\"#b9a7ff\" stroke-width=\"3\" stroke-linecap=\"round\"/><circle cx=\"86\" cy=\"22\" r=\"7\" fill=\"#ffe0c8\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M96 10l6-6M100 20h8M94 2l-1-6\" stroke=\"#ffd45c\" stroke-width=\"3.5\" stroke-linecap=\"round\"/></svg>"], ["兩", "兩個", "<svg viewBox=\"0 0 120 90\" aria-hidden=\"true\" focusable=\"false\"><circle cx=\"34\" cy=\"52\" r=\"22\" fill=\"#f07c6c\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M34 30q2-10 10-12\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"3\"/><path d=\"M36 26q10-8 16 0-8 6-16 0z\" fill=\"#8fd18a\" stroke=\"#3b2a25\" stroke-width=\"2\"/><circle cx=\"30.5\" cy=\"54\" r=\"1.4\" fill=\"#3b2a25\"/><circle cx=\"37.5\" cy=\"54\" r=\"1.4\" fill=\"#3b2a25\"/><path d=\"M31.9 56.8q2.0999999999999996 2.0999999999999996 4.199999999999999 0\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"2\" stroke-linecap=\"round\"/><ellipse cx=\"27.7\" cy=\"56.1\" rx=\"1.75\" ry=\"1.1199999999999999\" fill=\"#ff9fb0\"/><ellipse cx=\"40.3\" cy=\"56.1\" rx=\"1.75\" ry=\"1.1199999999999999\" fill=\"#ff9fb0\"/><circle cx=\"86\" cy=\"52\" r=\"22\" fill=\"#f07c6c\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M86 30q2-10 10-12\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"3\"/><path d=\"M88 26q10-8 16 0-8 6-16 0z\" fill=\"#8fd18a\" stroke=\"#3b2a25\" stroke-width=\"2\"/><circle cx=\"82.5\" cy=\"54\" r=\"1.4\" fill=\"#3b2a25\"/><circle cx=\"89.5\" cy=\"54\" r=\"1.4\" fill=\"#3b2a25\"/><path d=\"M83.9 56.8q2.0999999999999996 2.0999999999999996 4.199999999999999 0\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"2\" stroke-linecap=\"round\"/><ellipse cx=\"79.7\" cy=\"56.1\" rx=\"1.75\" ry=\"1.1199999999999999\" fill=\"#ff9fb0\"/><ellipse cx=\"92.3\" cy=\"56.1\" rx=\"1.75\" ry=\"1.1199999999999999\" fill=\"#ff9fb0\"/></svg>"], ["得", "得到", "<svg viewBox=\"0 0 120 90\" aria-hidden=\"true\" focusable=\"false\"><rect x=\"38\" y=\"20\" width=\"44\" height=\"34\" rx=\"4\" fill=\"#ffd45c\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M60 20v34M38 34h44\" stroke=\"#f07c6c\" stroke-width=\"5\"/><path d=\"M60 20q-12-14-16-4t16 4q12-14 16-4t-16 4\" fill=\"#f07c6c\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M14 72q10-16 30-16h8v14H30q-8 0-16 10z\" fill=\"#ffe0c8\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M106 72q-10-16-30-16h-8v14h22q8 0 16 10z\" fill=\"#ffe0c8\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/></svg>"]], "blank": ["做＿＿＿＿動作，得到＿＿＿＿東西󠇡。", ["一󠇡次", "兩樣"], ["十次", "一󠇡樣"]], "literal": "做一󠇡次動作，得到兩樣東西󠇡（只出手一󠇡次，就得到兩隻老虎）。", "meaning": "做一󠇡件事，同時得到兩種好處󠇡。", "more": "", "think": ["小男孩為󠇡什麼要卞莊子先等一󠇢等？", "現在說「一󠇢舉兩得」，一󠇡定要有老虎嗎？那一󠇡定要有什麼？"], "think_ref": ["兩隻老虎會先打起來，等牠們都受傷了再出手，比較容易，一󠇡次就能得到兩隻老虎。", "不󠇡用有老虎。只要做一󠇡件事，就有兩種好處󠇡，就可以說一󠇢舉兩得。"], "judge": [["我騎腳踏車上學，可以運動，又能欣賞路邊的風景，真是一󠇢舉兩得。", true, "做一󠇡件事（騎車上學），得到兩種好處󠇡（運動、看風景）。"], ["弟弟󠇡打翻了牛奶，又打破了碗，真是一󠇢舉兩得。", false, "打翻牛奶、打破碗都是壞事，不󠇡是好處󠇡，所以這句用錯了。"], ["我把看完的故事書送給表弟，房間變整齊，表弟也有新書看，一󠇢舉兩得。", true, "送書這一󠇡件事，帶來兩種好處󠇡。"]], "life": "週末我陪奶奶󠇡去公園散步，奶奶󠇡很開心，我也運動到了，真是一󠇢舉兩得。", "say": "你做過哪一󠇡件一󠇢舉兩得的事？說給家人聽。", "xy": "<svg viewBox=\"0 0 120 120\" aria-hidden=\"true\" focusable=\"false\"><rect x=\"38\" y=\"70\" width=\"44\" height=\"40\" rx=\"14\" fill=\"#f2c57c\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M60 72v36\" stroke=\"#3b2a25\" stroke-width=\"2.5\"/><circle cx=\"60\" cy=\"50\" r=\"26\" fill=\"#ffe0c8\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M32 44q2-26 28-26t28 26q-12-6-28-6t-28 6z\" fill=\"#8a5a3c\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M86 42l14 4-14 4\" fill=\"#8a5a3c\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M40 38q20-8 40 0\" fill=\"none\" stroke=\"#f2c57c\" stroke-width=\"3\"/><circle cx=\"54.5\" cy=\"54\" r=\"2.2\" fill=\"#3b2a25\"/><circle cx=\"65.5\" cy=\"54\" r=\"2.2\" fill=\"#3b2a25\"/><path d=\"M56.7 58.4q3.3000000000000003 3.3000000000000003 6.6000000000000005 0\" fill=\"none\" stroke=\"#3b2a25\" stroke-width=\"2\" stroke-linecap=\"round\"/><ellipse cx=\"50.1\" cy=\"57.3\" rx=\"2.75\" ry=\"1.7600000000000002\" fill=\"#ff9fb0\"/><ellipse cx=\"69.9\" cy=\"57.3\" rx=\"2.75\" ry=\"1.7600000000000002\" fill=\"#ff9fb0\"/><path d=\"M84 84l10-10\" stroke=\"#3b2a25\" stroke-width=\"7\" stroke-linecap=\"round\"/><circle cx=\"100\" cy=\"66\" r=\"12\" fill=\"#d8f0ff\" stroke=\"#3b2a25\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M95 62q3-4 7-3\" fill=\"none\" stroke=\"#fff\" stroke-width=\"3\" stroke-linecap=\"round\"/></svg>", "ch": {"q": "「一󠇡箭雙鵰」是射一󠇢枝箭，就射中󠇡兩隻大鳥。它和󠇡「一󠇢舉兩得」哪裡一󠇡樣？", "opts": ["都是做一󠇡次，就得到兩個好處󠇡", "都是在說打獵很危險"], "ans": 0, "why": "一󠇡箭雙鵰和󠇡一󠇢舉兩得的意思󠇢很像，都是做一󠇡次，就有兩個收穫。"}}];var UI={"title": "成語故事屋", "sub": "跟著󠇡小偵探小柚，先聽故事，再推理成語", "size": "字級", "zy": "注音", "hc": "高對比", "voice": "女聲", "voice_m": "男聲", "slow": "慢", "fast": "快", "s1": "聽故事", "s2": "推理看看：是哪四個字？", "s3": "拆開來看：每個字是什麼意思󠇢？", "s4": "字面意思󠇢和󠇡真正的意思󠇢", "s5": "想一󠇢想，說給家人聽", "s6": "用用看：用得󠇡對嗎？", "s7": "生活裡的例子󠇡", "s8": "挑󠇡戰題", "play": "播放故事", "pause": "暫停", "again": "從頭再聽", "listen": "聽一󠇢聽", "hint": "提示", "answer": "看答案", "guess_tip": "先在心裡或紙上猜猜看，卡住了再按提示。", "flip_tip": "先猜猜看每個字的意思󠇢，再按卡片翻過來。", "tap_to_flip": "按一󠇡下翻卡片", "fill_tip": "按下面的詞語，把空󠇡格填起來。", "literal": "字面意思󠇢", "meaning": "真正的意思󠇢", "show_meaning": "看真正的意思󠇢", "ref": "看看參考答案", "right": "對", "wrong": "不󠇡對", "good": "答對了！", "oops": "再想想看！", "done": "你收集到一󠇢張成語卡了！", "next_idiom": "下一󠇡個故事", "source": "", "retry": "重󠇡新填", "say": "說說看：", "think_again": "再讀一󠇡次句子󠇡，想一󠇢想。", "pick": "選故事", "book": "我的成語圖鑑", "story": "故事", "got": "破案成功！你收集到成語卡", "see_book": "看我的成語圖鑑", "got_n": "已收集 ", "unit": " 張", "got_on": "收集日期：", "solved": "破案", "read_again": "再讀一󠇡次", "go_case": "去破案", "more": "更多成語故事準備中，敬請期待！", "lv_tip": "每破一󠇡個案，就能收集一󠇢張成語卡。收集越多，偵探等級越高喔！", "lv1": "見習小偵探", "lv2": "小偵探", "lv3": "神探", "lv4": "成語大偵探", "bad_word": "這個詞放進去不通，換一󠇡個試試看。"};
+{
+const $=s=>document.querySelector(s);
+const st={i:0,voice:'f',rate:1};
+try{const s=JSON.parse(localStorage.getItem('cyw')||'{}');Object.assign(st,{voice:s.voice||'f',rate:s.rate||1,size:s.size,zy:s.zy,hc:s.hc});}catch(e){}
+const save=()=>{try{localStorage.setItem('cyw',JSON.stringify({voice:st.voice,rate:st.rate,size:st.size,zy:st.zy,hc:st.hc}))}catch(e){}};
+const au=new Audio();let cur='';
+function play(key,btn){
+ const src='audio/'+key+'-'+st.voice+'.mp3';
+ if(cur===key&&!au.paused){au.pause();setPlay(btn,false);return;}
+ if(cur!==key||!au.src.endsWith(src)){au.src=src;cur=key;}
+ au.playbackRate=st.rate;
+ au.play().then(()=>setPlay(btn,true)).catch(()=>{});
+ au.onended=()=>setPlay(btn,false);
+}
+let playBtn=null;
+function setPlay(btn,on){
+ document.querySelectorAll('[data-play]').forEach(b=>{b.setAttribute('aria-pressed','false');const l=b.querySelector('.lab');if(l&&b.dataset.kind==='story')l.textContent=UI.play;});
+ if(btn&&on){btn.setAttribute('aria-pressed','true');const l=btn.querySelector('.lab');if(l&&btn.dataset.kind==='story')l.textContent=UI.pause;}
+}
+function stopAudio(){au.pause();cur='';seqOn=false;document.querySelectorAll('.flip.now').forEach(c=>c.classList.remove('now'));const s=document.getElementById('bSeq');if(s)s.setAttribute('aria-pressed','false');setPlay(null,false);}
+const ic=n=>'<span class="ic" aria-hidden="true" data-ic="'+n+'"></span>';
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const NUM=['一','二','三'];
+
+function flip(b,on){b.setAttribute('aria-pressed',on);b.querySelector('.m').hidden=!on;b.querySelector('.pc').hidden=!on;}
+function showMean(on){$('#mean').hidden=!on;$('#bMean').setAttribute('aria-pressed',on);}
+let seqOn=false;
+function seq(id,btn){
+ const cards=[...document.querySelectorAll('.flip')];
+ if(seqOn){seqOn=false;au.pause();cards.forEach(c=>c.classList.remove('now'));btn.setAttribute('aria-pressed','false');return;}
+ stopAudio();seqOn=true;btn.setAttribute('aria-pressed','true');let k=0;
+ const next=()=>{cards.forEach(c=>c.classList.remove('now'));
+  if(!seqOn||k>=cards.length){seqOn=false;btn.setAttribute('aria-pressed','false');return;}
+  const c=cards[k];c.classList.add('now');flip(c,true);c.scrollIntoView({block:'nearest',behavior:'smooth'});
+  au.src='audio/'+id+'-c'+k+'-'+st.voice+'.mp3';cur='';au.playbackRate=st.rate;k++;
+  au.onended=()=>setTimeout(next,350);au.play().catch(()=>{seqOn=false;});};
+ next();
+}
+function getCards(){try{return JSON.parse(localStorage.getItem('cyw-cards')||'{}')}catch(e){return {}}}
+function earn(id){const c=getCards();if(!c[id]){const d=new Date();c[id]=d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate();try{localStorage.setItem('cyw-cards',JSON.stringify(c))}catch(e){}}tabs();}
+function level(n){return n>=20?UI.lv4:n>=10?UI.lv3:n>=4?UI.lv2:UI.lv1;}
+function tabs(){
+ $('#sel').innerHTML=DATA.map((d,i)=>'<option value="'+i+'"'+(i===st.i&&st.view!=='cards'?' selected':'')+'>'+UI.story+d.no+'：'+d.story_title+(getCards()[d.id]?' ★':'')+'</option>').join('');
+ const n=Object.keys(getCards()).filter(k=>DATA.some(d=>d.id===k)).length;
+ $('#cnt').textContent=n+'/'+DATA.length;$('#bBook').setAttribute('aria-pressed',st.view==='cards');
+}
+function renderCards(){
+ const c=getCards();const n=DATA.filter(d=>c[d.id]).length;
+ $('#app').innerHTML='<section class="card"><h2>'+ic('cards')+UI.book+'</h2>'+
+  '<div class="lv"><b>'+level(n)+'</b><span class="bar2"><i style="width:'+Math.round(n/DATA.length*100)+'%"></i></span><span>'+UI.got_n+n+'／'+DATA.length+UI.unit+'</span></div>'+
+  '<p class="tip">'+UI.lv_tip+'</p><div class="gal">'+DATA.map((d,i)=>c[d.id]?
+   '<div class="cc"><span class="stamp">'+UI.solved+'</span><img src="img/'+d.id+'-story.jpg" alt=""><p class="nm">'+d.idiom+'</p><p class="mn">'+d.meaning+'</p><p class="dt">'+UI.got_on+c[d.id]+'</p><button data-go="'+i+'">'+ic('book')+UI.read_again+'</button></div>':
+   '<div class="cc lock"><p class="q">？？？？</p><p class="mn">'+UI.story+d.no+'：'+d.story_title+'</p><button data-go="'+i+'">'+ic('search')+UI.go_case+'</button></div>').join('')+'</div>'+
+  '<p class="tip">'+UI.more+'</p></section>';
+ paintIcons($('#app'));
+ $('#app').onclick=e=>{const b=e.target.closest('[data-go]');if(b)go(+b.dataset.go);};
+}
+function render(){
+ const d=DATA[st.i];const id=d.id;
+ const chips=shuffle(d.blank[1].concat(d.blank[2]));
+ let n=0;const sent=d.blank[0].replace(/＿＿＿＿/g,()=>'<span class="slot" data-k="'+(n++)+'">　</span>');
+ $('#app').innerHTML=
+ '<section class="card"><h2><span class="no">1</span>'+ic('ear')+UI.s1+'：'+d.story_title+'</h2>'+
+  '<img class="pic" src="img/'+id+'-story.jpg" alt="">'+
+  '<div class="row"><button class="big" data-play="'+id+'-story" data-kind="story">'+ic('speaker')+'<span class="lab">'+UI.play+'</span></button>'+
+  '<button data-restart="'+id+'-story">'+ic('retry')+UI.again+'</button></div>'+
+  '<div class="story"><span class="sxy">'+d.xy+'</span>'+d.story.map(p=>'<p>'+p+'</p>').join('')+'</div>'+
+  '<p class="note">'+d.note+'</p><p class="src">'+d.source+'</p></section>'+
+ '<section class="card"><h2><span class="no">2</span>'+ic('search')+UI.s2+'</h2><p class="tip">'+UI.guess_tip+'</p>'+
+  '<div class="row">'+d.hints.map((h,k)=>'<button data-hint="'+k+'"'+(k?' disabled':'')+'>'+ic('bulb')+UI.hint+NUM[k]+'</button>').join('')+
+  '<button id="bAns">'+ic('eyes')+UI.answer+'</button></div>'+
+  d.hints.map((h,k)=>'<p class="hint" id="h'+k+'" hidden>'+h+'</p>').join('')+
+  '<p class="ans" id="ans" hidden>'+d.idiom+'</p></section>'+
+ '<section class="card"><h2><span class="no">3</span>'+ic('cards')+UI.s3+'</h2><p class="tip">'+UI.flip_tip+'</p>'+
+  '<div class="chars">'+d.chars.map((c,k)=>'<button class="flip" aria-pressed="false" data-flip="'+k+'"><b>'+c[0]+'</b><span class="pc" hidden>'+c[2]+'</span><span class="m" hidden>'+c[1]+'</span></button>').join('')+'</div>'+
+  '<div class="row"><button id="bSeq">'+ic('speaker')+UI.listen+'</button></div></section>'+
+ '<section class="card"><h2><span class="no">4</span>'+ic('pencil')+UI.s4+'</h2><p class="tip">'+UI.fill_tip+'</p>'+
+  '<p class="sent txt">'+UI.literal+'：'+sent+'</p>'+
+  '<div class="row" id="chips">'+chips.map(w=>'<button class="chip" data-w="'+w+'">'+w+'</button>').join('')+'<button id="bReset">'+ic('retry')+UI.retry+'</button></div>'+
+  '<p class="fb n" id="wfb" hidden>'+UI.bad_word+'</p>'+
+  '<div class="row"><button id="bMean">'+ic('eyes')+UI.show_meaning+'</button></div>'+
+  '<div class="mean" id="mean" hidden><dl><dt>'+UI.literal+'</dt><dd>'+d.literal+'</dd><dt>'+UI.meaning+'</dt><dd>'+d.meaning+(d.more?'<br>'+d.more:'')+'</dd></dl><button data-play="'+id+'-mean" data-kind="mean">'+ic('speaker')+UI.listen+'</button></div></section>'+
+ '<section class="card"><h2><span class="no">5</span>'+ic('voice')+UI.s5+'</h2>'+
+  d.think.map((t,k)=>'<p class="q">'+(k+1)+'. '+t+'</p><div class="row"><button data-ref="'+k+'">'+ic('eyes')+UI.ref+'</button></div><p class="ref" id="r'+k+'" hidden>'+d.think_ref[k]+'</p>').join('')+'</section>'+
+ '<section class="card"><h2><span class="no">6</span>'+ic('target')+UI.s6+'</h2>'+
+  d.judge.map((j,k)=>'<div class="jd"><p class="q">'+(k+1)+'. '+j[0]+'</p><div class="row"><button class="yes" data-j="'+k+'" data-v="1" aria-pressed="false"><span class="sym">○</span>'+UI.right+'</button><button class="nope" data-j="'+k+'" data-v="0" aria-pressed="false"><span class="sym">✕</span>'+UI.wrong+'</button></div><p class="fb" id="f'+k+'" hidden></p></div>').join('')+'</section>'+
+ '<section class="card"><h2><span class="no">7</span>'+ic('house')+UI.s7+'</h2><img class="pic" src="img/'+id+'-life.jpg" alt="">'+
+  '<p class="q">'+d.life+'</p><div class="row"><button data-play="'+id+'-life" data-kind="life">'+ic('speaker')+UI.listen+'</button></div>'+
+  '<p class="q">'+UI.say+d.say+'</p></section>'+
+ '<section class="card"><h2><span class="no">8</span>'+ic('trophy')+UI.s8+'</h2><p class="q">'+d.ch.q+'</p>'+
+  '<div class="row">'+d.ch.opts.map((o,k)=>'<button data-ch="'+k+'" aria-pressed="false">'+o+'</button>').join('')+'</div><p class="fb" id="chf" hidden></p></section>'+
+ '<section class="card done" id="done" hidden><p>'+ic('party')+UI.got+'「'+d.idiom+'」</p><div class="row" style="justify-content:center"><button id="bGoBook">'+ic('cards')+UI.see_book+'</button>'+(st.i<DATA.length-1?'<button id="bNext">'+ic('next')+UI.next_idiom+'</button>':'')+'</div></section>';
+ paintIcons($('#app'));
+ const d2=d;let fillK=0;
+ const app=$('#app');
+ app.onclick=e=>{
+  const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.play){play(b.dataset.play,b);return;}
+  if(b.dataset.restart){const k=b.dataset.restart;stopAudio();au.src='';cur='';play(k,app.querySelector('[data-play="'+k+'"]'));return;}
+  if(b.dataset.hint){const k=+b.dataset.hint,h=$('#h'+k);h.hidden=!h.hidden;b.setAttribute('aria-pressed',!h.hidden);const nx=app.querySelector('[data-hint="'+(k+1)+'"]');if(nx&&!h.hidden)nx.disabled=false;return;}
+  if(b.id==='bAns'){const a=$('#ans');a.hidden=!a.hidden;b.setAttribute('aria-pressed',!a.hidden);return;}
+  if(b.dataset.flip){flip(b,b.getAttribute('aria-pressed')!=='true');return;}
+  if(b.id==='bSeq'){seq(id,b);return;}
+  if(b.dataset.w!==undefined){
+   if(fillK>=d2.blank[1].length)return;
+   const fb=$('#wfb');
+   if(b.dataset.w===d2.blank[1][fillK]){const s=app.querySelector('.slot[data-k="'+fillK+'"]');s.innerHTML=b.dataset.w;s.classList.add('f');b.classList.add('ok');b.disabled=true;fillK++;fb.hidden=true;
+    if(fillK>=d2.blank[1].length){showMean(true);}}
+   else{b.classList.remove('shake','bad');void b.offsetWidth;b.classList.add('shake','bad');fb.hidden=false;clearTimeout(b._t);b._t=setTimeout(()=>b.classList.remove('bad'),1200);}
+   return;}
+  if(b.id==='bReset'){fillK=0;$('#wfb').hidden=true;app.querySelectorAll('.slot').forEach(s=>{s.innerHTML='　';s.classList.remove('f')});app.querySelectorAll('.chip').forEach(c=>{c.disabled=false;c.classList.remove('ok','bad')});return;}
+  if(b.id==='bMean'){showMean($('#mean').hidden);return;}
+  if(b.dataset.ref){const r=$('#r'+b.dataset.ref);r.hidden=!r.hidden;b.setAttribute('aria-pressed',!r.hidden);return;}
+  if(b.dataset.j){const k=+b.dataset.j,v=b.dataset.v==='1',j=d2.judge[k];
+   b.parentNode.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));
+   const f=$('#f'+k);f.hidden=false;const ok=v===j[1];f.className='fb '+(ok?'y':'n');
+   f.innerHTML=ok?ic('ok')+' '+j[2]:ic('search')+' '+UI.think_again;paintIcons(f);return;}
+  if(b.dataset.ch){const k=+b.dataset.ch,ok=k===d2.ch.ans;
+   app.querySelectorAll('[data-ch]').forEach(x=>x.setAttribute('aria-pressed',x===b));
+   const f=$('#chf');f.hidden=false;f.className='fb '+(ok?'y':'n');f.innerHTML=ok?ic('ok')+' '+d2.ch.why+'<img class="chpic" src="img/'+id+'-ch.jpg" alt="">':ic('search')+' '+UI.think_again;paintIcons(f);
+   if(ok){$('#done').hidden=false;earn(id);}return;}
+  if(b.id==='bGoBook'){showCards();return;}
+  if(b.id==='bNext'){go(st.i+1);return;}
+ };
+}
+function go(i){stopAudio();st.view='';st.i=i;location.hash=DATA[i].id;tabs();render();window.scrollTo(0,0);}
+function showCards(){stopAudio();st.view='cards';location.hash='cards';tabs();renderCards();window.scrollTo(0,0);}
+$('#sel').onchange=e=>go(+e.target.value);
+$('#bBook').onclick=()=>st.view==='cards'?go(st.i):showCards();
+document.querySelectorAll('[data-size]').forEach(b=>b.onclick=()=>setSize(b.dataset.size));
+function setSize(s){document.documentElement.className=s;st.size=s;document.querySelectorAll('[data-size]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.size===s));save();}
+function setZy(on){st.zy=on;document.body.classList.toggle('zy',on);$('#bZy').setAttribute('aria-pressed',on);save();}
+function setHc(on){st.hc=on;document.body.classList.toggle('hc',on);$('#bHc').setAttribute('aria-pressed',on);save();}
+function setVoice(v){st.voice=v;const b=$('#bVoice');b.querySelector('.ic').dataset.ic=v==='f'?'girl':'boy';paintIcons(b);$('#vLab').textContent=v==='f'?UI.voice:UI.voice_m;save();}
+function setRate(r){st.rate=+r;au.playbackRate=st.rate;const b=$('#bRate');b.querySelector('.ic').dataset.ic=st.rate<1?'turtle':'rabbit';paintIcons(b);$('#rLab').textContent=st.rate<1?UI.slow:UI.fast;save();}
+$('#bZy').onclick=()=>setZy(!st.zy);
+$('#bHc').onclick=()=>setHc(!st.hc);
+$('#bVoice').onclick=()=>{stopAudio();setVoice(st.voice==='f'?'m':'f');};
+$('#bRate').onclick=()=>setRate(st.rate<1?1:0.85);
+function fromHash(){const h=location.hash.slice(1);const k=DATA.findIndex(d=>d.id===h);return k<0?0:k;}
+function route(){if(location.hash==='#cards'){if(st.view!=='cards'){st.view='cards';stopAudio();tabs();renderCards();}return;}const k=fromHash();if(k!==st.i||st.view==='cards'){st.view='';st.i=k;stopAudio();tabs();render();}}
+window.addEventListener('hashchange',route);
+st.i=fromHash();
+paintIcons();setSize(st.size||'s2');setZy(!!st.zy);setHc(!!st.hc);setVoice(st.voice);setRate(st.rate);
+if(location.hash==='#cards'){st.view='cards';tabs();renderCards();}else{tabs();render();}
+}
+</script>
+</body>
+</html>

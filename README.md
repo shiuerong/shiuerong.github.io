@@ -9,6 +9,7 @@
 | `/ciyu/` | 語詞辨析（三上相似／相反詞） | claude.ai/artifact/6Qqrd9ckARA1drH9X1o8qh |
 | `/shudu/` | 數學讀題練習 | claude.ai/artifact/Q3QkRSpTczoo2N9SujQmtU |
 | `/dayue/` | 大約是幾百（含 ws/ 紙本學習單） | claude.ai/artifact/4NdbFjYBiM6e5JxHyU7LpK |
+| `/chengyu/` | 成語故事屋（二上成語故事、小偵探小柚、成語圖鑑） | claude.ai/artifact/Q4eiNKWjKfSENKSjoS8cKa（兩邊同步更新） |
 | `/shengtu/` | 批次生圖小幫手入口：打開就自動跳到最新的 Gemini 分享網址 | claude.ai/artifact/JCFRCxq1g1seYVBzU23yAw（保留，也指向同一個最新版） |
 
 - 2026-11-19 從 Claude 網頁搬過來。首頁課卡改連 `guoyu/`、`ciyu/`；引擎「分享練習」產生的網址改成 `https://shiuerong.github.io/guoyu/#…`。
@@ -18,3 +19,4 @@
 - 每年更新：匯入頁下載的 `lessons.json`、`pics.json` 放進 `guoyu/data/`，圖片放 `guoyu/img/`；改了圖或錄音要把 `guoyu/index.html` 的 `AV` 版本號加一。
 - 工具庫不搬，留在 claude.ai/artifact/4Yz7hmFRtCdxb3dUAtDFfx。
 - `shengtu/`：批次生圖小幫手改版時，只改 `shengtu/index.html` 裡按鈕那一行的網址和版本日期（頁面會讀按鈕的連結自動跳轉），Claude 入口頁也要一起換。
+- `chengyu/`：成語故事屋（2026-11-20 加入，首頁國語第二張課卡）。Claude 網頁版與這裡要同步更新；成語圖鑑的收集紀錄存在各自瀏覽器，兩個網址不共用。
