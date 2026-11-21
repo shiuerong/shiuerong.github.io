@@ -167,7 +167,6 @@ body.hc .cc{background:#000}body.hc .cc .stamp{background:#000;color:#ffe600;bor
   </span>
   <button class="tb" id="bZy" aria-pressed="false"><span class="ic" aria-hidden="true" data-ic="zy"></span>注音</button>
   <button class="tb" id="bHc" aria-pressed="false"><span class="ic" aria-hidden="true" data-ic="half"></span>高對比</button>
-  <button class="tb" id="bVoice" aria-pressed="false"><span class="ic" aria-hidden="true" data-ic="girl"></span><span id="vLab">女聲</span></button>
   <button class="tb" id="bRate" aria-pressed="false"><span class="ic" aria-hidden="true" data-ic="rabbit"></span><span id="rLab">快</span></button>
  </div>
  <div class="bar"><label class="pick"><span class="ic" aria-hidden="true" data-ic="book"></span>選故事<select id="sel"></select></label><button class="tb" id="bBook" aria-pressed="false"><span class="ic" aria-hidden="true" data-ic="cards"></span>我的成語圖鑑<span class="cnt" id="cnt"></span></button><button class="tb" id="bFish" aria-pressed="false"><span class="ic" aria-hidden="true" data-ic="fish"></span>釣魚<span class="cnt" id="tk"></span></button></div>
@@ -235,7 +234,7 @@ var DATA=[{"id": "bmdz", "no": 1, "lab": "第一課", "idiom": "本末倒置", "
 {
 const $=s=>document.querySelector(s);
 const st={i:0,voice:'f',rate:1};
-try{const s=JSON.parse(localStorage.getItem('cyw')||'{}');Object.assign(st,{voice:s.voice||'f',rate:s.rate||1,size:s.size,zy:s.zy,hc:s.hc});}catch(e){}
+try{const s=JSON.parse(localStorage.getItem('cyw')||'{}');Object.assign(st,{voice:'f',rate:s.rate||1,size:s.size,zy:s.zy,hc:s.hc});}catch(e){}
 const save=()=>{try{localStorage.setItem('cyw',JSON.stringify({voice:st.voice,rate:st.rate,size:st.size,zy:st.zy,hc:st.hc}))}catch(e){}};
 const au=new Audio();let cur='';
 au.addEventListener('error',()=>{if(au.src.endsWith('-m.mp3')){const t=au.currentSrc||au.src;au.src=t.replace(/-m\.mp3$/,'-f.mp3');au.playbackRate=st.rate;au.play().catch(()=>{});}});
@@ -511,11 +510,10 @@ document.querySelectorAll('[data-size]').forEach(b=>b.onclick=()=>setSize(b.data
 function setSize(s){document.documentElement.className=s;st.size=s;document.querySelectorAll('[data-size]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.size===s));save();}
 function setZy(on){st.zy=on;document.body.classList.toggle('zy',on);$('#bZy').setAttribute('aria-pressed',on);save();}
 function setHc(on){st.hc=on;document.body.classList.toggle('hc',on);$('#bHc').setAttribute('aria-pressed',on);save();}
-function setVoice(v){st.voice=v;const b=$('#bVoice');b.querySelector('.ic').dataset.ic=v==='f'?'girl':'boy';paintIcons(b);$('#vLab').textContent=v==='f'?UI.voice:UI.voice_m;save();}
+function setVoice(v){st.voice='f';}
 function setRate(r){st.rate=+r;au.playbackRate=st.rate;const b=$('#bRate');b.querySelector('.ic').dataset.ic=st.rate<1?'turtle':'rabbit';paintIcons(b);$('#rLab').textContent=st.rate<1?UI.slow:UI.fast;save();}
 $('#bZy').onclick=()=>setZy(!st.zy);
 $('#bHc').onclick=()=>setHc(!st.hc);
-$('#bVoice').onclick=()=>{stopAudio();setVoice(st.voice==='f'?'m':'f');};
 $('#bRate').onclick=()=>setRate(st.rate<1?1:0.85);
 function fromHash(){const h=location.hash.slice(1);const k=DATA.findIndex(d=>d.id===h);return k<0?0:k;}
 function route(){if(location.hash==='#cards'){if(st.view!=='cards'){stopGame();st.view='cards';stopAudio();tabs();renderCards();}return;}if(location.hash==='#fish'){if(st.view!=='fish'){st.view='fish';stopAudio();tabs();renderFish();}return;}const k=fromHash();if(k!==st.i||st.view){stopGame();st.view='';st.i=k;stopAudio();tabs();render();}}
