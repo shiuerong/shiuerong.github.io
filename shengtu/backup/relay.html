@@ -1,0 +1,8 @@
+<!DOCTYPE html><meta charset="utf-8"><title>relay</title><body>傳送中…
+<script>
+fetch('source-20261118.txt').then(function(r){return r.text();}).then(function(t){
+  var w = window.opener || window.parent;
+  if (w && w !== window) { w.postMessage({shengtuSrc: t}, 'https://gemini.google.com'); document.body.textContent = '已傳送 ' + t.length; }
+  else { document.body.textContent = '沒有開啟者視窗'; }
+});
+</script>
