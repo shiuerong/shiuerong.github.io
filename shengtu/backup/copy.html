@@ -19,7 +19,7 @@ button:focus-visible{outline:6px solid #1d4ed8;outline-offset:4px}
 <script>
 var src = '';
 var b = document.getElementById('b'), msg = document.getElementById('msg');
-fetch('source-20261118.txt', {cache:'no-store'}).then(function(r){return r.text();}).then(function(t){ src = t; b.disabled = false; b.textContent = '複製程式'; });
+fetch('source-20261124.txt', {cache:'no-store'}).then(function(r){return r.text();}).then(function(t){ src = t; b.disabled = false; b.textContent = '複製程式'; });
 b.addEventListener('click', function(){
   navigator.clipboard.writeText(src).then(function(){
     msg.textContent = '✔ 已複製好了（' + src.length.toLocaleString() + ' 字）';
