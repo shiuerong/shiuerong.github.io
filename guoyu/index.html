@@ -669,7 +669,7 @@ function speak(key, btn, then){ stopAll(); if(!key) return; const txt=HOWSAY[key
   const u=new SpeechSynthesisUtterance(txt); u.voice=twVoice; u.lang='zh-TW'; u.rate=RATE; u.onend=u.onerror=done; speechSynthesis.speak(u); }
 const sayBtn = (key,label='聽聲音') => `<button class="say" type="button" data-id="${String(key).replace(/"/g,'&quot;')}" aria-label="${label}">${ICON.spk}</button>`;
 document.addEventListener('click',e=>{ const b=e.target.closest('.say[data-id]'); if(b){ e.stopPropagation(); speak(b.dataset.id,b); return; } const c=e.target.closest('.clause[data-say]'); if(c){ e.stopPropagation(); document.querySelectorAll('.clause.on').forEach(x=>x.classList.remove('on')); c.classList.add('on'); speak(c.dataset.say,null,()=>c.classList.remove('on')); } },true);
-const AV='1124a';
+const AV='1124b';
 let ac=null; let QUIET=store.get('g1.quiet')==='1';
 function beep(ok){ if(QUIET) return; try{ ac=ac||new (window.AudioContext||window.webkitAudioContext)(); const ns=ok?[660,880]:[240,180];
   ns.forEach((f,i)=>{ const o=ac.createOscillator(),g=ac.createGain(); o.type=ok?'triangle':'square'; o.frequency.value=f; const t=ac.currentTime+i*.12;
