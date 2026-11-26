@@ -6,7 +6,7 @@
 |---|---|---|
 | `/`（index.html、zy.woff） | 教室首頁 | claude.ai/artifact/3w4nbrioudJN4g4zcs5djx（已加「搬家了」提示） |
 | `/guoyu/` | 國語遊戲引擎（首冊、第一冊…），網址後加 `#import` 是匯入頁 | claude.ai/artifact/JUeD8pacnmdxuLkKbzKU5n |
-| `/ciyu/` | 語詞辨析（三上相似／相反詞） | claude.ai/artifact/6Qqrd9ckARA1drH9X1o8qh |
+| `/ciyu/` | 語詞辨析（三上相似／相反詞；L8 另有「理解語詞」：圈意思、寫一寫、小測驗） | claude.ai/artifact/6Qqrd9ckARA1drH9X1o8qh |
 | `/shudu/` | 數學讀題練習 | claude.ai/artifact/Q3QkRSpTczoo2N9SujQmtU |
 | `/dayue/` | 大約是幾百（含 ws/ 紙本學習單） | claude.ai/artifact/4NdbFjYBiM6e5JxHyU7LpK |
 | `/chengyu/` | 成語故事屋（二上成語故事、小偵探小柚、成語圖鑑） | claude.ai/artifact/Q4eiNKWjKfSENKSjoS8cKa（兩邊同步更新） |
