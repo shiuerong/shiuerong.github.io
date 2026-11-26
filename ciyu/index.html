@@ -399,7 +399,9 @@ const isQ=()=>S.mode==='lj3'||S.mode==='xc2';
 let U=LJM.UI; const MF=LJM.F;
 // 每課專屬文字（課名、獎狀）放在該課 lj.ui，蓋過共用文字
 const ljU=()=>{ U=Object.assign({},LJM.UI,(LJ()&&LJ().ui)||{}); };
-const LS={found:{},cm:{},mn:{},sn:{},wr:{},hint:{},pen:'#1E293B',quiz:null};
+const LS={found:{},cm:{},mn:{},sn:{},wr:{},hint:{},wf:{},pen:'#1E293B',quiz:null};
+// 選錯的詞：紅字放進括號，唸整句讓學生聽出不通順（老師 2026-11-26）
+const FILLNO='唸起來怪怪的，換一個試試看！';
 const isVS=c=>{const n=c.codePointAt(0);return n>=0xE01E0&&n<=0xE01EF;};
 function zchars(w){ const src=[...(S.zy?(ZYMAP[w]||w):w)], out=[]; src.forEach(c=>{ if(isVS(c)&&out.length) out[out.length-1]+=c; else out.push(c); }); return out; }
 const TC=(w,k)=>`<span class="t" lang="zh-Hant">${esc(zchars(w)[k]||[...w][k])}</span>`;
@@ -445,7 +447,7 @@ function renderLJ1(){
   const dis=W.filter(v=>v.id!==id).sort((a,b)=>((a.id.charCodeAt(0)+ri*7)%5)-((b.id.charCodeAt(0)+ri*7)%5)).slice(0,2);
   const chips=[x,...dis].sort((a,b)=>a.w.localeCompare(b.w,'zh-Hant'));
   h+=`<section class="step ${cur===3?'do':''}"><h3 class="sth">${T(U.s3)}${sn?icSvgS('ok'):''}</h3>`;
-  h+=`<div class="sent">${sayBtn(x.full,U.listen)}${T(x.sb)}<span class="blank ${sn?'ok':''}">${sn?T(x.w):''}</span>${T(x.sa)}</div>`;
+  h+=`<div class="sent">${sayBtn(x.full,U.listen)}${T(x.sb)}<span class="blank ${sn?'ok':LS.wf[id]?'no':''}">${sn?T(x.w):LS.wf[id]?T(LS.wf[id]):''}</span>${T(x.sa)}</div>`;
   if(S.pic&&x.spic) h+=`<div class="spicw">${x.spic}</div>`;
   h+=`${R(U.s3p,'p','note')}<div class="opts">${chips.map(c=>`<button class="pick ${sn&&c.w===x.w?'picked':''}" data-act="fill" data-w="${esc(c.w)}">${T(c.w)}</button>`).join('')}</div></section>`;
   h+=`<div class="foot">${S.j>0?bigBtn('ljprev','prev',U.prev):'<span></span>'}<div class="rgt">${bigBtn('whole','speaker',U.whole)}`;
@@ -513,8 +515,8 @@ function onLJ(b,sayEl){ ljU(); if(S.mode==='xc1') return onXC1(b,sayEl);
       bad(`[data-act="tile"][data-c="${c}"]`); tipMsg(MF.notSame(c,x.w),2400); return; }
     if(a==='ring'){ const o=+b.dataset.o; if(o===x.ok){ LS.mn[id]=true; speak('答對了！'+x.ex); tipMsg(MF.ringOk(x),2400); render(); good($('.circled'),true); }
       else { LS.hint[id]=true; speak(U.again); tipMsg(U.miss,2400); render(); bad(`[data-act="ring"][data-o="${o}"]`); } return; }
-    if(a==='fill'){ const w=b.dataset.w; if(w===x.w){ LS.sn[id]=true; speak(x.full); tipMsg(MF.fillOk(x),2400); render(); good($('.blank'),true); }
-      else { speak(MF.fillNoSay(w)); tipMsg(MF.fillNo(w),2400); bad(`[data-act="fill"][data-w="${w}"]`); } return; }
+    if(a==='fill'){ const w=b.dataset.w; if(w===x.w){ delete LS.wf[id]; LS.sn[id]=true; speak(x.full); tipMsg(MF.fillOk(x),2400); render(); good($('.blank'),true); }
+      else { LS.wf[id]=w; render(); speak((x.sb+w+x.sa).replace(/[。！？]$/,'')+'。'+FILLNO); tipMsg(MF.fillNo(w),3200); bad('.blank.no'); } return; }
     if(a==='whole'){ speak(MF.wordSay(x)); return; }
     if(a==='ljnext'||a==='ljprev'){ S.j=Math.max(0,Math.min(L.words.length-1,S.j+(a==='ljnext'?1:-1))); save(); render(); window.scrollTo(0,0); return; }
     if(a==='go2'){ setMode('lj2'); return; }
@@ -583,19 +585,19 @@ function renderXC1(){
   h+=st.same?`<p class="stat okc">${T(XF.sameOk(g.same))}</p>`:''; h+='</section>';
   // 步驟 2
   h+=`<section class="step ${cur===2?'do':''}"><h3 class="sth">${T(XU.x2)}${r2?icSvgS('ok'):''}</h3>`;
-  if(st.same){ h+=R(XU.x2p,'p','note')+xTiles(g,st,'xring'); if(r2) h+=`<p class="stat okc">${T(XU.allRing)}</p>`; }
+  h+=R(XU.x2p,'p','note')+xTiles(g,st,'xring'); if(r2) h+=`<p class="stat okc">${T(XU.allRing)}</p>`;
   h+='</section>';
   // 步驟 3：用這組字互相配對
   h+=`<section class="step ${cur===3?'do':''}"><h3 class="sth">${T(XU.x3)}${r3?icSvgS('ok'):''}</h3>`;
-  if(r2){ h+=R(XU.x3p,'p','note'); const ms=W.map(x=>x.dm).slice().sort((a,b)=>a.localeCompare(b,'zh-Hant'));
+  { h+=R(XU.x3p,'p','note'); const ms=W.map(x=>x.dm).slice().sort((a,b)=>a.localeCompare(b,'zh-Hant'));
     h+=W.map((x,wi)=>{ const d=dch(g,x), ok=st.mean[wi];
       return `<div class="xmean"><div class="xmq"><span class="tile c${wi%3+1}">${TC(d,0)}</span>${T('是：')}</div><div class="opts">${ms.map(m=>`<button class="pick ${ok&&m===x.dm?'picked':''}" data-act="xmean" data-wi="${wi}" data-m="${esc(m)}">${T(m)}</button>`).join('')}</div>`+
         (ok?`<p class="stat okc">${R(XF.mp(x),'span','')}</p>${x.ex?`<p class="note">${T(XF.ex(x))}</p>`:''}`:'')+'</div>'; }).join(''); }
   h+='</section>';
   // 步驟 4
   h+=`<section class="step ${cur===4?'do':''}"><h3 class="sth">${T(XU.x4)}${r4?icSvgS('ok'):''}</h3>`;
-  if(r3){ const full=XF.full(g);
-    h+=`<div class="sent">${sayBtn(full,U.listen)}${g.sent.map(p=>typeof p==='number'?`<span class="blank ${st.fill[p]?'ok':''}">${st.fill[p]?T(st.fill[p]):''}</span>`:T(p)).join('')}</div>`;
+  { const full=XF.full(g);
+    h+=`<div class="sent">${sayBtn(full,U.listen)}${g.sent.map(p=>typeof p==='number'?(st.fill[p]?`<span class="blank ok">${T(st.fill[p])}</span>`:p===st.fill.length&&st.wrong?`<span class="blank no">${T(st.wrong)}</span>`:'<span class="blank"></span>'):T(p)).join('')}</div>`;
     h+=`${R(XU.x4p,'p','note')}<div class="opts">${W.map(x=>`<button class="pick ${st.fill.includes(x.w)?'picked':''}" data-act="xfill" data-w="${esc(x.w)}">${T(x.w)}</button>`).join('')}</div>`;
     if(g.swap){ h+=`<div class="foot" style="justify-content:flex-start">${bigBtn('xswap','search',XU.swap)}</div>`;
       if(st.swOpen) h+=`<div class="test">${R(XU.swapQ,'p','note')}${W.map(x=>{ const s=XF.swapS(g,x.w), shown=st.sw[x.w], ok=g.ans.includes(x.w);
@@ -617,8 +619,8 @@ function onXC1(b,sayEl){
   if(a==='xmean'){ const x=W[wi]; if(b.dataset.m===x.dm){ st.mean[wi]=true; speak(XF.meanOk(x.w,dch(g,x),x.dm)); tipMsg(XF.meanOk(x.w,dch(g,x),x.dm),2400); render(); good($(`[data-act="xmean"][data-wi="${wi}"].picked`),W.every((_,i)=>st.mean[i])); }
     else { speak(XU.meanNo); tipMsg(XU.meanNo,2400); bad(`[data-act="xmean"][data-wi="${wi}"][data-m="${b.dataset.m}"]`); } return; }
   if(a==='xfill'){ const w=b.dataset.w, k=st.fill.length; if(k>=g.ans.length) return;
-    if(w===g.ans[k]){ st.fill.push(w); const done=st.fill.length===g.ans.length; if(done){ speak(XF.full(g)); tipMsg(MF.fillOk({full:XF.full(g)}),2400); } else tone(GOOD); render(); good($('.blank.ok'),done); }
-    else { speak(MF.fillNoSay(w)); tipMsg(XF.fillNo(w)+(g.swap?'　'+XU.swapTip:''),3000); bad(`[data-act="xfill"][data-w="${w}"]`); } return; }
+    if(w===g.ans[k]){ st.wrong=''; st.fill.push(w); const done=st.fill.length===g.ans.length; if(done){ speak(XF.full(g)); tipMsg(MF.fillOk({full:XF.full(g)}),2400); } else tone(GOOD); render(); good($('.blank.ok'),done); }
+    else { st.wrong=w; const ws=g.sent.map(p=>typeof p==='number'?(st.fill[p]||(p===k?w:'什麼')):p).join(''); render(); speak(ws.replace(/[。！？]$/,'')+'。'+FILLNO); tipMsg(XF.fillNo(w)+(g.swap?'　'+XU.swapTip:''),3200); bad('.blank.no'); } return; }
   if(a==='xswap'){ st.swOpen=!st.swOpen; render(); return; }
   if(a==='xsw'){ const w=b.dataset.w; st.sw[w]=true; speak(XF.swapS(g,w)); render(); return; }
   if(a==='xwhole'){ speak(W.map(x=>`${x.w}，${x.mp}`).join('。')+'。'+XF.full(g)); return; }
