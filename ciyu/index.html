@@ -200,6 +200,9 @@ body.hc .opt.circled::after{border-color:#ff4fd8}body.hc .gpic{background:#fff}
 .xmq .tile{min-width:56px;min-height:56px}.xpic{width:min(100%,11rem)}.xw{font-size:1.6rem;font-family:var(--font-text)}
 body.hc .tile.xs{background:#000;color:#fff;border-color:#fff;box-shadow:inset 0 0 0 4px #fff}body.hc .tile.c3{color:#9dff9d;background:#000;box-shadow:none;border-color:#9dff9d}
 body.hc .tile.circled::after{border-color:#ff4fd8}
+.modes.sub{padding:.5rem .6rem;margin-top:-.3rem;border-radius:18px;background:#f1ecdd;border-left:6px solid var(--accent)}
+.mtab.lvtab{background:#fff;font-size:.92rem}.mtab.lvtab[aria-pressed="true"]{background:var(--accent)}
+body.hc .modes.sub{background:#000;border-left-color:#ffeb3b}body.hc .mtab.lvtab{background:#000;color:#fff}body.hc .mtab.lvtab[aria-pressed="true"]{background:#ffeb3b;color:#000}
 </style>
 </head>
 <body>
@@ -411,8 +414,13 @@ const STAR='<svg class="star" viewBox="0 0 24 24" aria-hidden="true"><path d="M1
 const byId=id=>LJ().words.find(x=>x.id===id);
 function stars(){ const L=LJ(); let n=0; L.words.forEach(x=>{ if(LS.cm[x.id])n++; if(LS.mn[x.id])n++; if(LS.sn[x.id])n++; }); L.write.forEach(id=>{ if(LS.wr[id])n++; }); return `<span class="stars2">${STAR}${n}／${L.words.length*3+L.write.length}</span>`; }
 function modeTabs(){ if(!hasLJ()&&!hasXC()) return '';
-  const tb=(m,ic,lab)=>`<button class="mtab" data-act="mode" data-m="${m}" aria-pressed="${S.mode===m}"><span class="ic" aria-hidden="true" data-ic="${ic}"></span>${T(lab)}</button>`;
-  return `<div class="modes" role="group" aria-label="練習種類">${tb('ciyu','search',U.cy)}${hasLJ()?tb('lj1','target',U.tab1)+tb('lj2','pencil',U.tab2)+tb('lj3','trophy',U.tab3):''}${hasXC()?tb('xc1','target',XU.tab1)+tb('xc2','trophy',XU.tab2):''}</div>`; }
+  // 第一排：練習種類；第二排：選到的種類的關卡（相似相反的三層在工具列）
+  const tb=(m,ic,lab,on,cls)=>`<button class="mtab ${cls||''}" data-act="mode" data-m="${m}" aria-pressed="${on}"><span class="ic" aria-hidden="true" data-ic="${ic}"></span>${T(lab)}</button>`;
+  const k=S.mode.slice(0,2);
+  let h=`<div class="modes" role="group" aria-label="練習種類">${tb('ciyu','search',U.cy,k==='ci')}${hasLJ()?tb('lj1','bulb','理解語詞',k==='lj'):''}${hasXC()?tb('xc1','pencil','選詞填寫',k==='xc'):''}</div>`;
+  const lv=k==='lj'?[['lj1','target',U.tab1],['lj2','pencil',U.tab2],['lj3','trophy',U.tab3]]:k==='xc'?[['xc1','target',XU.tab1],['xc2','trophy',XU.tab2]]:[];
+  if(lv.length) h+=`<div class="modes sub" role="group" aria-label="關卡">${lv.map(([m,ic,lab])=>tb(m,ic,lab,S.mode===m,'lvtab')).join('')}</div>`;
+  return h; }
 function setMode(m){ S.mode=m; save(); fillSel(); reset(); render(); window.scrollTo(0,0); }
 function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 function initQuiz(force){ const W=LJ().words; if(LS.quiz&&!force&&LS.qsrc===W) return; LS.qsrc=W;
